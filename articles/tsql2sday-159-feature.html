@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-P9VH7BLE4X"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-P9VH7BLE4X');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>T-SQL Tuesday 159 — What&#8217;s Your Favorite New Feature? — Magdalena Bronowska</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+:root { --rose:#c97b65; --plum:#9b78bb; --gold:#b8935a; --transition:background 0.35s,color 0.35s,border-color 0.35s; }
+[data-theme="dark"] {
+  --bg:#0f1017; --bg2:#14161f; --bg3:#191c28; --bg4:#1f2233;
+  --text:#e8e4f0; --text-mid:#9991b8; --text-dim:#585278;
+  --border:rgba(155,120,187,0.16); --border-md:rgba(201,123,101,0.28);
+  --shadow:0 4px 24px rgba(0,0,0,0.4);
+  --code-bg:#363a57; --code-header:#2a2d46; --code-border:rgba(155,120,187,0.35);
+  --syn-keyword:#e8a0f0; --syn-function:#93c5fd; --syn-string:#86efac;
+  --syn-number:#fdba74; --syn-comment:#94a3b8; --syn-operator:#7dd3fc;
+  --syn-alias:#fde68a; --syn-type:#f9a8d4; --syn-default:#e2e8f0;
+}
+[data-theme="light"] {
+  --bg:#faf8f5; --bg2:#f3f0eb; --bg3:#edeae4; --bg4:#e5e1d9;
+  --text:#0e0b1a; --text-mid:#3a3355; --text-dim:#6a6090;
+  --border:rgba(80,60,120,0.18); --border-md:rgba(160,70,50,0.3);
+  --shadow:0 4px 24px rgba(0,0,0,0.08);
+  --code-bg:#363a57; --code-header:#2a2d46; --code-border:rgba(155,120,187,0.40);
+  --syn-keyword:#e8a0f0; --syn-function:#93c5fd; --syn-string:#86efac;
+  --syn-number:#fdba74; --syn-comment:#94a3b8; --syn-operator:#7dd3fc;
+  --syn-alias:#fde68a; --syn-type:#f9a8d4; --syn-default:#e2e8f0;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',system-ui,sans-serif;font-size:16px;line-height:1.75;overflow-x:hidden;transition:var(--transition)}
+.top-bar{display:flex;justify-content:flex-end;align-items:center;gap:8px;padding:12px 32px;background:var(--bg2);border-bottom:1px solid var(--border)}
+.theme-toggle{background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:5px 10px;cursor:pointer;display:flex;align-items:center;gap:6px;font-size:13px;color:var(--text-mid);font-family:'DM Sans',sans-serif;transition:background 0.2s,border-color 0.2s,color 0.2s}
+.theme-toggle:hover{border-color:var(--border-md);color:var(--text)}
+header{position:relative;padding:64px 40px 52px;border-bottom:1px solid var(--border);overflow:hidden;background:var(--bg2)}
+header::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 50% 0%,rgba(155,120,187,0.10) 0%,transparent 65%);pointer-events:none}
+.back-link{display:inline-flex;align-items:center;gap:8px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-dim);text-decoration:none;margin-bottom:28px;transition:color 0.2s,gap 0.2s}
+.back-link:hover{color:var(--rose);gap:12px}
+.post-meta{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.26em;text-transform:uppercase;color:var(--gold);opacity:0.8;margin-bottom:14px}
+h1{font-family:'DM Serif Display',serif;font-style:italic;font-weight:400;font-size:clamp(1.9rem,5vw,3.2rem);line-height:1.1;letter-spacing:-0.01em;color:var(--text);max-width:760px}
+.post-tag-header{margin-top:18px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--plum);border:1px solid rgba(155,120,187,0.3);padding:3px 10px;border-radius:4px;display:inline-block}
+main{max-width:900px;margin:0 auto;padding:56px 32px 100px}
+.article h2{font-family:'DM Serif Display',serif;font-style:italic;font-weight:400;font-size:clamp(1.3rem,3vw,1.8rem);color:var(--text);margin:48px 0 18px;line-height:1.2;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.article h3{font-family:'DM Sans',sans-serif;font-weight:500;font-size:1rem;letter-spacing:0.06em;text-transform:uppercase;color:var(--plum);margin:32px 0 12px}
+.article p{font-family:'DM Sans',sans-serif;font-weight:300;font-size:16px;color:var(--text);line-height:1.85;margin-bottom:18px}
+.article a{color:var(--rose);text-decoration:none;border-bottom:1px solid rgba(201,123,101,0.35);transition:border-color 0.2s}
+.article a:hover{border-color:var(--rose)}
+.article blockquote{margin:20px 0;padding:14px 22px;border-left:3px solid var(--plum);background:var(--bg3);border-radius:0 6px 6px 0;color:var(--text-mid);font-style:italic}
+.tsql-logo{text-align:center;margin-bottom:36px}
+.tsql-logo img{width:130px;height:130px;border-radius:12px;border:1px solid rgba(155,120,187,0.25)!important;opacity:0.88;transition:opacity 0.2s,transform 0.2s;display:inline-block;margin:0}
+.tsql-logo img:hover{opacity:1;transform:translateY(-3px)}
+.code-wrap{position:relative;margin:24px 0;border-radius:10px;overflow:hidden;border:1px solid var(--code-border);box-shadow:0 6px 28px rgba(0,0,0,0.3)}
+.code-header{display:flex;align-items:center;justify-content:space-between;background:var(--code-header);padding:9px 16px;border-bottom:1px solid rgba(255,255,255,0.07)}
+.code-lang{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.3)}
+.code-wrap pre{background:var(--code-bg);padding:22px 24px;overflow-x:auto;font-family:'DM Mono',monospace;font-size:13.5px;line-height:1.8;color:var(--syn-default);margin:0;border-radius:0;tab-size:4}
+.kw{color:var(--syn-keyword)} .fn{color:var(--syn-function)} .str{color:var(--syn-string)}
+.num{color:var(--syn-number)} .cmt{color:var(--syn-comment);font-style:italic}
+.op{color:var(--syn-operator)} .al{color:var(--syn-alias)} .tp{color:var(--syn-type)}
+.article code:not(pre code){font-family:'DM Mono',monospace;font-size:13px;background:rgba(155,120,187,0.15);padding:2px 7px;border-radius:4px;color:var(--plum)}
+.prev-next{display:flex;justify-content:space-between;gap:16px;margin-top:56px;padding-top:28px;border-top:1px solid var(--border)}
+.prev-next a{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-dim);text-decoration:none;border-bottom:none;transition:color 0.2s}
+.prev-next a:hover{color:var(--rose)}
+footer{text-align:center;padding:44px 24px;border-top:1px solid var(--border)}
+.footer-name{font-family:'DM Serif Display',serif;font-style:italic;font-size:1.4rem;color:var(--text-mid);display:block;margin-bottom:8px}
+.footer-sub{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:var(--text-dim)}
+.footer-sub span{color:var(--gold)}
+@media(max-width:600px){.top-bar{padding:10px 16px}header{padding:44px 18px 36px}main{padding:36px 18px 64px}}
+
+.copy-btn {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.45);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+  z-index: 2;
+  user-select: none;
+}
+.copy-btn:hover { background: rgba(255,255,255,0.16); color: rgba(255,255,255,0.85); border-color: rgba(255,255,255,0.3); }
+.copy-btn.copied { color: #86efac; border-color: rgba(134,239,172,0.5); background: rgba(134,239,172,0.08); }
+
+</style>
+</head>
+<body>
+<div class="top-bar">
+  <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+    <span id="theme-icon">&#127769;</span>
+    <span id="theme-label">Dark</span>
+  </button>
+</div>
+<header>
+  <a href="../blog.html" class="back-link">&#8592; All articles</a>
+  <p class="post-meta">14 February 2023</p>
+  <h1>T-SQL Tuesday 159 &#8212; What&#8217;s Your Favorite New Feature?</h1>
+  <span class="post-tag-header">SQL</span>
+</header>
+<main>
+<article class="article">
+
+  <div class="tsql-logo">
+    <a href="https://dbanuggets.com/2023/02/05/t-sql-tuesday-159-invitation-whats-your-new-favorite-feature/" target="_blank" rel="noopener">
+      <img src="../assets/images/t-sql-tuesday-logo.jpg" alt="T-SQL Tuesday Logo">
+    </a>
+  </div>
+
+  <p>This month the #TSQL2SDAY invitation comes from Deepthi Goguri (<a href="http://tsqltuesday.com/2023/02/07/t-sql-tuesday-159-whats-your-favorite-new-feature/" target="_blank" rel="noopener">blog</a> | <a href="https://twitter.com/dbanuggets" target="_blank" rel="noopener">twitter</a>) who asks us to write about our favorite new feature in SQL Server 2022 or in Azure and New Year&#8217;s Resolutions. The T-SQL Tuesday is a monthly blogging event that was created by Adam Machanic (<a href="http://dataeducation.com/" target="_blank" rel="noopener">blog</a>) and is maintained by Steve Jones (<a href="https://voiceofthedba.wordpress.com/" target="_blank" rel="noopener">blog</a> | <a href="https://twitter.com/way0utwest" target="_blank" rel="noopener">twitter</a>).</p>
+
+  <p>If you want to find out about my New Year&#8217;s Resolutions <a href="tsql2sday-159-resolutions.html">read this post</a>.</p>
+
+  <p>There are many new features in SQL Server 2022, I&#8217;ve done my research, and I found quite several updates and new features that really interest me, and there were mostly features about the <a href="https://learn.microsoft.com/en-us/sql/sql-server/what-s-new-in-sql-server-2022?view=sql-server-ver16#language" target="_blank" rel="noopener">Language</a>, the new/updated T-SQL functions such as:</p>
+
+  <!-- DATETRUNC -->
+  <h2>DATETRUNC()</h2>
+  <p>From MS Learn:</p>
+  <blockquote>DATETRUNC() function returns an input date truncated to a specified datepart.</blockquote>
+  <p>On the surface the work similarly to <code>DATEPART()</code>, however that function returns integer values, opposed to the dates returned by <code>DATETRUNC()</code> (we will see that better in the example below).</p>
+  <p>Let&#8217;s consider a query:</p>
+
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang">SQL</span></div>
+    <pre><span class="kw">declare</span> @d <span class="tp">datetime2</span> <span class="op">=</span> <span class="str">'2023-02-14 23:02:14.2302149'</span>;
+<span class="kw">select</span> <span class="str">'10 - Year'</span>       part, <span class="fn">DATETRUNC</span>(year,        @d) dateTRUNC, <span class="fn">DATEPART</span>(year,        @d) datePART
+<span class="kw">union</span>
+<span class="kw">select</span> <span class="str">'11 - Quarter'</span>,          <span class="fn">DATETRUNC</span>(quarter,     @d),           <span class="fn">DATEPART</span>(quarter,     @d)
+<span class="kw">union</span>
+<span class="kw">select</span> <span class="str">'12 - Month'</span>,            <span class="fn">DATETRUNC</span>(month,       @d),           <span class="fn">DATEPART</span>(month,       @d)
+<span class="kw">union</span>
+<span class="kw">select</span> <span class="str">'13 - Week'</span>,             <span class="fn">DATETRUNC</span>(week,        @d),           <span class="fn">DATEPART</span>(week,        @d) <span class="cmt">-- For a U.S. English environment, @@DATEFIRST defaults to 7 (Sunday).</span>
+<span class="kw">union</span>
+<span class="kw">select</span> <span class="str">'14 - Iso_week'</span>,         <span class="fn">DATETRUNC</span>(iso_week,    @d),           <span class="fn">DATEPART</span>(iso_week,    @d)
+<span class="kw">union</span>
+<span class="kw">select</span> <span class="str">'15 - DayOfYear'</span>,        <span class="fn">DATETRUNC</span>(dayofyear,   @d),           <span class="fn">DATEPART</span>(dayofyear,   @d)
+<span class="kw">union</span>
+<span class="kw">select</span> <span class="str">'16 - Day'</span>,              <span class="fn">DATETRUNC</span>(day,         @d),           <span class="fn">DATEPART</span>(day,         @d)
+<span class="kw">union</span>
+<span class="kw">select</span> <span class="str">'17 - Hour'</span>,             <span class="fn">DATETRUNC</span>(hour,        @d),           <span class="fn">DATEPART</span>(hour,        @d)
+<span class="kw">union</span>
+<span class="kw">select</span> <span class="str">'18 - Minute'</span>,           <span class="fn">DATETRUNC</span>(minute,      @d),           <span class="fn">DATEPART</span>(minute,      @d)
+<span class="kw">union</span>
+<span class="kw">select</span> <span class="str">'19 - Second'</span>,           <span class="fn">DATETRUNC</span>(second,      @d),           <span class="fn">DATEPART</span>(second,      @d)
+<span class="kw">union</span>
+<span class="kw">select</span> <span class="str">'20 - Millisecond'</span>,      <span class="fn">DATETRUNC</span>(millisecond, @d),           <span class="fn">DATEPART</span>(millisecond, @d)
+<span class="kw">union</span>
+<span class="kw">select</span> <span class="str">'21 - Microsecond'</span>,      <span class="fn">DATETRUNC</span>(microsecond, @d),           <span class="fn">DATEPART</span>(microsecond, @d);</pre>
+  </div>
+
+  <p>And the results are as below:</p>
+
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang">RESULT</span></div>
+    <pre>part               dateTRUNC                       datePART
+----               ---------                       --------
+10 - Year          2023-01-01 00:00:00.0000000     2023
+11 - Quarter       2023-01-01 00:00:00.0000000     1
+12 - Month         2023-02-01 00:00:00.0000000     2
+13 - Week          2023-02-12 00:00:00.0000000     7
+14 - Iso_week      2023-02-13 00:00:00.0000000     7
+15 - DayOfYear     2023-02-14 00:00:00.0000000     45
+16 - Day           2023-02-14 00:00:00.0000000     14
+17 - Hour          2023-02-14 23:00:00.0000000     23
+18 - Minute        2023-02-14 23:02:00.0000000     2
+19 - Second        2023-02-14 23:02:14.0000000     14
+20 - Millisecond   2023-02-14 23:02:14.2300000     230
+21 - Microsecond   2023-02-14 23:02:14.2302140     230214</pre>
+  </div>
+
+  <p>So clearly we see the difference between the values returned by the two functions.</p>
+  <p>One thing to note is that for <code>Iso_week</code> the first day of the week in the ISO8601 calendar system is Monday, while <code>Week</code> uses by default Sunday For a U.S. English environment.</p>
+
+  <!-- LEAST / GREATEST -->
+  <h2>LEAST() &amp; GREATEST()</h2>
+  <p>From MS Learn:</p>
+  <blockquote>The <code>LEAST()</code> &amp; <code>GREATEST()</code> functions return the minimum / maximum value from a list of one or more expressions.</blockquote>
+  <p>If the data type is various then in the return I will receive the data type of the highest value before comparison. It is similar to <code>MAX()</code> and <code>MIN()</code> functions, however <code>LEAST()</code> &amp; <code>GREATEST()</code> accept more arguments (up to 254) and they work differently on columns.</p>
+  <p>Let&#8217;s consider this example with multiple arguments:</p>
+
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang">SQL</span></div>
+    <pre><span class="kw">create table</span> tsql2sday (s1 <span class="tp">int</span>, s2 <span class="tp">int</span>, s3 <span class="tp">int</span>);
+<span class="kw">insert into</span> tsql2sday <span class="kw">values</span> (<span class="num">2</span>,<span class="num">1</span>,<span class="num">3</span>),(<span class="num">5</span>,<span class="num">4</span>,<span class="num">3</span>),(<span class="num">4</span>,<span class="num">2</span>,<span class="num">3</span>),(<span class="num">40.1</span>,<span class="num">110.12</span>,<span class="num">398.1</span>);
+<span class="kw">select</span> <span class="op">*</span>, <span class="fn">least</span>(s1,s2,s3) least, <span class="fn">greatest</span>(s1,s2,s3) greatest <span class="kw">from</span> tsql2sday;</pre>
+  </div>
+
+  <p>The results show that <code>LEAST()</code> &amp; <code>GREATEST()</code> work horizontally:</p>
+
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang">RESULT</span></div>
+    <pre>s1    s2    s3    least   greatest
+--    --    --    -----   --------
+2     1     3     1       3
+5     4     3     3       5
+4     2     3     2       4
+40    110   398   40      398</pre>
+  </div>
+
+  <!-- STRING_SPLIT -->
+  <h2>STRING_SPLIT()</h2>
+  <p>From MS Learn:</p>
+  <blockquote>A table-valued function that splits a string into rows of substrings, based on a specified separator character.</blockquote>
+  <p>The STRING_SPLIT() is not new, but has been updated in SQL Server 2022 with <code>enable_ordinal</code> argument and <code>ordinal</code> output column. Again from the MS Learn:</p>
+  <blockquote><code>enable_ordinal</code> serves as a flag to enable or disable the <code>ordinal</code> output column. A value of 1 enables the <code>ordinal</code> column. If <code>enable_ordinal</code> is omitted, <code>NULL</code>, or has a value of 0, the <code>ordinal</code> column is disabled.</blockquote>
+  <p>Let&#8217;s have a look at this query:</p>
+
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang">SQL</span></div>
+    <pre><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> <span class="fn">STRING_SPLIT</span>(<span class="str">'This month the #TSQL2SDAY invitation comes from Deepthi Goguri'</span>,<span class="str">' '</span>);</pre>
+  </div>
+
+  <p>and the results would be in a single column,</p>
+
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang">RESULT</span></div>
+    <pre>value
+-----
+This
+month
+the
+#TSQL2SDAY
+invitation
+comes
+from
+Deepthi
+Goguri</pre>
+  </div>
+
+  <p>but starting from SQL Server 2022 we can add this extra argument to enable the <code>ordinal</code> column in the output:</p>
+
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang">SQL</span></div>
+    <pre><span class="kw">select</span> <span class="op">*</span> <span class="kw">from</span> <span class="fn">STRING_SPLIT</span>(<span class="str">'This month the #TSQL2SDAY invitation comes from Deepthi Goguri'</span>,<span class="str">' '</span>, <span class="num">1</span>);</pre>
+  </div>
+
+  <p>and now we got more information:</p>
+
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang">RESULT</span></div>
+    <pre>value        ordinal
+-----        -------
+This         1
+month        2
+the          3
+#TSQL2SDAY   4
+invitation   5
+comes        6
+from         7
+Deepthi      8
+Goguri       9</pre>
+  </div>
+
+  <p>Thanks,<br>Magda</p>
+
+  <div class="prev-next">
+    <a href="tsql2sday-159-resolutions.html">&#8592; T-SQL Tuesday 159: New Year&#8217;s Resolutions</a>
+    <a href="festive-tech-2024.html">Festive Tech Calendar 2024 &#8594;</a>
+  </div>
+
+</article>
+</main>
+<footer>
+  <span class="footer-name">Magdalena Bronowska</span>
+  <p class="footer-sub">&#169; 2025 &nbsp;&#183;&nbsp; <span>Made with Love and Coffee</span></p>
+</footer>
+<script>
+function toggleTheme(){const h=document.documentElement,d=h.getAttribute('data-theme')==='dark';h.setAttribute('data-theme',d?'light':'dark');document.getElementById('theme-icon').textContent=d?'☀️':'🌙';document.getElementById('theme-label').textContent=d?'Light':'Dark';localStorage.setItem('theme',d?'light':'dark')}
+(function(){const s=localStorage.getItem('theme');if(s==='light'){document.documentElement.setAttribute('data-theme','light');document.getElementById('theme-icon').textContent='☀️';document.getElementById('theme-label').textContent='Light'}})();
+
+function copyCode(btn) {
+  var pre = btn.closest('.code-wrap').querySelector('pre');
+  var text = pre.innerText;
+  navigator.clipboard.writeText(text).then(function() {
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.code-wrap').forEach(function(wrap) {
+    var btn = document.createElement('button');
+    btn.className = 'copy-btn';
+    btn.textContent = 'Copy';
+    btn.setAttribute('onclick', 'copyCode(this)');
+    btn.setAttribute('aria-label', 'Copy code');
+    var header = wrap.querySelector('.code-header'); if(header) header.appendChild(btn); else wrap.appendChild(btn);
+  });
+});
+
+</script>
+</body>
+</html>

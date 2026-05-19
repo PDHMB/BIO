@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-P9VH7BLE4X"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-P9VH7BLE4X');
+</script>
+  
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Microsoft Excel — Data Import from PDF — Very Useful Tool — Magdalena Bronowska</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --rose:        #c97b65;
+  --plum:        #9b78bb;
+  --gold:        #b8935a;
+  --transition:  background 0.35s, color 0.35s, border-color 0.35s;
+}
+[data-theme="dark"] {
+  --bg:          #0f1017;
+  --bg2:         #14161f;
+  --bg3:         #191c28;
+  --bg4:         #1f2233;
+  --text:        #e8e4f0;
+  --text-mid:    #9991b8;
+  --text-dim:    #585278;
+  --border:      rgba(155,120,187,0.16);
+  --border-md:   rgba(201,123,101,0.28);
+  --shadow:      0 4px 24px rgba(0,0,0,0.4);
+  --code-bg:     #12141e;
+}
+[data-theme="light"] {
+  --bg:          #faf8f5;
+  --bg2:         #f3f0eb;
+  --bg3:         #edeae4;
+  --bg4:         #e5e1d9;
+  --text:        #0e0b1a;
+  --text-mid:    #3a3355;
+  --text-dim:    #6a6090;
+  --border:      rgba(80,60,120,0.18);
+  --border-md:   rgba(160,70,50,0.3);
+  --shadow:      0 4px 24px rgba(0,0,0,0.08);
+  --code-bg:     #e8e4f0;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.75;
+  overflow-x: hidden;
+  transition: var(--transition);
+}
+.top-bar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 32px;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+}
+.theme-toggle {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 5px 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--text-mid);
+  font-family: 'DM Sans', sans-serif;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+.theme-toggle:hover { border-color: var(--border-md); color: var(--text); }
+.theme-icon { font-size: 14px; }
+header {
+  position: relative;
+  padding: 64px 40px 52px;
+  border-bottom: 1px solid var(--border);
+  overflow: hidden;
+  background: var(--bg2);
+}
+header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 70% 60% at 50% 0%, rgba(155,120,187,0.10) 0%, transparent 65%);
+  pointer-events: none;
+}
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  text-decoration: none;
+  margin-bottom: 28px;
+  transition: color 0.2s, gap 0.2s;
+}
+.back-link:hover { color: var(--rose); gap: 12px; }
+.post-meta {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: 0.8;
+  margin-bottom: 14px;
+}
+h1 {
+  font-family: 'DM Serif Display', serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(1.9rem, 5vw, 3.2rem);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  max-width: 900px;
+}
+.post-tag-header {
+  margin-top: 18px;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--plum);
+  border: 1px solid rgba(155,120,187,0.3);
+  padding: 3px 10px;
+  border-radius: 4px;
+  display: inline-block;
+}
+main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 56px 32px 100px;
+}
+.article h2 {
+  font-family: 'DM Serif Display', serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(1.3rem, 3vw, 1.8rem);
+  color: var(--text);
+  margin: 48px 0 18px;
+  line-height: 1.2;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+.article h3 {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+  font-size: 1rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--plum);
+  margin: 32px 0 12px;
+}
+.article p {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  font-size: 16px;
+  color: var(--text);
+  line-height: 1.85;
+  margin-bottom: 18px;
+}
+.article a {
+  color: var(--rose);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(201,123,101,0.35);
+  transition: border-color 0.2s;
+}
+.article a:hover { border-color: var(--rose); }
+.article pre {
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 22px 24px;
+  overflow-x: auto;
+  margin: 24px 0;
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--text-mid);
+}
+.article code:not(pre code) {
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  background: var(--code-bg);
+  padding: 2px 7px;
+  border-radius: 4px;
+  color: var(--plum);
+}
+.article blockquote {
+  border-left: 3px solid var(--rose);
+  margin: 24px 0;
+  padding: 12px 24px;
+  background: var(--bg3);
+  border-radius: 0 6px 6px 0;
+  color: var(--text-mid);
+  font-style: italic;
+}
+.article ul, .article ol {
+  padding-left: 24px;
+  margin-bottom: 18px;
+  color: var(--text);
+  font-weight: 300;
+}
+.article li { margin-bottom: 6px; line-height: 1.75; }
+.article img {
+  max-width: 100%;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  margin: 18px 0;
+  display: block;
+}
+.img-caption {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--text-dim);
+  letter-spacing: 0.08em;
+  margin-top: -10px;
+  margin-bottom: 18px;
+}
+.tsql-logo {
+  text-align: center;
+  margin-bottom: 36px;
+}
+.tsql-logo img {
+  width: 130px;
+  height: 130px;
+  border-radius: 12px;
+  border: 1px solid rgba(155,120,187,0.25) !important;
+  opacity: 0.88;
+  transition: opacity 0.2s, transform 0.2s;
+  display: inline-block;
+  margin: 0;
+}
+.tsql-logo img:hover { opacity: 1; transform: translateY(-3px); }
+footer {
+  text-align: center;
+  padding: 44px 24px;
+  border-top: 1px solid var(--border);
+}
+.footer-name {
+  font-family: 'DM Serif Display', serif;
+  font-style: italic;
+  font-size: 1.4rem;
+  color: var(--text-mid);
+  display: block;
+  margin-bottom: 8px;
+}
+.footer-sub {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+.footer-sub span { color: var(--gold); }
+.prev-next {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 56px;
+  padding-top: 28px;
+  border-top: 1px solid var(--border);
+}
+.prev-next a {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.prev-next a:hover { color: var(--rose); }
+@media (max-width: 600px) {
+  .top-bar { padding: 10px 16px; }
+  header { padding: 44px 18px 36px; }
+  main { padding: 36px 18px 64px; }
+}
+
+.code-wrap { position: relative; }
+.copy-btn {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.45);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+  z-index: 2;
+  user-select: none;
+}
+.copy-btn:hover { background: rgba(255,255,255,0.16); color: rgba(255,255,255,0.85); border-color: rgba(255,255,255,0.3); }
+.copy-btn.copied { color: #86efac; border-color: rgba(134,239,172,0.5); background: rgba(134,239,172,0.08); }
+
+</style>
+</head>
+<body>
+<div class="top-bar">
+  <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+    <span class="theme-icon" id="theme-icon">🌙</span>
+    <span id="theme-label">Dark</span>
+  </button>
+</div>
+<header>
+  <a href="../blog.html" class="back-link">← All articles</a>
+  <p class="post-meta">15 September 2020</p>
+  <h1>Microsoft Excel — Data Import from PDF — Very Useful Tool</h1>
+  <span class="post-tag-header">Excel</span>
+</header>
+<main>
+  <article class="article">
+    
+
+
+<p>Many times happened to me when I received a PDF file with a table that I had to "type" into the program manually. Fortunately, the data didn't have too many lines 10-20 at most, so it wasn't time-consuming, but it was frustrating and it could cost a mistake. I wish I knew that before.</p>
+<p>This option allows you in an easy way to get the data from a PDF file to Excel or Power BI.</p>
+
+<h2>EXCEL – PDF FILE – IMPORT</h2>
+
+<img src="../assets/images/magda_powerquery_01_example.png" alt="Example of data in PDF file">
+
+<p>This example I found somewhere on the internet.<br>
+It is necessary to have an Excel Power Query add-in.</p>
+<p>In Excel spreadsheet choose from ribbon <strong>DATA &gt; GET DATA &gt; FROM FILE &gt; FROM PDF</strong></p>
+
+<img src="../assets/images/magda_powerquery_02_from_pdf.jpg" alt="Data Tab &gt; Get Data &gt; From File &gt; From PDF">
+
+<p>In the next step, we choose PDF file to import &gt; <strong>IMPORT</strong></p>
+
+<img src="../assets/images/magda_powerquery_03_pdf.jpg" alt="Choose your PDF file to Import">
+
+<p>Next step is <strong>NAVIGATOR</strong>. In NAVIGATOR we have TABLE AND PAGE and choosing one we will see on the right side how our data look like.</p>
+
+<img src="../assets/images/magda_powerquery_04_navigator.jpg" alt="Import data &gt; Load or Transform Data">
+
+<p>If we have nothing to correct, click <strong>LOAD</strong>. And that is it. Now we have proper data in the Excel spreadsheet.</p>
+
+<img src="../assets/images/magda_powerquery_05_imported.jpg" alt="Imported data from PDF File to EXCEL">
+
+<p>If we want to change something in the data, e.g. to separate the columns, click <strong>TRANSFORM DATA</strong>.</p>
+
+<h2>The visual form of imported data</h2>
+<p>If our PDF file is in a "nice" form of a table with columns and headers clearly marked, then most likely there will be no need for the transformation of the data. If our file is without clearly marked / separated columns or in the form of a text where the data between invisible columns are separated only by spaces, the data should be properly prepared while importing through TRANSFORM DATA.<br>
+Few examples:</p>
+
+<img src="../assets/images/magda_powerquery_06_example1.jpg" alt="Left – PDF file with no line between column. Right – Data in Navigator">
+<img src="../assets/images/magda_powerquery_07_example2.jpg" alt="Left – PDF file with no line between column. Right – Data in Navigator">
+
+<p>Unfortunately, I have not found a solution to prepare a PDF file made/printed from a photo or a print screen, or a scanned document in this way.</p>
+<p>I think it is a very useful tool, It saves me from retyping line of a text to Excel. It is shame I didn't know it before.</p>
+<p>Thank you, Magda.</p>
+
+    <div class="prev-next">
+      <a href="tsql2sday-130.html" class="back-link">← Automate Your Stress Away</a>
+      <a href="power-query-install.html">Power Query Installation →</a>
+    </div>
+  </article>
+</main>
+<footer>
+  <span class="footer-name">Magdalena Bronowska</span>
+  <p class="footer-sub">© 2025 &nbsp;·&nbsp; <span>Made with Love and Coffee</span></p>
+</footer>
+<script>
+function toggleTheme() {
+  const html = document.documentElement;
+  const isDark = html.getAttribute('data-theme') === 'dark';
+  html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  document.getElementById('theme-icon').textContent = isDark ? '☀️' : '🌙';
+  document.getElementById('theme-label').textContent = isDark ? 'Light' : 'Dark';
+  localStorage.setItem('theme', isDark ? 'light' : 'dark');
+}
+(function() {
+  const saved = localStorage.getItem('theme');
+  if (saved === 'light') {
+    document.documentElement.setAttribute('data-theme', 'light');
+    document.getElementById('theme-icon').textContent = '☀️';
+    document.getElementById('theme-label').textContent = 'Light';
+  }
+})();
+
+function copyCode(btn) {
+  var pre = btn.closest('.code-wrap').querySelector('pre');
+  var text = pre.innerText;
+  navigator.clipboard.writeText(text).then(function() {
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.code-wrap').forEach(function(wrap) {
+    var btn = document.createElement('button');
+    btn.className = 'copy-btn';
+    btn.textContent = 'Copy';
+    btn.setAttribute('onclick', 'copyCode(this)');
+    btn.setAttribute('aria-label', 'Copy code');
+    var header = wrap.querySelector('.code-header'); if(header) header.appendChild(btn); else wrap.appendChild(btn);
+  });
+});
+
+</script>
+</body>
+</html>

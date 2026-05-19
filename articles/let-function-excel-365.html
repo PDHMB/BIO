@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-P9VH7BLE4X"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-P9VH7BLE4X');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LET Function in Excel 365 — Magdalena Bronowska</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+:root { --rose:#c97b65; --plum:#9b78bb; --gold:#b8935a; --transition:background 0.35s,color 0.35s,border-color 0.35s; }
+[data-theme="dark"] {
+  --bg:#0f1017; --bg2:#14161f; --bg3:#191c28; --bg4:#1f2233;
+  --text:#e8e4f0; --text-mid:#9991b8; --text-dim:#585278;
+  --border:rgba(155,120,187,0.16); --border-md:rgba(201,123,101,0.28);
+  --shadow:0 4px 24px rgba(0,0,0,0.4);
+}
+[data-theme="light"] {
+  --bg:#faf8f5; --bg2:#f3f0eb; --bg3:#edeae4; --bg4:#e5e1d9;
+  --text:#0e0b1a; --text-mid:#3a3355; --text-dim:#6a6090;
+  --border:rgba(80,60,120,0.18); --border-md:rgba(160,70,50,0.3);
+  --shadow:0 4px 24px rgba(0,0,0,0.08);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',system-ui,sans-serif;font-size:16px;line-height:1.75;overflow-x:hidden;transition:var(--transition)}
+.top-bar{display:flex;justify-content:flex-end;align-items:center;gap:8px;padding:12px 32px;background:var(--bg2);border-bottom:1px solid var(--border)}
+.theme-toggle{background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:5px 10px;cursor:pointer;display:flex;align-items:center;gap:6px;font-size:13px;color:var(--text-mid);font-family:'DM Sans',sans-serif;transition:background 0.2s,border-color 0.2s,color 0.2s}
+.theme-toggle:hover{border-color:var(--border-md);color:var(--text)}
+header{position:relative;padding:64px 40px 52px;border-bottom:1px solid var(--border);overflow:hidden;background:var(--bg2)}
+header::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 50% 0%,rgba(155,120,187,0.10) 0%,transparent 65%);pointer-events:none}
+.back-link{display:inline-flex;align-items:center;gap:8px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-dim);text-decoration:none;margin-bottom:28px;transition:color 0.2s,gap 0.2s}
+.back-link:hover{color:var(--rose);gap:12px}
+.post-meta{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.26em;text-transform:uppercase;color:var(--gold);opacity:0.8;margin-bottom:14px}
+h1{font-family:'DM Serif Display',serif;font-style:italic;font-weight:400;font-size:clamp(1.9rem,5vw,3.2rem);line-height:1.1;letter-spacing:-0.01em;color:var(--text);max-width:900px}
+.post-tag-header{margin-top:18px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--plum);border:1px solid rgba(155,120,187,0.3);padding:3px 10px;border-radius:4px;display:inline-block}
+main{max-width:900px;margin:0 auto;padding:56px 32px 100px}
+.article h2{font-family:'DM Serif Display',serif;font-style:italic;font-weight:400;font-size:clamp(1.3rem,3vw,1.8rem);color:var(--text);margin:48px 0 18px;line-height:1.2;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.article p{font-family:'DM Sans',sans-serif;font-weight:300;font-size:16px;color:var(--text);line-height:1.85;margin-bottom:18px}
+.article a{color:var(--rose);text-decoration:none;border-bottom:1px solid rgba(201,123,101,0.35);transition:border-color 0.2s}
+.article a:hover{border-color:var(--rose)}
+.article strong{font-weight:500;color:var(--text)}
+.article blockquote{margin:20px 0;padding:14px 22px;border-left:3px solid var(--plum);background:var(--bg3);border-radius:0 6px 6px 0;color:var(--text-mid);font-style:italic}
+.article code{font-family:'DM Mono',monospace;font-size:13px;background:rgba(155,120,187,0.15);padding:2px 7px;border-radius:4px;color:var(--plum)}
+.article img{max-width:100%;border-radius:8px;border:1px solid var(--border);margin:18px 0;display:block}
+.param-block{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:18px 22px;margin:20px 0}
+.param-block p{margin-bottom:10px}
+.param-block p:last-child{margin-bottom:0}
+.prev-next{display:flex;justify-content:space-between;gap:16px;margin-top:56px;padding-top:28px;border-top:1px solid var(--border)}
+.prev-next a{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-dim);text-decoration:none;border-bottom:none;transition:color 0.2s}
+.prev-next a:hover{color:var(--rose)}
+footer{text-align:center;padding:44px 24px;border-top:1px solid var(--border)}
+.footer-name{font-family:'DM Serif Display',serif;font-style:italic;font-size:1.4rem;color:var(--text-mid);display:block;margin-bottom:8px}
+.footer-sub{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:var(--text-dim)}
+.footer-sub span{color:var(--gold)}
+@media(max-width:600px){.top-bar{padding:10px 16px}header{padding:44px 18px 36px}main{padding:36px 18px 64px}}
+</style>
+</head>
+<body>
+<div class="top-bar">
+  <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+    <span id="theme-icon">&#127769;</span>
+    <span id="theme-label">Dark</span>
+  </button>
+</div>
+
+<header>
+  <a href="../blog.html" class="back-link">&#8592; All articles</a>
+  <p class="post-meta">29 October 2020</p>
+  <h1>LET Function in Excel 365</h1>
+  <span class="post-tag-header">Excel</span>
+</header>
+
+<main>
+<article class="article">
+
+
+
+  <p>Microsoft Excel 365 gives us a new function &#8211; LET(). It is not available for every Microsoft 365 subscriber though. A few weeks ago my Excel did not have this function, but now I can work with it. I did a few examples when I was learning this feature and want to share them with you today.</p>
+  
+    <img src="../assets/images/2020-10-29-let-function-in-excel-365_01.png" alt="LET function in Excel 365">
+
+  <h2>What is LET function?</h2>
+
+  <p>Microsoft&#8217;s definition:</p>
+  <blockquote>The LET function assigns names to calculation results. This allows storing intermediate calculations, values, or defining names inside a formula. These names only apply within the scope of the LET function. Similar to variables in programming, LET is accomplished through Excel&#8217;s native formula syntax.</blockquote>
+
+  <p><a href="http://support.microsoft.com/en-us/office/let-function-34842dd8-b92b-4d3f-b325-b8b8f9908999" target="_blank" rel="noopener">LET function description</a></p>
+
+  <img src="../assets/images/2020-10-29-let-function-in-excel-365_02.png" alt="Source: https://support.microsoft.com">
+
+  <p>Few more details about the parameters:</p>
+
+  <p><strong>Name1</strong> &#8211; a name of the variable/expression; has to start with a letter and cannot be the output of a formula</p>
+  <p><strong>Name_value1..127</strong> &#8211; a value/formula for the corresponding name</p>
+  <p><strong>Calculation_or_name2..127</strong> &#8211; this one has two modes: the first serves as a place for calculations using names defined before, and the second acts as Name1, i.e. defines a name for another variable in relation to Name_value_2..127</p>
+
+  <h2>Example 1 &#8211; single name</h2>
+
+  <p>Here is the simplest example of the LET function application. We need to provide at least three parameters:</p>
+
+  <p><strong>Name1</strong> &#8211; the name starting with a letter of a single variable/expression; cannot use formulas here<br>
+  <code>myName</code></p>
+
+  <p><strong>Name_value1</strong> &#8211; an actual value or an expression<br>
+  <code>CONCAT("M","a","g","d","a")</code></p>
+
+  <p><strong>Calculation_or_name2</strong> &#8211; can be a formula that uses the Name1<br>
+  <code>"My name is: " &amp; myName</code></p>
+
+  <p>As a result we will get a string<br>
+  <code>My name is: Magda</code></p>
+
+  <img src="../assets/images/2020-10-29-let-function-in-excel-365_03.png" alt="Excel LET with single variable!">
+
+  <h2>Example 2 &#8211; multiple names</h2>
+
+  <p>The definition of the LET function allows us to provide more (up to 126) defined pairs (name:value), so let&#8217;s see how we can add one more.</p>
+
+  <p><strong>Name1</strong> &#8211; the name starting with a letter of a single variable/expression; cannot use formulas here<br>
+  <code>myName</code></p>
+
+  <p><strong>Name_value1</strong> &#8211; an actual value or an expression<br>
+  <code>CONCAT("M","a","g","d","a")</code></p>
+
+  <p><strong>Calculation_or_name2</strong> &#8211; this one changes now, as it becomes a name of a second variable, so all the rules apply<br>
+  <code>liveIn</code></p>
+
+  <p><strong>Name_value2</strong> &#8211; an actual value or an expression of the second name<br>
+  <code>"Southampton"</code></p>
+
+  <p><strong>Calculation_or_name3</strong> &#8211; now the final calculation is that uses both names the Name1 and Name2<br>
+  <code>"My name is: " &amp; myName &amp; " and I live in: " &amp; liveIn</code></p>
+
+  <p>As a result, we will get a string<br>
+  <code>My name is: Magda and I live in: Southampton</code></p>
+
+  <img src="../assets/images/2020-10-29-let-function-in-excel-365_04.png" alt="Excel LET with multiple variables">
+
+  <h2>Example 3 &#8211; reusing values</h2>
+
+  <p>As my last example I want to see the parameters being reused in multiple calculations</p>
+
+  <p><strong>Name1</strong> &#8211; the name starting with a letter of a single variable/expression; cannot use formulas here<br>
+  <code>myName</code></p>
+
+  <p><strong>Name_value1</strong> &#8211; an actual value or an expression<br>
+  <code>CONCAT("M","a","g","d","a")</code></p>
+
+  <p><strong>Calculation_or_name2</strong> &#8211; second variable<br>
+  <code>text</code></p>
+
+  <p><strong>Name_value2</strong> &#8211; as a value using formula with Name1<br>
+  <code>SUBSTITUTE(myName&amp;" was here"," ","-")</code></p>
+
+  <p><strong>Calculation_or_name3</strong> &#8211; in the final calculation I am using second variable text multiple times<br>
+  <code>UPPER(text)&amp;" | "&amp;LOWER(text)&amp;" | "&amp;PROPER(text)</code></p>
+
+  <p>As a result, we will get a string<br>
+  <code>MAGDA-WAS-HERE | magda-was-here | Magda-Was-Here</code></p>
+
+  <img src="../assets/images/2020-10-29-let-function-in-excel-365_05.png" alt="MAGDA-WAS-HERE">
+
+  <p>So far I did not find why it is throwing an error #NAME?, but it is gone when I remove the first variable.</p>
+
+  <p>Thank you,</p>
+  <p>Magda</p>
+
+  <div class="prev-next">
+    <a href="d-like-duplicate.html">&#8592; D like Duplicate</a>
+    <span></span>
+  </div>
+
+</article>
+</main>
+
+<footer>
+  <span class="footer-name">Magdalena Bronowska</span>
+  <p class="footer-sub">&#169; 2025 &nbsp;&#183;&nbsp; <span>Made with Love and Coffee</span></p>
+</footer>
+
+<script>
+function toggleTheme(){const h=document.documentElement,d=h.getAttribute('data-theme')==='dark';h.setAttribute('data-theme',d?'light':'dark');document.getElementById('theme-icon').textContent=d?'☀️':'🌙';document.getElementById('theme-label').textContent=d?'Light':'Dark';localStorage.setItem('theme',d?'light':'dark')}
+(function(){const s=localStorage.getItem('theme');if(s==='light'){document.documentElement.setAttribute('data-theme','light');document.getElementById('theme-icon').textContent='☀️';document.getElementById('theme-label').textContent='Light'}})();
+</script>
+</body>
+</html>

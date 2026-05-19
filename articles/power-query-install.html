@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-P9VH7BLE4X"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-P9VH7BLE4X');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Power Query Installation — Magdalena Bronowska</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --rose:        #c97b65;
+  --plum:        #9b78bb;
+  --gold:        #b8935a;
+  --transition:  background 0.35s, color 0.35s, border-color 0.35s;
+}
+[data-theme="dark"] {
+  --bg:          #0f1017;
+  --bg2:         #14161f;
+  --bg3:         #191c28;
+  --bg4:         #1f2233;
+  --text:        #e8e4f0;
+  --text-mid:    #9991b8;
+  --text-dim:    #585278;
+  --border:      rgba(155,120,187,0.16);
+  --border-md:   rgba(201,123,101,0.28);
+  --shadow:      0 4px 24px rgba(0,0,0,0.4);
+  --code-bg:     #12141e;
+}
+[data-theme="light"] {
+  --bg:          #faf8f5;
+  --bg2:         #f3f0eb;
+  --bg3:         #edeae4;
+  --bg4:         #e5e1d9;
+  --text:        #0e0b1a;
+  --text-mid:    #3a3355;
+  --text-dim:    #6a6090;
+  --border:      rgba(80,60,120,0.18);
+  --border-md:   rgba(160,70,50,0.3);
+  --shadow:      0 4px 24px rgba(0,0,0,0.08);
+  --code-bg:     #e8e4f0;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.75;
+  overflow-x: hidden;
+  transition: var(--transition);
+}
+.top-bar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 32px;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+}
+.theme-toggle {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 5px 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--text-mid);
+  font-family: 'DM Sans', sans-serif;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+.theme-toggle:hover { border-color: var(--border-md); color: var(--text); }
+.theme-icon { font-size: 14px; }
+header {
+  position: relative;
+  padding: 64px 40px 52px;
+  border-bottom: 1px solid var(--border);
+  overflow: hidden;
+  background: var(--bg2);
+}
+header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 70% 60% at 50% 0%, rgba(155,120,187,0.10) 0%, transparent 65%);
+  pointer-events: none;
+}
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  text-decoration: none;
+  margin-bottom: 28px;
+  transition: color 0.2s, gap 0.2s;
+}
+.back-link:hover { color: var(--rose); gap: 12px; }
+.post-meta {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: 0.8;
+  margin-bottom: 14px;
+}
+h1 {
+  font-family: 'DM Serif Display', serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(1.9rem, 5vw, 3.2rem);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  max-width: 900px;
+}
+.post-tag-header {
+  margin-top: 18px;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--plum);
+  border: 1px solid rgba(155,120,187,0.3);
+  padding: 3px 10px;
+  border-radius: 4px;
+  display: inline-block;
+}
+main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 56px 32px 100px;
+}
+.article h2 {
+  font-family: 'DM Serif Display', serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(1.3rem, 3vw, 1.8rem);
+  color: var(--text);
+  margin: 48px 0 18px;
+  line-height: 1.2;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+.article h3 {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+  font-size: 1rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--plum);
+  margin: 32px 0 12px;
+}
+.article p {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  font-size: 16px;
+  color: var(--text);
+  line-height: 1.85;
+  margin-bottom: 18px;
+}
+.article a {
+  color: var(--rose);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(201,123,101,0.35);
+  transition: border-color 0.2s;
+}
+.article a:hover { border-color: var(--rose); }
+.article pre {
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 22px 24px;
+  overflow-x: auto;
+  margin: 24px 0;
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--text-mid);
+}
+.article code:not(pre code) {
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  background: var(--code-bg);
+  padding: 2px 7px;
+  border-radius: 4px;
+  color: var(--plum);
+}
+.article blockquote {
+  border-left: 3px solid var(--rose);
+  margin: 24px 0;
+  padding: 12px 24px;
+  background: var(--bg3);
+  border-radius: 0 6px 6px 0;
+  color: var(--text-mid);
+  font-style: italic;
+}
+.article ul, .article ol {
+  padding-left: 24px;
+  margin-bottom: 18px;
+  color: var(--text);
+  font-weight: 300;
+}
+.article li { margin-bottom: 6px; line-height: 1.75; }
+.article img {
+  max-width: 100%;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  margin: 18px 0;
+  display: block;
+}
+.img-caption {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--text-dim);
+  letter-spacing: 0.08em;
+  margin-top: -10px;
+  margin-bottom: 18px;
+}
+.tsql-logo {
+  text-align: center;
+  margin-bottom: 36px;
+}
+.tsql-logo img {
+  width: 130px;
+  height: 130px;
+  border-radius: 12px;
+  border: 1px solid rgba(155,120,187,0.25) !important;
+  opacity: 0.88;
+  transition: opacity 0.2s, transform 0.2s;
+  display: inline-block;
+  margin: 0;
+}
+.tsql-logo img:hover { opacity: 1; transform: translateY(-3px); }
+footer {
+  text-align: center;
+  padding: 44px 24px;
+  border-top: 1px solid var(--border);
+}
+.footer-name {
+  font-family: 'DM Serif Display', serif;
+  font-style: italic;
+  font-size: 1.4rem;
+  color: var(--text-mid);
+  display: block;
+  margin-bottom: 8px;
+}
+.footer-sub {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+.footer-sub span { color: var(--gold); }
+.prev-next {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 56px;
+  padding-top: 28px;
+  border-top: 1px solid var(--border);
+}
+.prev-next a {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.prev-next a:hover { color: var(--rose); }
+@media (max-width: 600px) {
+  .top-bar { padding: 10px 16px; }
+  header { padding: 44px 18px 36px; }
+  main { padding: 36px 18px 64px; }
+}
+
+.code-wrap { position: relative; }
+.copy-btn {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.45);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+  z-index: 2;
+  user-select: none;
+}
+.copy-btn:hover { background: rgba(255,255,255,0.16); color: rgba(255,255,255,0.85); border-color: rgba(255,255,255,0.3); }
+.copy-btn.copied { color: #86efac; border-color: rgba(134,239,172,0.5); background: rgba(134,239,172,0.08); }
+
+</style>
+</head>
+<body>
+<div class="top-bar">
+  <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+    <span class="theme-icon" id="theme-icon">🌙</span>
+    <span id="theme-label">Dark</span>
+  </button>
+</div>
+<header>
+  <a href="../blog.html" class="back-link">← All articles</a>
+  <p class="post-meta">19 September 2020</p>
+  <h1>Power Query Installation</h1>
+  <span class="post-tag-header">Excel</span>
+</header>
+<main>
+  <article class="article">
+    
+<img src="../assets/images/2020-09-19-power-query-installation_01.jpg" alt="Power Query installation">
+
+<p>While I was preparing to work in the new (for me) Microsoft Office 365, I learned that Excel 365 already has the "built-in" Power Query add-in. It does not appear directly on the ribbon. It is located under the <strong>DATA</strong> tab.</p>
+
+<img src="../assets/images/2020-09-19-power-query-installation_02.png" alt="Data Tab – entrance to Power Query in Microsoft Office 365">
+
+<p>Data Tab – entrance to Power Query in Microsoft Office 365.<br>
+For previous versions of Excel, the Power Query add-in should be downloaded from the Microsoft website and installed.</p>
+<p>The trick for me was that during the installation of the 64-bit version there was a message that the 64-bit version for MS Excel 2010 and MS Excel 2013 should be installed first. It was weird because my version is MS Excel 365.</p>
+
+<img src="../assets/images/2020-09-19-power-query-installation_03.png" alt="Power Query installation">
+
+<p>And when I tried installing the 32-bit version, there was a message that you do not need to install the MS Excel 2016 version and that it is under the DATA tab. So this explains everything!</p>
+
+<img src="../assets/images/2020-09-19-power-query-installation_04.png" alt="Power Query installation">
+
+<p>A pleasant surprise and few clicks less – if I knew this before.</p>
+<p>For versions before MS Excel 2016, Power Query Add-in should be installed from the <a href="https://www.microsoft.com/en-us/download/details.aspx?id=39379&CorrelationId=0c93f2ac-c612-4a6f-b4c2-47ffc1828b23" target="_blank" rel="noopener">link</a>.</p>
+<p>Then in Excel under <strong>FILE tab &gt; OPTIONS &gt; Add-Ins</strong>, we will find Microsoft Power Query for Excel</p>
+
+<img src="../assets/images/2020-09-19-power-query-installation_05.png" alt="Power Query installation">
+
+<p>The next step will be <strong>Manage &gt; COM Add-Ins &gt; Go…</strong><br>
+We choose what we need and hit OK.</p>
+
+<img src="../assets/images/2020-09-19-power-query-installation_06.png" alt="Power Query installation">
+
+<p>Now we have Power Query for Excel added to Excel.</p>
+
+<img src="../assets/images/2020-09-19-power-query-installation_07.png" alt="Power Query Tab in Excel 2013">
+
+<p>Thank you,<br>Magda</p>
+
+    <div class="prev-next">
+      <a href="excel-pdf-import.html" class="back-link">← Data Import from PDF</a>
+      <a href="d-like-duplicate.html">D like Duplicate →</a>
+    </div>
+  </article>
+</main>
+<footer>
+  <span class="footer-name">Magdalena Bronowska</span>
+  <p class="footer-sub">© 2025 &nbsp;·&nbsp; <span>Made with Love and Coffee</span></p>
+</footer>
+<script>
+function toggleTheme() {
+  const html = document.documentElement;
+  const isDark = html.getAttribute('data-theme') === 'dark';
+  html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  document.getElementById('theme-icon').textContent = isDark ? '☀️' : '🌙';
+  document.getElementById('theme-label').textContent = isDark ? 'Light' : 'Dark';
+  localStorage.setItem('theme', isDark ? 'light' : 'dark');
+}
+(function() {
+  const saved = localStorage.getItem('theme');
+  if (saved === 'light') {
+    document.documentElement.setAttribute('data-theme', 'light');
+    document.getElementById('theme-icon').textContent = '☀️';
+    document.getElementById('theme-label').textContent = 'Light';
+  }
+})();
+
+function copyCode(btn) {
+  var pre = btn.closest('.code-wrap').querySelector('pre');
+  var text = pre.innerText;
+  navigator.clipboard.writeText(text).then(function() {
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.code-wrap').forEach(function(wrap) {
+    var btn = document.createElement('button');
+    btn.className = 'copy-btn';
+    btn.textContent = 'Copy';
+    btn.setAttribute('onclick', 'copyCode(this)');
+    btn.setAttribute('aria-label', 'Copy code');
+    var header = wrap.querySelector('.code-header'); if(header) header.appendChild(btn); else wrap.appendChild(btn);
+  });
+});
+
+</script>
+</body>
+</html>

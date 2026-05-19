@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-P9VH7BLE4X"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-P9VH7BLE4X');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Getting Started with Data and SQL — Magdalena Bronowska</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --rose:        #c97b65;
+  --plum:        #9b78bb;
+  --gold:        #b8935a;
+  --transition:  background 0.35s, color 0.35s, border-color 0.35s;
+}
+[data-theme="dark"] {
+  --bg:          #0f1017;
+  --bg2:         #14161f;
+  --bg3:         #191c28;
+  --bg4:         #1f2233;
+  --text:        #e8e4f0;
+  --text-mid:    #9991b8;
+  --text-dim:    #585278;
+  --border:      rgba(155,120,187,0.16);
+  --border-md:   rgba(201,123,101,0.28);
+  --shadow:      0 4px 24px rgba(0,0,0,0.4);
+  --code-bg:     #363a57;
+  --code-border: rgba(155,120,187,0.35);
+  --syn-keyword: #e8a0f0;
+  --syn-function:#93c5fd;
+  --syn-string:  #86efac;
+  --syn-number:  #fdba74;
+  --syn-comment: #94a3b8;
+  --syn-operator:#7dd3fc;
+  --syn-alias:   #fde68a;
+  --syn-default: #e2e8f0;
+}
+[data-theme="light"] {
+  --bg:          #faf8f5;
+  --bg2:         #f3f0eb;
+  --bg3:         #edeae4;
+  --bg4:         #e5e1d9;
+  --text:        #0e0b1a;
+  --text-mid:    #3a3355;
+  --text-dim:    #6a6090;
+  --border:      rgba(80,60,120,0.18);
+  --border-md:   rgba(160,70,50,0.3);
+  --shadow:      0 4px 24px rgba(0,0,0,0.08);
+  --code-bg:     #363a57;
+  --code-border: rgba(155,120,187,0.35);
+  --syn-keyword: #e8a0f0;
+  --syn-function:#93c5fd;
+  --syn-string:  #86efac;
+  --syn-number:  #fdba74;
+  --syn-comment: #94a3b8;
+  --syn-operator:#7dd3fc;
+  --syn-alias:   #fde68a;
+  --syn-default: #e2e8f0;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.75;
+  overflow-x: hidden;
+  transition: var(--transition);
+}
+
+/* top bar */
+.top-bar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 32px;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+}
+.theme-toggle {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 5px 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--text-mid);
+  font-family: 'DM Sans', sans-serif;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+.theme-toggle:hover { border-color: var(--border-md); color: var(--text); }
+
+/* header */
+header {
+  position: relative;
+  padding: 64px 40px 52px;
+  border-bottom: 1px solid var(--border);
+  overflow: hidden;
+  background: var(--bg2);
+}
+header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 70% 60% at 50% 0%, rgba(155,120,187,0.10) 0%, transparent 65%);
+  pointer-events: none;
+}
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  text-decoration: none;
+  margin-bottom: 28px;
+  transition: color 0.2s, gap 0.2s;
+}
+.back-link:hover { color: var(--rose); gap: 12px; }
+.post-meta {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: 0.8;
+  margin-bottom: 14px;
+}
+h1 {
+  font-family: 'DM Serif Display', serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(1.9rem, 5vw, 3.2rem);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  max-width: 900px;
+}
+.post-tag-header {
+  margin-top: 18px;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--plum);
+  border: 1px solid rgba(155,120,187,0.3);
+  padding: 3px 10px;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+/* main */
+main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 56px 32px 100px;
+}
+.article h2 {
+  font-family: 'DM Serif Display', serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(1.3rem, 3vw, 1.8rem);
+  color: var(--text);
+  margin: 48px 0 18px;
+  line-height: 1.2;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+.article h3 {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+  font-size: 1rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--plum);
+  margin: 32px 0 12px;
+}
+.article p {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  font-size: 16px;
+  color: var(--text);
+  line-height: 1.85;
+  margin-bottom: 18px;
+}
+.article a {
+  color: var(--rose);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(201,123,101,0.35);
+  transition: border-color 0.2s;
+}
+.article a:hover { border-color: var(--rose); }
+.article ul {
+  padding-left: 24px;
+  margin-bottom: 18px;
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 1.85;
+}
+.article ul li { margin-bottom: 6px; }
+
+/* code blocks with syntax highlighting */
+.code-wrap {
+  position: relative;
+  margin: 24px 0;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--code-border);
+  box-shadow: 0 6px 28px rgba(0,0,0,0.4);
+}
+.code-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #2a2d46;
+  padding: 9px 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.code-lang {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+}
+.code-wrap pre {
+  background: var(--code-bg);
+  padding: 22px 24px;
+  overflow-x: auto;
+  font-family: 'DM Mono', monospace;
+  font-size: 13.5px;
+  line-height: 1.8;
+  color: var(--syn-default);
+  margin: 0;
+  border-radius: 0;
+  tab-size: 2;
+}
+
+/* syntax tokens */
+.kw  { color: var(--syn-keyword);  }
+.fn  { color: var(--syn-function); }
+.str { color: var(--syn-string);   }
+.num { color: var(--syn-number);   }
+.cmt { color: var(--syn-comment);  font-style: italic; }
+.op  { color: var(--syn-operator); }
+.al  { color: var(--syn-alias);    }
+
+/* inline code */
+.article code:not(pre code) {
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  background: rgba(155,120,187,0.15);
+  padding: 2px 7px;
+  border-radius: 4px;
+  color: var(--plum);
+}
+
+/* images */
+.article img {
+  max-width: 100%;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  margin: 18px 0;
+  display: block;
+}
+
+/* prev/next */
+.prev-next {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 56px;
+  padding-top: 28px;
+  border-top: 1px solid var(--border);
+}
+.prev-next a {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  text-decoration: none;
+  border-bottom: none;
+  transition: color 0.2s;
+}
+.prev-next a:hover { color: var(--rose); }
+
+/* footer */
+footer {
+  text-align: center;
+  padding: 44px 24px;
+  border-top: 1px solid var(--border);
+}
+.footer-name {
+  font-family: 'DM Serif Display', serif;
+  font-style: italic;
+  font-size: 1.4rem;
+  color: var(--text-mid);
+  display: block;
+  margin-bottom: 8px;
+}
+.footer-sub {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+.footer-sub span { color: var(--gold); }
+
+@media (max-width: 600px) {
+  .top-bar { padding: 10px 16px; }
+  header   { padding: 44px 18px 36px; }
+  main     { padding: 36px 18px 64px; }
+}
+
+.copy-btn {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.45);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+  z-index: 2;
+  user-select: none;
+}
+.copy-btn:hover { background: rgba(255,255,255,0.16); color: rgba(255,255,255,0.85); border-color: rgba(255,255,255,0.3); }
+.copy-btn.copied { color: #86efac; border-color: rgba(134,239,172,0.5); background: rgba(134,239,172,0.08); }
+
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+    <span class="theme-icon" id="theme-icon">&#127769;</span>
+    <span id="theme-label">Dark</span>
+  </button>
+</div>
+
+<header>
+  <a href="../blog.html" class="back-link">&#8592; All articles</a>
+  <p class="post-meta">August 2025</p>
+  <h1>Getting Started with Data and SQL</h1>
+  <span class="post-tag-header">SQL</span>
+</header>
+
+<main>
+<article class="article">
+
+  <p>No matter if you're a data analyst or a data scientist, first of all, the first thing you need is access to the data. Without it, you can't build charts, reports, or models. Therefore, most companies store their data in databases. A database is the place where everyone can look for the data and use it when they need to. However, how do you actually get that data out of a database? That's where SQL comes in.</p>
+
+  <p>What is SQL? SQL stands for Structured Query Language. It's a simple but powerful language used to work with data stored in databases. With SQL, you can initially retrieve specific data. Next, you can filter specific rows or columns, join many tables, and even transform the data to suit your needs. Once the data is ready, you can use it to create visualizations that highlight key insights and trends. Consequently, you can make better decisions.</p>
+
+  <p>In this article, I'll walk you through the first 10 SQL scripts that are worth to learn. These are the basics that will help you start working with real data and answering real questions right away. To start with, these scripts cover the most common tasks you'll come across when working with data. These examples will help you build a solid foundation in SQL. Therefore, with them, you'll be ready to work with real data and easily answer practical questions.</p>
+
+  <h2>Let's Dive into the Top 10 SQL Scripts</h2>
+
+  <p>In the following section, we'll explore the 10 most useful SQL scripts every beginner should learn. Specifically, these examples are practical, beginner-friendly, and designed to reflect real-world data tasks. As you go through each script, you'll not only learn how they work, but also when and why to use them. So, let's begin with the foundation - the SELECT statement.</p>
+
+  <!-- 1 -->
+  <h2>1. SELECT Statement</h2>
+  <h3>Why:</h3>
+  <p>To begin with, this is the foundational query - it retrieves data from a table. While <code>SELECT *</code> returns all columns from the table, in real analysis, you'll often want to specify only the columns you need. This approach makes your queries more efficient and readable.</p>
+
+  <h3>Syntax:</h3>
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang">SQL</span></div>
+    <pre><span class="kw">SELECT</span> column_name(s)
+<span class="kw">FROM</span> table_name;</pre>
+  </div>
+
+  <h3>Example:</h3>
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang">SQL</span></div>
+    <pre><span class="kw">SELECT</span> <span class="op">*</span>
+<span class="kw">FROM</span> sales;</pre>
+  </div>
+
+  <img src="../assets/images/DA1.png" alt="Result of SELECT * FROM sales — all columns and rows from the sales table">
+  <p>In this example, the query selects all columns and all rows from the sales table. In other words, the asterisk (*) acts as a shortcut that tells SQL to return everything - every piece of data available in the table.</p>
+
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang">SQL</span></div>
+    <pre><span class="kw">SELECT</span> product_id, customer_id, quantity
+<span class="kw">FROM</span> sales;</pre>
+  </div>
+
+  <img src="../assets/images/DA2.png" alt="Result of SELECT product_id, customer_id, quantity FROM sales">
+  <p>On the other hand, this query selects only three specific columns - product_id, customer_id, and quantity - from the sales table. As a result, it returns only the data relevant to your analysis.</p>
+
+  <!-- 2 -->
+  <h2>2. Filtering Rows with WHERE</h2>
+  <h3>Why:</h3>
+  <p>To narrow down your data, the WHERE clause is essential - it <strong>filters rows</strong> based on specific conditions. In particular, it specifies the search criteria for the rows returned by the query. As a result, you'll use it constantly to focus on particular segments of your dataset - such as a certain region, product, or date range.</p>
+
+  <h3>Syntax:</h3>
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang">SQL</span></div>
+    <pre><span class="kw">SELECT</span> column_name(s)
+<span class="kw">FROM</span> table_name
+<span class="kw">WHERE</span> condition;</pre>
+  </div>
+
+  <h3>Example:</h3>
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang">SQL</span></div>
+    <pre><span class="kw">SELECT</span> <span class="op">*</span>
+<span class="kw">FROM</span> orders
+<span class="kw">WHERE</span> order_date <span class="kw">BETWEEN</span> <span class="str">'2025-07-31'</span> <span class="kw">AND</span> <span class="str">'2025-08-04'</span>;</pre>
+  </div>
+
+  <img src="../assets/images/DA3.png" alt="Result of SELECT * FROM orders WHERE order_date BETWEEN — filtered by date range">
+  <p>In this example, the query selects all columns from the orders table. However, it returns only the orders placed between July 31 and August 4, 2025, inclusive. Here, the BETWEEN keyword is used to filter rows within a date range (or numeric range), making it easier to extract time-specific data.</p>
+
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang">SQL</span></div>
+    <pre><span class="kw">SELECT</span> product_id, customer_id, quantity
+<span class="kw">FROM</span> sales
+<span class="kw">WHERE</span> quantity <span class="op">&gt;=</span> <span class="num">3</span>;</pre>
+  </div>
+
+  <img src="../assets/images/DA4.png" alt="Result of SELECT with WHERE quantity >= 3 from sales">
+  <p>Similarly, this query selects three specific columns - product_id, customer_id, and quantity - from the sales table. More importantly, it filters the data to show only rows where the quantity is 3 or more. To clarify, the <code>&gt;=</code> operator means "greater than or equal to."</p>
+
+  <!-- 3 -->
+  <h2>3. Sorting Results with ORDER BY</h2>
+  <h3>Why:</h3>
+  <p>The ORDER BY clause in SQL is used to sort the results of a query. By default, it sorts in ascending (ASC) order. However, you can specify descending order using DESC. This becomes especially useful when you want to identify top-performing items, the most recent dates, or any other kind of ranked data.</p>
+
+  <h3>Syntax:</h3>
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang">SQL</span></div>
+    <pre><span class="kw">SELECT</span> column_name(s)
+<span class="kw">FROM</span> table_name
+<span class="kw">ORDER BY</span> column1, column2 <span class="kw">ASC</span><span class="op">|</span><span class="kw">DESC</span>;</pre>
+  </div>
+
+  <h3>Example:</h3>
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang">SQL</span></div>
+    <pre><span class="kw">SELECT</span> product_id, revenue
+<span class="kw">FROM</span> sales
+<span class="kw">ORDER BY</span> revenue <span class="kw">DESC</span>;</pre>
+  </div>
+
+  <img src="../assets/images/DA5.png" alt="Result of SELECT product_id, revenue ORDER BY revenue DESC">
+  <p>In this case, the query selects two columns - product_id and revenue - from the sales table. Then, it uses ORDER BY revenue DESC to sort the results by revenue in descending order. As a result, the products with the highest revenue appear at the top of the result set.</p>
+
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang">SQL</span></div>
+    <pre><span class="kw">SELECT</span> product_id, quantity
+<span class="kw">FROM</span> sales
+<span class="kw">WHERE</span> quantity <span class="op">&gt;=</span> <span class="num">3</span>
+<span class="kw">ORDER BY</span> quantity <span class="kw">ASC</span>;</pre>
+  </div>
+
+  <img src="../assets/images/DA6.png" alt="Result of SELECT with WHERE quantity >= 3 ORDER BY quantity ASC">
+  <p>Similarly, this query selects product_id and quantity from the sales table. First, the WHERE clause filters out any rows where the quantity is less than 3. Next, ORDER BY quantity ASC sorts the remaining rows in ascending order - that is, from the lowest to the highest quantity.</p>
+
+  <!-- 4 -->
+  <h2>4. Counting Rows</h2>
+  <h3>Why:</h3>
+  <p>The COUNT() function returns the number of items found in a group. In other words, it gives you a quick total of how many records exist. <code>COUNT(*)</code> will be essential for reporting or understanding the dataset size. Alternatively, you can specify a column name instead of the asterisk symbol (*). However, it's worth remembering that NULL values will not be counted when you use a specific column.</p>
+
+  <h3>Syntax:</h3>
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang">SQL</span></div>
+    <pre><span class="kw">SELECT</span> <span class="fn">COUNT</span>(column_name)
+<span class="kw">FROM</span> table_name
+<span class="kw">WHERE</span> condition;</pre>
+  </div>
+
+  <h3>Example:</h3>
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang">SQL</span></div>
+    <pre><span class="kw">SELECT</span> <span class="fn">COUNT</span>(<span class="op">*</span>)
+<span class="kw">FROM</span> orders;</pre>
+  </div>
+
+  <img src="../assets/images/DA7.png" alt="Result of SELECT COUNT(*) FROM orders">
+  <p>In this example, the query counts all rows in the orders table. The <code>COUNT(*)</code> function includes every row, regardless of whether any columns contain NULL values.</p>
+
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang">SQL</span></div>
+    <pre><span class="kw">SELECT</span> <span class="fn">COUNT</span>(product_id)
+<span class="kw">FROM</span> sales
+<span class="kw">WHERE</span> quantity <span class="op">&gt;=</span> <span class="num">5</span>;</pre>
+  </div>
+
+  <img src="../assets/images/DA8.png" alt="Result of SELECT COUNT(product_id) FROM sales WHERE quantity >= 5">
+  <p>Meanwhile, this query counts the number of rows in the sales table where the quantity is 5 or more. <code>COUNT(product_id)</code> only includes rows where product_id is not NULL. In practice, since product_id is typically present, it effectively counts all the filtered rows.</p>
+
+  <!-- 5 -->
+  <h2>5. Grouping and Aggregation (GROUP BY)</h2>
+  <h3>Why:</h3>
+  <p>The GROUP BY clause lets you summarize data by grouping rows that share the same value in one or more columns. For instance, you can group sales by region or orders by customer. As a result, this is key to turning raw data into insights. The GROUP BY statement is typically used together with aggregate functions like COUNT(), SUM(), AVG(), MAX(), or MIN(). Together, they help you generate meaningful summaries from your data.</p>
+
+  <h3>Syntax:</h3>
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang">SQL</span></div>
+    <pre><span class="kw">SELECT</span> column_name(s)
+<span class="kw">FROM</span> table_name
+<span class="kw">GROUP BY</span> column_name(s);</pre>
+  </div>
+
+  <h3>Example:</h3>
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang">SQL</span></div>
+    <pre><span class="kw">SELECT</span> region
+<span class="kw">FROM</span> sales
+<span class="kw">GROUP BY</span> region;</pre>
+  </div>
+
+  <img src="../assets/images/DA9.png" alt="Result of SELECT region FROM sales GROUP BY region — unique regions listed">
+  <p>This query groups the rows in the sales table by the region column. It returns one row for each unique region. Since no aggregate functions are used here, it basically lists all different regions without duplicates.</p>
+
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang">SQL</span></div>
+    <pre><span class="kw">SELECT</span> region, <span class="fn">SUM</span>(revenue) <span class="kw">AS</span> <span class="al">total_revenue</span>
+<span class="kw">FROM</span> sales
+<span class="kw">GROUP BY</span> region;</pre>
+  </div>
+
+  <img src="../assets/images/DA10.png" alt="Result of SELECT region, SUM(revenue) GROUP BY region — total revenue per region">
+  <p>In contrast, this query not only groups the data by region, but also calculates the total revenue for each group using the SUM() function. Therefore, the result shows each region along with its corresponding total revenue.</p>
+
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang">SQL</span></div>
+    <pre><span class="kw">SELECT</span> product_id, <span class="fn">AVG</span>(quantity) <span class="kw">AS</span> <span class="al">avg_quantity</span>
+<span class="kw">FROM</span> sales
+<span class="kw">WHERE</span> region <span class="op">=</span> <span class="str">'West'</span>
+<span class="kw">GROUP BY</span> product_id
+<span class="kw">HAVING</span> <span class="fn">AVG</span>(quantity) <span class="op">&gt;</span> <span class="num">2</span>;</pre>
+  </div>
+
+  <img src="../assets/images/DA11.png" alt="Result of GROUP BY product_id HAVING AVG(quantity) > 2 in West region">
+  <p>First, the WHERE clause filters the sales data to include only rows where the region is 'West'. Then, the query groups the data by product_id and calculates the average quantity sold for each product. Finally, the HAVING clause filters to show only products with an average quantity greater than 2 in the West region.</p>
+
+  <!-- 6 -->
+  <h2>6. Filtering Groups with HAVING</h2>
+  <h3>Why:</h3>
+  <p>The HAVING clause is used to filter aggregated results, which sets it apart from the WHERE clause. While WHERE filters individual rows before any grouping takes place, HAVING filters groups of rows after aggregation. In other words, it allows you to apply conditions to groups created by the GROUP BY clause. You can use HAVING with aggregate functions such as COUNT(), SUM(), AVG(), MAX(), or MIN() to filter out groups that don't meet certain criteria. This becomes especially useful when you want to focus only on significant or relevant aggregated results.</p>
+
+  <h3>Syntax:</h3>
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang">SQL</span></div>
+    <pre><span class="kw">SELECT</span> column_name, <span class="fn">AGGREGATE_FUNCTION</span>(column_name)
+<span class="kw">FROM</span> table_name
+<span class="kw">GROUP BY</span> column_name
+<span class="kw">HAVING</span> <span class="fn">AGGREGATE_FUNCTION</span>(column_name) condition;</pre>
+  </div>
+
+  <h3>Example:</h3>
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang">SQL</span></div>
+    <pre><span class="kw">SELECT</span> region, <span class="fn">SUM</span>(revenue) <span class="kw">AS</span> <span class="al">total_revenue</span>
+<span class="kw">FROM</span> sales
+<span class="kw">GROUP BY</span> region
+<span class="kw">HAVING</span> <span class="fn">SUM</span>(revenue) <span class="op">&gt;</span> <span class="num">200</span>;</pre>
+  </div>
+<p>In this query, the data is grouped by region, and the total revenue for each group is calculated. Then, the HAVING clause filters those results to include only the regions where the revenue exceeds 200.</p>
+  <img src="../assets/images/DA12.png" alt="Result of GROUP BY region HAVING SUM(revenue) > 200">
+  
+
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang">SQL</span></div>
+    <pre><span class="kw">SELECT</span> product_id, <span class="fn">COUNT</span>(order_id) <span class="kw">AS</span> <span class="al">total_orders</span>
+<span class="kw">FROM</span> sales
+<span class="kw">WHERE</span> region <span class="op">=</span> <span class="str">'West'</span>    <span class="cmt">-- Filters rows before grouping</span>
+<span class="kw">GROUP BY</span> product_id
+<span class="kw">HAVING</span> <span class="fn">COUNT</span>(order_id) <span class="op">&gt;</span> <span class="num">5</span>;    <span class="cmt">-- Filters groups after aggregation</span></pre>
+  </div>
+
+  <img src="../assets/images/DA13.png" alt="Result of GROUP BY product_id HAVING COUNT(order_id) > 5 in West region">
+  <p>In this example, at first, the WHERE clause filters the sales data to include only rows where the region is 'West'. Then, the query groups the data by product_id and counts how many orders each product has. Finally, the HAVING clause filters the groups to show only products with more than 5 orders in the West region.</p>
+
+  <!-- 7 -->
+  <h2>7. UNION Operator</h2>
+  <h3>Why:</h3>
+  <p>The UNION operator is used to combine the result sets of two or more SELECT statements into a single result set. By default, it removes duplicates. If you want to include duplicates, you can use UNION ALL. Each SELECT statement must have the same number of columns. The columns must be in the same order and have compatible data types.</p>
+
+  <h3>Syntax:</h3>
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang">SQL</span></div>
+    <pre><span class="kw">SELECT</span> column1, column2
+<span class="kw">FROM</span> table1
+
+<span class="kw">UNION</span>
+
+<span class="kw">SELECT</span> column1, column2
+<span class="kw">FROM</span> table2;</pre>
+  </div>
+
+  <h3>Example:</h3>
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang">SQL</span></div>
+    <pre><span class="kw">SELECT</span> product_id
+<span class="kw">FROM</span> sales
+
+<span class="kw">UNION</span>
+
+<span class="kw">SELECT</span> item  <span class="cmt">-- Assuming `item` in `orders` refers to product_id in text</span>
+<span class="kw">FROM</span> orders;</pre>
+  </div>
+
+  <img src="../assets/images/DA14.png" alt="Result of UNION combining product_id from sales and item from orders">
+  <p>This combines product IDs from sales and orders. It removes duplicates and assumes item represents product IDs.</p>
+
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang">SQL</span></div>
+    <pre><span class="kw">SELECT</span> customer_id
+<span class="kw">FROM</span> orders
+
+<span class="kw">UNION ALL</span>
+
+<span class="kw">SELECT</span> customer_id
+<span class="kw">FROM</span> sales;</pre>
+  </div>
+
+  <img src="../assets/images/DA15.png" alt="Result of UNION ALL combining customer_id from orders and sales including duplicates">
+  <p>This returns all customer IDs from both tables, including duplicates, which is helpful for spotting repeat customers or tracking frequency.</p>
+
+  <!-- 8 -->
+  <h2>8. Joining Tables</h2>
+  <h3>Why:</h3>
+  <p>In relational databases, data is stored across multiple related tables. To perform meaningful analysis, you often need to bring this data together. That's where joins come in - they allow you to combine rows from two or more tables based on related columns. In short, joins are a foundational SQL skill for working with real-world datasets.</p>
+
+  <p>There are several types of joins, each serving a different purpose:</p>
+  <ul>
+    <li><strong>(INNER) JOIN</strong> &#8212; Returns only the records with matching values in both tables.</li>
+    <li><strong>LEFT (OUTER) JOIN</strong> &#8212; Returns all records from the left table and only the matched records from the right table.</li>
+    <li><strong>RIGHT (OUTER) JOIN</strong> &#8212; Returns all records from the right table and only the matched ones from the left.</li>
+    <li><strong>FULL (OUTER) JOIN</strong> &#8212; Returns all records when there is a match in either table.</li>
+  </ul>
+
+  <p>If you want to dive deeper into SQL joins, feel free to check out my blog post on the topic <a href="tsql2sday-131.html">here</a>.</p>
+
+  <h3>Syntax:</h3>
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang">SQL</span></div>
+    <pre><span class="kw">SELECT</span> table1.column_name, table2.column_name
+<span class="kw">FROM</span> table1
+<span class="kw">JOIN</span> table2
+<span class="kw">ON</span> table1.common_column <span class="op">=</span> table2.common_column;</pre>
+  </div>
+
+  <h3>Example:</h3>
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang">SQL</span></div>
+    <pre><span class="kw">SELECT</span> s.product_id, c.customer_id, s.revenue
+<span class="kw">FROM</span> sales s
+<span class="kw">INNER JOIN</span> customers c <span class="kw">ON</span> s.customer_id <span class="op">=</span> c.customer_id;</pre>
+  </div>
+
+  <img src="../assets/images/DA16.png" alt="Result of INNER JOIN sales and customers tables">
+  <p>This query combines data from two tables: sales (aliased as s) and customers (aliased as c). The INNER JOIN links rows where the customer_id is the same in both tables. It returns the order ID, the customer's name, and the revenue for each matching record.</p>
+
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang">SQL</span></div>
+    <pre><span class="kw">SELECT</span> c.last_name, <span class="fn">AVG</span>(o.amount) <span class="kw">AS</span> <span class="al">avg_order</span>
+<span class="kw">FROM</span> customers c
+<span class="kw">INNER JOIN</span> orders o <span class="kw">ON</span> c.customer_id <span class="op">=</span> o.customer_id
+<span class="kw">INNER JOIN</span> sales s <span class="kw">ON</span> c.customer_id <span class="op">=</span> s.customer_id
+<span class="kw">WHERE</span> s.region <span class="op">=</span> <span class="str">'West'</span>
+<span class="kw">GROUP BY</span> c.last_name;</pre>
+  </div>
+
+  <img src="../assets/images/DA17.png" alt="Result of multi-table INNER JOIN grouped by last_name with average order amount">
+  <p>This query joins the customers table (alias c) with the orders table (alias o) and sales table (alias s) using the customer_id. It filters for customers in the 'West' region. Then, it groups the results by customer name and calculates the average order amount for each customer.</p>
+
+  <!-- 9 -->
+  <h2>9. Using Aliases for Clarity</h2>
+  <h3>Why:</h3>
+  <p>Aliases (AS) make results more readable. In SQL, an alias is a short or temporary name you give to a table or column in a query. Basically, it helps make your query easier to read and write. For example, you can use aliases to rename long column names or to make table names shorter.</p>
+
+  <h3>Syntax:</h3>
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang">SQL</span></div>
+    <pre><span class="kw">SELECT</span> column_name <span class="kw">AS</span> <span class="al">alias_name</span>  <span class="cmt">-- alias used on the column</span>
+<span class="kw">FROM</span> table_name;
+
+<span class="cmt">-- or</span>
+
+<span class="kw">SELECT</span> column_name(s)
+<span class="kw">FROM</span> table_name <span class="kw">AS</span> <span class="al">alias_name</span>;  <span class="cmt">-- alias used on the table</span></pre>
+  </div>
+
+  <h3>Example:</h3>
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang">SQL</span></div>
+    <pre><span class="kw">SELECT</span>
+  customer_id,
+  first_name <span class="op">||</span> <span class="str">' '</span> <span class="op">||</span> last_name <span class="kw">AS</span> <span class="al">full_name</span>
+<span class="kw">FROM</span> customers;</pre>
+  </div>
+
+  <img src="../assets/images/DA18.png" alt="Result of SELECT with alias full_name combining first_name and last_name">
+  <p>This query selects the first_name and last_name columns from the customers table. The <code>AS full_name</code> part gives a new temporary name (alias) to the column in the result. So, instead of showing the column header as first_name, it will appear as full_name.</p>
+
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang">SQL</span></div>
+    <pre><span class="kw">SELECT</span> c.customer_id <span class="kw">AS</span> <span class="al">Customer_ID</span>, s.revenue <span class="kw">AS</span> <span class="al">Sale_Amount</span>
+<span class="kw">FROM</span> sales s
+<span class="kw">JOIN</span> customers c <span class="kw">ON</span> s.customer_id <span class="op">=</span> c.customer_id;</pre>
+  </div>
+
+  <img src="../assets/images/DA19.png" alt="Result of JOIN with column aliases Customer_ID and Sale_Amount">
+  <p>This query joins the sales table (aliased as s) with the customers table (aliased as c). It selects the customer's name (customer_name) and revenue (revenue) from the joined tables. Using AS, the columns are renamed in the results: customer_name becomes name and revenue becomes sale_amount.</p>
+
+  <!-- 10 -->
+  <h2>10. CASE WHEN, ELSE and THEN</h2>
+  <h3>Why:</h3>
+  <p>The CASE statement in SQL is useful when you want to add conditional logic to your queries. In other words, it's like using an "if-else" statement in programming. With it, you can create custom labels, categories, or logic based on the values in your data. As a result, your query results become easier to understand and more informative.</p>
+
+  <h3>Syntax:</h3>
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang">SQL</span></div>
+    <pre><span class="kw">SELECT</span> column_name,
+  <span class="kw">CASE</span>
+    <span class="kw">WHEN</span> condition1 <span class="kw">THEN</span> result1
+    <span class="kw">WHEN</span> condition2 <span class="kw">THEN</span> result2
+    <span class="kw">ELSE</span> default_result
+  <span class="kw">END AS</span> <span class="al">alias_name</span>
+<span class="kw">FROM</span> table_name;</pre>
+  </div>
+
+  <h3>Example:</h3>
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang">SQL</span></div>
+    <pre><span class="kw">SELECT</span> order_id, total_amount,
+  <span class="kw">CASE</span>
+    <span class="kw">WHEN</span> total_amount <span class="op">&gt;=</span> <span class="num">1000</span> <span class="kw">THEN</span> <span class="str">'High'</span>
+    <span class="kw">WHEN</span> total_amount <span class="op">&gt;=</span> <span class="num">500</span>  <span class="kw">THEN</span> <span class="str">'Medium'</span>
+    <span class="kw">ELSE</span> <span class="str">'Low'</span>
+  <span class="kw">END AS</span> <span class="al">sale_category</span>
+<span class="kw">FROM</span> sales;</pre>
+  </div>
+
+  <img src="../assets/images/DA20.png" alt="Result of CASE WHEN creating sale_category column — High, Medium, Low labels">
+  <p>This query selects the order_id and total_amount from the sales table. It also uses the CASE WHEN statement to create a new column called sale_category. If the total_amount is 1,000 or more, the category is labeled 'High'. If the amount is between 500 and 999, it's labeled 'Medium'. Otherwise, it's labeled 'Low'.</p>
+
+  <!-- COMBO -->
+  <h2>Let's try to combine all of them!</h2>
+
+  <p>Now that you've explored the essential SQL tools - SELECT, WHERE, GROUP BY, HAVING, JOIN, and ORDER BY - it's time to put them all together in one powerful query.</p>
+  <p>Let's break down the story behind this query:</p>
+  <p>You want to identify customers in the West region who have placed multiple orders, check their average order amount, and classify their total sales as High, Medium, or Low based on spending.</p>
+
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang">SQL</span></div>
+    <pre><span class="kw">SELECT</span>
+  c.last_name <span class="kw">AS</span> <span class="al">name</span>,
+  <span class="fn">COUNT</span>(o.order_id) <span class="kw">AS</span> <span class="al">total_orders</span>,
+  <span class="fn">AVG</span>(o.amount) <span class="kw">AS</span> <span class="al">avg_order_amount</span>,
+  <span class="kw">CASE</span>
+    <span class="kw">WHEN</span> <span class="fn">SUM</span>(s.total_amount) <span class="op">&gt;=</span> <span class="num">100</span> <span class="kw">THEN</span> <span class="str">'High'</span>
+    <span class="kw">WHEN</span> <span class="fn">SUM</span>(s.total_amount) <span class="op">&gt;=</span> <span class="num">200</span> <span class="kw">THEN</span> <span class="str">'Medium'</span>
+    <span class="kw">ELSE</span> <span class="str">'Low'</span>
+  <span class="kw">END AS</span> <span class="al">sales_category</span>
+<span class="kw">FROM</span> customers c
+<span class="kw">INNER JOIN</span> orders o <span class="kw">ON</span> c.customer_id <span class="op">=</span> o.customer_id
+<span class="kw">INNER JOIN</span> sales s <span class="kw">ON</span> o.order_id <span class="op">=</span> s.order_id
+<span class="kw">WHERE</span> s.region <span class="op">=</span> <span class="str">'West'</span>
+<span class="kw">GROUP BY</span> c.last_name
+<span class="kw">HAVING</span> <span class="fn">COUNT</span>(o.order_id) <span class="op">&gt;</span> <span class="num">2</span>
+<span class="kw">ORDER BY</span> avg_order_amount <span class="kw">DESC</span>;</pre>
+  </div>
+
+  <img src="../assets/images/DA21.png" alt="Result of combined query with JOIN, GROUP BY, HAVING, ORDER BY and CASE WHEN">
+
+  <p>This query is a great example of how SQL lets you ask layered questions and get clear, insightful answers - all in one go.</p>
+  <p>You're not just pulling data - you're turning it into a story.</p>
+
+  <!-- SUMMARY -->
+  <h2>Summary</h2>
+  <p>To sum up, learning SQL is important for anyone working with data. Whether you are a data analyst or a data scientist, SQL helps you access and work with data in databases. First, you learned how to select and filter data. Next, we looked at grouping, aggregating, and joining tables. In addition, we explored using HAVING, AVG(), aliases, and the CASE statement.</p>
+  <p>These basics are essential to help you write clear and useful queries. With them, you can work confidently with real data and find answers to practical questions. Finally, by combining these tools, you can create powerful queries. This allows you to turn raw data into valuable insights and smart decisions.</p>
+
+  <div class="prev-next">
+    <a href="festive-tech-2024.html">&#8592; Festive Tech Calendar 2024</a>
+    <span></span>
+  </div>
+
+</article>
+</main>
+
+<footer>
+  <span class="footer-name">Magdalena Bronowska</span>
+  <p class="footer-sub">&#169; 2025 &nbsp;&#183;&nbsp; <span>Made with Love and Coffee</span></p>
+</footer>
+
+<script>
+function toggleTheme() {
+  const html = document.documentElement;
+  const isDark = html.getAttribute('data-theme') === 'dark';
+  html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  document.getElementById('theme-icon').textContent = isDark ? '☀️' : '🌙';
+  document.getElementById('theme-label').textContent = isDark ? 'Light' : 'Dark';
+  localStorage.setItem('theme', isDark ? 'light' : 'dark');
+}
+(function () {
+  const saved = localStorage.getItem('theme');
+  if (saved === 'light') {
+    document.documentElement.setAttribute('data-theme', 'light');
+    document.getElementById('theme-icon').textContent = '☀️';
+    document.getElementById('theme-label').textContent = 'Light';
+  }
+})();
+
+function copyCode(btn) {
+  var pre = btn.closest('.code-wrap').querySelector('pre');
+  var text = pre.innerText;
+  navigator.clipboard.writeText(text).then(function() {
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.code-wrap').forEach(function(wrap) {
+    var btn = document.createElement('button');
+    btn.className = 'copy-btn';
+    btn.textContent = 'Copy';
+    btn.setAttribute('onclick', 'copyCode(this)');
+    btn.setAttribute('aria-label', 'Copy code');
+    wrap.appendChild(btn);
+  });
+});
+
+</script>
+</body>
+</html>

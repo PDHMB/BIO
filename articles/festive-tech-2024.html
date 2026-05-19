@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-P9VH7BLE4X"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-P9VH7BLE4X');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Festive Tech Calendar 2024: Exclusive Functions in Azure SQL Database and Managed Instance — Magdalena Bronowska</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --rose:        #c97b65;
+  --plum:        #9b78bb;
+  --gold:        #b8935a;
+  --transition:  background 0.35s, color 0.35s, border-color 0.35s;
+}
+[data-theme="dark"] {
+  --bg:          #0f1017;
+  --bg2:         #14161f;
+  --bg3:         #191c28;
+  --bg4:         #1f2233;
+  --text:        #e8e4f0;
+  --text-mid:    #9991b8;
+  --text-dim:    #585278;
+  --border:      rgba(155,120,187,0.16);
+  --border-md:   rgba(201,123,101,0.28);
+  --shadow:      0 4px 24px rgba(0,0,0,0.4);
+  --code-bg:     #363a57;
+  --code-header: #2a2d46;
+  --code-border: rgba(155,120,187,0.35);
+  --syn-keyword: #e8a0f0;
+  --syn-function:#93c5fd;
+  --syn-string:  #86efac;
+  --syn-number:  #fdba74;
+  --syn-comment: #94a3b8;
+  --syn-operator:#7dd3fc;
+  --syn-alias:   #fde68a;
+  --syn-type:    #f9a8d4;
+  --syn-default: #e2e8f0;
+}
+[data-theme="light"] {
+  --bg:          #faf8f5;
+  --bg2:         #f3f0eb;
+  --bg3:         #edeae4;
+  --bg4:         #e5e1d9;
+  --text:        #0e0b1a;
+  --text-mid:    #3a3355;
+  --text-dim:    #6a6090;
+  --border:      rgba(80,60,120,0.18);
+  --border-md:   rgba(160,70,50,0.3);
+  --shadow:      0 4px 24px rgba(0,0,0,0.08);
+  --code-bg:     #363a57;
+  --code-header: #2a2d46;
+  --code-border: rgba(155,120,187,0.40);
+  --syn-keyword: #e8a0f0;
+  --syn-function:#93c5fd;
+  --syn-string:  #86efac;
+  --syn-number:  #fdba74;
+  --syn-comment: #94a3b8;
+  --syn-operator:#7dd3fc;
+  --syn-alias:   #fde68a;
+  --syn-type:    #f9a8d4;
+  --syn-default: #e2e8f0;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.75;
+  overflow-x: hidden;
+  transition: var(--transition);
+}
+/* top bar */
+.top-bar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 32px;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+}
+.theme-toggle {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 5px 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--text-mid);
+  font-family: 'DM Sans', sans-serif;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+.theme-toggle:hover { border-color: var(--border-md); color: var(--text); }
+/* header */
+header {
+  position: relative;
+  padding: 64px 40px 52px;
+  border-bottom: 1px solid var(--border);
+  overflow: hidden;
+  background: var(--bg2);
+}
+header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 70% 60% at 50% 0%, rgba(155,120,187,0.10) 0%, transparent 65%);
+  pointer-events: none;
+}
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  text-decoration: none;
+  margin-bottom: 28px;
+  transition: color 0.2s, gap 0.2s;
+}
+.back-link:hover { color: var(--rose); gap: 12px; }
+.post-meta {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: 0.8;
+  margin-bottom: 14px;
+}
+h1 {
+  font-family: 'DM Serif Display', serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(1.9rem, 5vw, 3.2rem);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  max-width: 900px;
+}
+.post-tag-header {
+  margin-top: 18px;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--plum);
+  border: 1px solid rgba(155,120,187,0.3);
+  padding: 3px 10px;
+  border-radius: 4px;
+  display: inline-block;
+}
+/* main */
+main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 56px 32px 100px;
+}
+.article h2 {
+  font-family: 'DM Serif Display', serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(1.3rem, 3vw, 1.8rem);
+  color: var(--text);
+  margin: 48px 0 18px;
+  line-height: 1.2;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+.article h3 {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+  font-size: 1rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--plum);
+  margin: 32px 0 12px;
+}
+.article p {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  font-size: 16px;
+  color: var(--text);
+  line-height: 1.85;
+  margin-bottom: 18px;
+}
+.article a {
+  color: var(--rose);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(201,123,101,0.35);
+  transition: border-color 0.2s;
+}
+.article a:hover { border-color: var(--rose); }
+.article ul {
+  padding-left: 24px;
+  margin-bottom: 18px;
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 1.85;
+}
+.article ul li { margin-bottom: 6px; }
+/* code blocks */
+.code-wrap {
+  position: relative;
+  margin: 24px 0;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--code-border);
+  box-shadow: 0 6px 28px rgba(0,0,0,0.3);
+}
+.code-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--code-header);
+  padding: 9px 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+.code-lang {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+}
+.code-wrap pre {
+  background: var(--code-bg);
+  padding: 22px 24px;
+  overflow-x: auto;
+  font-family: 'DM Mono', monospace;
+  font-size: 13.5px;
+  line-height: 1.8;
+  color: var(--syn-default);
+  margin: 0;
+  border-radius: 0;
+  tab-size: 4;
+}
+/* syntax tokens */
+.kw  { color: var(--syn-keyword);  }
+.fn  { color: var(--syn-function); }
+.str { color: var(--syn-string);   }
+.num { color: var(--syn-number);   }
+.cmt { color: var(--syn-comment);  font-style: italic; }
+.op  { color: var(--syn-operator); }
+.al  { color: var(--syn-alias);    }
+.tp  { color: var(--syn-type);     }
+/* inline code */
+.article code:not(pre code) {
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  background: rgba(155,120,187,0.15);
+  padding: 2px 7px;
+  border-radius: 4px;
+  color: var(--plum);
+}
+/* images */
+.article img {
+  max-width: 100%;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  margin: 18px 0;
+  display: block;
+}
+/* prev/next */
+.prev-next {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 56px;
+  padding-top: 28px;
+  border-top: 1px solid var(--border);
+}
+.prev-next a {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  text-decoration: none;
+  border-bottom: none;
+  transition: color 0.2s;
+}
+.prev-next a:hover { color: var(--rose); }
+/* footer */
+footer {
+  text-align: center;
+  padding: 44px 24px;
+  border-top: 1px solid var(--border);
+}
+.footer-name {
+  font-family: 'DM Serif Display', serif;
+  font-style: italic;
+  font-size: 1.4rem;
+  color: var(--text-mid);
+  display: block;
+  margin-bottom: 8px;
+}
+.footer-sub {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+.footer-sub span { color: var(--gold); }
+@media (max-width: 600px) {
+  .top-bar { padding: 10px 16px; }
+  header   { padding: 44px 18px 36px; }
+  main     { padding: 36px 18px 64px; }
+}
+
+.code-wrap { position: relative; }
+.copy-btn {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.45);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+  z-index: 2;
+  user-select: none;
+}
+.copy-btn:hover { background: rgba(255,255,255,0.16); color: rgba(255,255,255,0.85); border-color: rgba(255,255,255,0.3); }
+.copy-btn.copied { color: #86efac; border-color: rgba(134,239,172,0.5); background: rgba(134,239,172,0.08); }
+
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+    <span class="theme-icon" id="theme-icon">&#127769;</span>
+    <span id="theme-label">Dark</span>
+  </button>
+</div>
+
+<header>
+  <a href="../blog.html" class="back-link">&#8592; All articles</a>
+  <p class="post-meta">13 December 2024</p>
+  <h1>Festive Tech Calendar 2024: Exclusive Functions in Azure SQL Database and Managed Instance</h1>
+  <span class="post-tag-header">Azure SQL</span>
+</header>
+
+<main>
+<article class="article">
+
+  <!-- About -->
+  <h2>About Festive Tech Calendar</h2>
+  <p>The <a href="https://festivetechcalendar.com/" target="_blank" rel="noopener">Festive Tech Calendar 2024</a> is a community initiative by <a href="https://cloudfamily.info" target="_blank" rel="noopener">CloudFamily</a>. This is my first contribution and I am quite excited to be part of it. A big thank you to Gregor (<a href="https://gregorsuttie.com" target="_blank" rel="noopener">blog</a> | <a href="https://x.com/gregor_suttie" target="_blank" rel="noopener">X</a>) and Richard (<a href="https://pixelrobots.co.uk" target="_blank" rel="noopener">blog</a> | <a href="https://x.com/Pixel_Robots" target="_blank" rel="noopener">X</a>) for organizing the wonderful event.</p>
+
+  <!-- Azure SQL vs SQL Server -->
+  <h2>Azure SQL Offering vs Classic SQL Server</h2>
+  <p>Microsoft releases the classic SQL Server every couple of years, with some functionality added through regular updates. On the other hand, the SQL Server offering in Azure (Azure SQL Database and Managed Instance) receives the latest features earlier.</p>
+  <p>This post highlights some of the T-SQL functions currently available in Azure SQL but not yet in classic SQL Server. However, with the <a href="https://www.microsoft.com/en-us/sql-server/blog/2024/11/19/announcing-microsoft-sql-server-2025-apply-for-the-preview-for-the-enterprise-ai-ready-database/" target="_blank" rel="noopener">recent announcement of SQL Server 2025</a>, this might change next year. Keep in mind that some of these functions are in preview, so their behavior might evolve as they reach general availability.</p>
+
+  <!-- UNISTR and || -->
+  <h2><code>UNISTR()</code> and <code>||</code> (String concatenation)</h2>
+  <p>Microsoft <a href="https://techcommunity.microsoft.com/blog/azuresqlblog/announcing-unistr-and--operator-in-azure-sql-database-%E2%80%93-preview/4157714" target="_blank" rel="noopener">announced a public preview of these earlier this year</a>, which are available in Azure SQL Database and <a href="https://learn.microsoft.com/en-us/fabric/database/sql/feature-comparison-sql-database-fabric" target="_blank" rel="noopener">SQL database in Microsoft Fabric</a>.</p>
+
+  <h3>UNISTR()</h3>
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang">SQL — SYNTAX</span></div>
+    <pre><span class="cmt">-- SYNTAX</span>
+<span class="fn">UNISTR</span> ( <span class="str">'character_expression'</span> [ , <span class="str">'unicode_escape_character'</span> ] )</pre>
+  </div>
+
+  <p>The <a href="https://learn.microsoft.com/en-us/sql/t-sql/functions/unistr-transact-sql" target="_blank" rel="noopener"><code>UNISTR</code> function</a> simplifies working with Unicode code points, making it easy to represent multilingual strings, emojis, and other special characters in SQL queries. The <code>UNISTR</code> function works only with UTF8-compatible collations.</p>
+  <p>For example, we can fetch our favorite festive symbols by referencing Unicode code points in a compact and readable format using escape sequences:</p>
+
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang">SQL</span></div>
+    <pre><span class="kw">SELECT</span>
+    <span class="fn">UNISTR</span>(<span class="str">'\+0026C4'</span>) <span class="kw">AS</span> <span class="al">Snowman</span>,
+    <span class="fn">UNISTR</span>(<span class="str">'\+002744'</span>) <span class="kw">AS</span> <span class="al">Snowflake</span>,
+    <span class="fn">UNISTR</span>(<span class="str">'\+01F384'</span>) <span class="kw">AS</span> <span class="al">ChristmasTree</span>,
+    <span class="fn">UNISTR</span>(<span class="str">'\+01F381'</span>) <span class="kw">AS</span> <span class="al">Present</span>,
+    <span class="fn">UNISTR</span>(<span class="str">'\+01F525'</span>) <span class="kw">AS</span> <span class="al">Fire</span>,
+    <span class="fn">UNISTR</span>(<span class="str">'\+01F385'</span>) <span class="kw">AS</span> <span class="al">Santa</span>;
+
+<span class="cmt">-- Output: ⛄❄🎄🎁🔥🎅</span></pre>
+  </div>
+
+  <h3>Comparing with NCHAR</h3>
+  <p>To achieve the same result using <code>NCHAR()</code>, you need to account for surrogate pairs for characters above the <a href="https://www.unicode.org/roadmaps/bmp/" target="_blank" rel="noopener">Basic Multilingual Plane (BMP)</a>, making it less compact.</p>
+
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang">SQL</span></div>
+    <pre><span class="kw">SELECT</span>
+    <span class="fn">NCHAR</span>(<span class="num">0xD83C</span>) <span class="op">+</span> <span class="fn">NCHAR</span>(<span class="num">0xDF84</span>) <span class="kw">AS</span> <span class="al">ChristmasTree</span>, <span class="cmt">-- 🎄</span>
+    <span class="fn">NCHAR</span>(<span class="num">0xD83C</span>) <span class="op">+</span> <span class="fn">NCHAR</span>(<span class="num">0xDF81</span>) <span class="kw">AS</span> <span class="al">Present</span>,       <span class="cmt">-- 🎁</span>
+    <span class="fn">NCHAR</span>(<span class="num">0xD83D</span>) <span class="op">+</span> <span class="fn">NCHAR</span>(<span class="num">0xDD25</span>) <span class="kw">AS</span> <span class="al">Fire</span>,          <span class="cmt">-- 🔥</span>
+    <span class="fn">NCHAR</span>(<span class="num">0xD83C</span>) <span class="op">+</span> <span class="fn">NCHAR</span>(<span class="num">0xDF85</span>) <span class="kw">AS</span> <span class="al">Santa</span>;         <span class="cmt">-- 🎅</span></pre>
+  </div>
+
+  <h3>Working with Escape Characters</h3>
+  <p>The default escape character (<code>\</code>) simplifies paths and mixed sequences:</p>
+
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang">SQL</span></div>
+    <pre><span class="cmt">-- default escape character is '\'</span>
+<span class="kw">SELECT</span> <span class="fn">UNISTR</span>(<span class="str">'C:\\Path\\To\\File\+0041'</span>) <span class="kw">AS</span> <span class="al">FilePath</span>;
+<span class="cmt">-- Output: C:\Path\To\FileA</span>
+
+
+<span class="cmt">-- custom escape character</span>
+<span class="kw">SELECT</span> <span class="fn">UNISTR</span>(<span class="tp">N</span><span class="str">'#0041#0042#0043'</span>, <span class="str">'#'</span>) <span class="kw">AS</span> <span class="al">ABC</span>;
+<span class="cmt">-- Output: ABC</span></pre>
+  </div>
+
+  <p>If you work with Unicode frequently, here's a helpful list of <a href="https://codepoints.net/" target="_blank" rel="noopener">codepoints</a>.</p>
+
+  <h3>|| (String concatenation)</h3>
+  <p>The <a href="https://learn.microsoft.com/en-us/sql/t-sql/language-elements/string-concatenation-pipes-transact-sql" target="_blank" rel="noopener"><code>||</code> operator</a> is used to concatenate strings in T-SQL. It behaves similarly to the <code>+</code> operator but aligns T-SQL with SQL dialects like PostgreSQL, Oracle, and MySQL, where <code>||</code> is the standard.</p>
+
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang">SQL</span></div>
+    <pre><span class="cmt">-- concatenation with mixed types (converts to string)</span>
+<span class="kw">SELECT</span> <span class="num">1.0</span> <span class="op">||</span> <span class="str">'Calendar'</span> <span class="op">||</span> <span class="num">2</span> <span class="op">||</span> <span class="num">3</span>;
+<span class="cmt">-- Output: 1.0Calendar23</span>
+
+<span class="cmt">-- at least one operand must be a string</span>
+<span class="kw">SELECT</span> <span class="num">1</span> <span class="op">||</span> <span class="num">1</span>
+<span class="cmt">-- Error: The data types int and int are incompatible in the concat operator.</span>
+
+<span class="cmt">-- incompatible types</span>
+<span class="kw">select</span> <span class="str">'1'</span> <span class="op">||</span> <span class="num">0x1</span>
+<span class="cmt">-- Error: The data types varchar and varbinary are incompatible in the concat operator.</span>
+
+<span class="cmt">-- concatenate Christmas trees</span>
+<span class="kw">select</span> <span class="str">'🎄'</span><span class="op">||</span> <span class="str">'🎄'</span><span class="op">||</span> <span class="str">'🎄'</span><span class="op">||</span> <span class="str">'🎄'</span><span class="op">||</span> <span class="str">'🎄'</span><span class="op">||</span> <span class="str">'🎄'</span><span class="op">||</span> <span class="str">'🎄'</span><span class="op">||</span><span class="num">2024</span><span class="op">||</span><span class="str">'🎄'</span><span class="op">||</span> <span class="str">'🎄'</span><span class="op">||</span> <span class="str">'🎄'</span><span class="op">||</span> <span class="str">'🎄'</span><span class="op">||</span> <span class="str">'🎄'</span><span class="op">||</span> <span class="str">'🎄'</span><span class="op">||</span> <span class="str">'🎄'</span>;
+<span class="cmt">-- Output: 🎄🎄🎄🎄🎄🎄🎄2024🎄🎄🎄🎄🎄🎄🎄</span></pre>
+  </div>
+
+  <h3>||= (Compound assignment)</h3>
+  <p>The <a href="https://learn.microsoft.com/en-us/sql/t-sql/language-elements/compound-assignment-pipes-transact-sql" target="_blank" rel="noopener"><code>||=</code> operator</a> combines concatenation with assignment, making it easy to append values to an existing variable or column. It behaves like the <code>+=</code> operator for character and binary strings.</p>
+  <p>Example: A Flat 1D Christmas Tree</p>
+
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang">SQL</span></div>
+    <pre><span class="kw">DECLARE</span> @ChristmasTree <span class="tp">NVARCHAR</span>(<span class="num">16</span>) <span class="op">=</span> <span class="str">''</span>;
+
+<span class="kw">SET</span> @ChristmasTree <span class="op">||=</span> <span class="fn">UNISTR</span>(<span class="str">'\+00272F'</span>);
+<span class="kw">SET</span> @ChristmasTree <span class="op">||=</span> <span class="fn">UNISTR</span>(<span class="str">'\+01F384'</span>);
+<span class="kw">SET</span> @ChristmasTree <span class="op">||=</span> <span class="fn">UNISTR</span>(<span class="str">'\+01F384'</span>);
+<span class="kw">SET</span> @ChristmasTree <span class="op">||=</span> <span class="fn">UNISTR</span>(<span class="str">'\+01F384'</span>);
+<span class="kw">SET</span> @ChristmasTree <span class="op">||=</span> <span class="fn">UNISTR</span>(<span class="str">'\+01F384'</span>);
+<span class="kw">SET</span> @ChristmasTree <span class="op">||=</span> <span class="fn">UNISTR</span>(<span class="str">'\+01F381'</span>);
+
+<span class="kw">SELECT</span> @ChristmasTree <span class="kw">AS</span> [<span class="al">1DChristmasTree</span>];
+
+<span class="cmt">/* Output:
+1DChristmasTree
+✯🎄🎄🎄🎄🎁
+*/</span></pre>
+  </div>
+
+  <h3>Conclusion</h3>
+  <p>The <code>UNISTR</code>, <code>||</code>, and <code>||=</code> operators are a nice additions to T-SQL, streamlining Unicode handling and string concatenation in Azure SQL Database. They align T-SQL with other SQL dialects, making it easier to work with multilingual data, emojis, and dynamic string manipulation.</p>
+
+  <!-- JSON -->
+  <h2>JSON_OBJECTAGG() and JSON_ARRAYAGG()</h2>
+  <p>The JSON type and aggregate functions were <a href="https://techcommunity.microsoft.com/blog/azuresqlblog/native-json-type--json-aggregates-are-now-in-private-preview-for-azure-sql-datab/3830753" target="_blank" rel="noopener">announced last year</a> and are currently in preview for Azure SQL Database and Azure SQL Managed Instance.</p>
+
+  <h3>JSON object vs array</h3>
+  <p>Before we jump right in into the new functions, here's a quick introduction to JSON.</p>
+  <p><a href="https://www.json.org/json-en.html" target="_blank" rel="noopener">JSON (JavaScript Object Notation)</a> uses two fundamental structures: <strong>arrays</strong> and <strong>objects</strong>. While both are used to represent data in JSON, they serve different purposes and have distinct structures.</p>
+
+  <h3>JSON Array</h3>
+  <p>A JSON array is an ordered collection of values (like a list). It can contain elements of any type: strings, numbers, objects, other arrays, or even <code>null</code>. Elements are indexed by their position, starting from 0.</p>
+
+  <h3>Example: JSON Array</h3>
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang">JSON</span></div>
+    <pre>[<span class="str">"Apple"</span>, <span class="str">"Banana"</span>, <span class="str">"Cherry"</span>]</pre>
+  </div>
+
+  <p>Use Case:</p>
+  <ul>
+    <li>Lists of related items (e.g., product names, user IDs).</li>
+    <li>Data where order matters (e.g., a sequence of events).</li>
+  </ul>
+
+  <h3>JSON Object</h3>
+  <p>A JSON object is a collection of key-value pairs (like a dictionary or map). Keys must be strings, while values can be any valid JSON type. Keys are unique, and their order is not guaranteed.</p>
+
+  <h3>Example: JSON Object</h3>
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang">JSON</span></div>
+    <pre>{
+  <span class="fn">"name"</span>: <span class="str">"Santa"</span>,
+  <span class="fn">"age"</span>: <span class="num">65</span>,
+  <span class="fn">"city"</span>: <span class="str">"North Pole"</span>
+}</pre>
+  </div>
+
+  <p>Use Case:</p>
+  <ul>
+    <li>Represent structured data (e.g., a single entity like a person or a product).</li>
+    <li>When accessing data by meaningful identifiers (e.g., "name", "age").</li>
+  </ul>
+
+  <h3>Festive Tables for Examples</h3>
+  <p>Let's create some sample festive tables and see both functions in action:</p>
+
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang">SQL</span></div>
+    <pre><span class="kw">CREATE TABLE</span> Workshop (
+    WorkshopID   <span class="tp">INT</span> <span class="kw">PRIMARY KEY</span>,
+    WorkshopName <span class="tp">NVARCHAR</span>(<span class="num">50</span>)
+);
+
+<span class="kw">CREATE TABLE</span> Elves (
+    ElfID      <span class="tp">INT</span> <span class="kw">PRIMARY KEY</span>,
+    ElfName    <span class="tp">NVARCHAR</span>(<span class="num">50</span>),
+    JoinDate   <span class="tp">DATE</span>,
+    WorkshopID <span class="tp">INT</span> <span class="kw">FOREIGN KEY REFERENCES</span> Workshop(WorkshopID)
+);
+
+<span class="kw">INSERT INTO</span> Workshop (WorkshopID, WorkshopName)
+<span class="kw">VALUES</span>
+    (<span class="num">1</span>, <span class="str">'Toy Assembly'</span>),
+    (<span class="num">2</span>, <span class="str">'Gift Wrapping'</span>),
+    (<span class="num">3</span>, <span class="str">'Reindeer Care'</span>);
+
+<span class="kw">INSERT INTO</span> Elves (ElfID, ElfName, JoinDate, WorkshopID)
+<span class="kw">VALUES</span>
+    (<span class="num">1</span>, <span class="str">'Buddy'</span>,      <span class="str">'2021-12-01'</span>, <span class="num">1</span>),
+    (<span class="num">2</span>, <span class="str">'Jingle'</span>,     <span class="str">'2020-11-15'</span>, <span class="num">1</span>),
+    (<span class="num">3</span>, <span class="str">'Sparkle'</span>,    <span class="str">'2022-01-10'</span>, <span class="num">2</span>),
+    (<span class="num">4</span>, <span class="str">'Snowflake'</span>,  <span class="str">'2023-03-05'</span>, <span class="num">2</span>),
+    (<span class="num">5</span>, <span class="str">'Peppermint'</span>, <span class="str">'2020-12-20'</span>, <span class="num">3</span>);</pre>
+  </div>
+
+  <h3>JSON_ARRAYAGG() function</h3>
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang">SQL — SYNTAX</span></div>
+    <pre><span class="cmt">-- SYNTAX</span>
+<span class="fn">JSON_ARRAYAGG</span> (value_expression [ order_by_clause ] [ json_null_clause ] )</pre>
+  </div>
+
+  <p>The <a href="https://learn.microsoft.com/en-us/sql/t-sql/functions/json-arrayagg-transact-sql" target="_blank" rel="noopener"><code>JSON_ARRAYAGG</code></a> constructs a JSON array from an aggregation of SQL data or columns.</p>
+
+  <h3>Example: JSON Array of Elf Names</h3>
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang">SQL</span></div>
+    <pre><span class="kw">SELECT</span> <span class="fn">JSON_ARRAYAGG</span>(ElfName <span class="kw">ORDER BY</span> JoinDate <span class="kw">ASC</span>) <span class="kw">AS</span> <span class="al">ElfNames</span>
+<span class="kw">FROM</span> Elves;
+<span class="cmt">-- Output: ["Jingle","Peppermint","Buddy","Sparkle","Snowflake"]</span>
+
+
+<span class="kw">SELECT</span> <span class="fn">JSON_ARRAYAGG</span>(WorkshopName <span class="kw">ORDER BY</span> WorkshopName <span class="kw">ASC</span>) <span class="kw">AS</span> <span class="al">Workshop</span>
+<span class="kw">FROM</span> Workshop;
+<span class="cmt">-- Output: ["Gift Wrapping","Reindeer Care","Toy Assembly"]</span></pre>
+  </div>
+
+  <h3>JSON_OBJECTAGG() function</h3>
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang">SQL — SYNTAX</span></div>
+    <pre><span class="cmt">-- SYNTAX</span>
+<span class="fn">JSON_OBJECTAGG</span> ( json_key_value [ json_null_clause ] )</pre>
+  </div>
+
+  <p>The <a href="https://learn.microsoft.com/en-us/sql/t-sql/functions/json-objectagg-transact-sql" target="_blank" rel="noopener"><code>JSON_OBJECTAGG</code></a> function constructs a JSON object from an aggregation of SQL data or columns.</p>
+
+  <h3>Example: JSON Object of Elf Directory</h3>
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang">SQL</span></div>
+    <pre><span class="kw">SELECT</span> <span class="fn">JSON_OBJECTAGG</span>(ElfID: ElfName) <span class="kw">AS</span> <span class="al">ElfDirectory</span>
+<span class="kw">FROM</span> Elves;</pre>
+  </div>
+
+  <p>Output:</p>
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang">JSON</span></div>
+    <pre>{
+    <span class="fn">"1"</span>: <span class="str">"Buddy"</span>,
+    <span class="fn">"2"</span>: <span class="str">"Jingle"</span>,
+    <span class="fn">"3"</span>: <span class="str">"Sparkle"</span>,
+    <span class="fn">"4"</span>: <span class="str">"Snowflake"</span>,
+    <span class="fn">"5"</span>: <span class="str">"Peppermint"</span>
+}</pre>
+  </div>
+
+  <h3>Example: Combining JSON_ARRAYAGG() and JSON_OBJECTAGG()</h3>
+  <p>We can combine both functions to generate a JSON object where each workshop maps to an array of elf names:</p>
+
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang">SQL</span></div>
+    <pre><span class="kw">WITH</span> ElfGroups <span class="kw">AS</span> (
+    <span class="kw">SELECT</span>
+        W.WorkshopName,
+        <span class="fn">JSON_ARRAYAGG</span>(E.ElfName <span class="kw">ORDER BY</span> E.ElfName <span class="kw">ASC</span>) <span class="kw">AS</span> <span class="al">ElfArray</span>
+    <span class="kw">FROM</span> Workshop W
+    <span class="kw">JOIN</span> Elves E <span class="kw">ON</span> W.WorkshopID <span class="op">=</span> E.WorkshopID
+    <span class="kw">GROUP BY</span> W.WorkshopName
+)
+<span class="kw">SELECT</span> <span class="fn">JSON_OBJECTAGG</span>(WorkshopName: ElfArray) <span class="kw">AS</span> <span class="al">WorkshopElves</span>
+<span class="kw">FROM</span> ElfGroups;</pre>
+  </div>
+
+  <p>Output:</p>
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang">JSON</span></div>
+    <pre>{
+    <span class="fn">"Toy Assembly"</span>:   [<span class="str">"Buddy"</span>, <span class="str">"Jingle"</span>],
+    <span class="fn">"Gift Wrapping"</span>:  [<span class="str">"Snowflake"</span>, <span class="str">"Sparkle"</span>],
+    <span class="fn">"Reindeer Care"</span>: [<span class="str">"Peppermint"</span>]
+}</pre>
+  </div>
+
+  <h3>What about FOR JSON?</h3>
+  <p>You still have option to use <code>FOR JSON</code> syntax, but the output may be more verbose and less compact compared to the new aggregate functions.</p>
+
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang">SQL</span></div>
+    <pre><span class="kw">SELECT</span> ElfID, ElfName
+<span class="kw">FROM</span> Elves
+<span class="kw">FOR JSON PATH</span>;</pre>
+  </div>
+
+  <p>Output:</p>
+  <div class="code-wrap">
+    <div class="code-header"><span class="code-lang">JSON</span></div>
+    <pre>[
+  { <span class="fn">"ElfID"</span>: <span class="num">1</span>, <span class="fn">"ElfName"</span>: <span class="str">"Buddy"</span>      },
+  { <span class="fn">"ElfID"</span>: <span class="num">2</span>, <span class="fn">"ElfName"</span>: <span class="str">"Jingle"</span>     },
+  { <span class="fn">"ElfID"</span>: <span class="num">3</span>, <span class="fn">"ElfName"</span>: <span class="str">"Sparkle"</span>    },
+  { <span class="fn">"ElfID"</span>: <span class="num">4</span>, <span class="fn">"ElfName"</span>: <span class="str">"Snowflake"</span>  },
+  { <span class="fn">"ElfID"</span>: <span class="num">5</span>, <span class="fn">"ElfName"</span>: <span class="str">"Peppermint"</span> }
+]</pre>
+  </div>
+
+  <p>While <code>FOR JSON</code> works well, the new functions like <code>JSON_ARRAYAGG</code> and <code>JSON_OBJECTAGG</code> offer cleaner and more flexible options for working with JSON data.</p>
+  <p>Have fun with elves and JSON!</p>
+
+  <!-- Conclusion -->
+  <h2>Conclusion</h2>
+  <p>This lightweight post aimed to bring the new functions to your attention, as not everyone works with the cloud and might not be aware of the shiny new features coming your way in the future.</p>
+  <p>Thank you,<br>Magda</p>
+
+  <div class="prev-next">
+    <a href="tsql2sday-159-feature.html">&#8592; Favourite SQL Server 2022 Feature</a>
+    <a href="getting-started-sql.html">Getting Started with Data and SQL &#8594;</a>
+  </div>
+
+</article>
+</main>
+
+<footer>
+  <span class="footer-name">Magdalena Bronowska</span>
+  <p class="footer-sub">&#169; 2025 &nbsp;&#183;&nbsp; <span>Made with Love and Coffee</span></p>
+</footer>
+
+<script>
+function toggleTheme() {
+  const html = document.documentElement;
+  const isDark = html.getAttribute('data-theme') === 'dark';
+  html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  document.getElementById('theme-icon').textContent = isDark ? '☀️' : '🌙';
+  document.getElementById('theme-label').textContent = isDark ? 'Light' : 'Dark';
+  localStorage.setItem('theme', isDark ? 'light' : 'dark');
+}
+(function () {
+  const saved = localStorage.getItem('theme');
+  if (saved === 'light') {
+    document.documentElement.setAttribute('data-theme', 'light');
+    document.getElementById('theme-icon').textContent = '☀️';
+    document.getElementById('theme-label').textContent = 'Light';
+  }
+})();
+
+function copyCode(btn) {
+  var pre = btn.closest('.code-wrap').querySelector('pre');
+  var text = pre.innerText;
+  navigator.clipboard.writeText(text).then(function() {
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.code-wrap').forEach(function(wrap) {
+    var btn = document.createElement('button');
+    btn.className = 'copy-btn';
+    btn.textContent = 'Copy';
+    btn.setAttribute('onclick', 'copyCode(this)');
+    btn.setAttribute('aria-label', 'Copy code');
+    wrap.appendChild(btn);
+  });
+});
+
+</script>
+</body>
+</html>

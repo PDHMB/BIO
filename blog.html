@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+
+   <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-P9VH7BLE4X"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-P9VH7BLE4X');
+</script>
+   
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Writing — Magdalena Bronowska</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+
+/* ══════════════════════════════════════
+   THEME TOKENS
+══════════════════════════════════════ */
+:root {
+  --rose:        #c97b65;
+  --rose-hover:  #b56a55;
+  --plum:        #9b78bb;
+  --gold:        #b8935a;
+  --transition:  background 0.35s, color 0.35s, border-color 0.35s;
+}
+
+[data-theme="dark"] {
+  --bg:          #0f1017;
+  --bg2:         #14161f;
+  --bg3:         #191c28;
+  --bg4:         #1f2233;
+  --text:        #e8e4f0;
+  --text-mid:    #9991b8;
+  --text-dim:    #585278;
+  --border:      rgba(155,120,187,0.16);
+  --border-md:   rgba(201,123,101,0.28);
+  --nav-bg:      rgba(15,16,23,0.94);
+  --shadow:      0 4px 24px rgba(0,0,0,0.4);
+  --header-glow: radial-gradient(ellipse 70% 60% at 50% 0%, rgba(155,120,187,0.14) 0%, transparent 65%),
+                 radial-gradient(ellipse 35% 35% at 85% 85%, rgba(201,123,101,0.08) 0%, transparent 65%);
+}
+
+[data-theme="light"] {
+  --bg:          #faf8f5;
+  --bg2:         #f3f0eb;
+  --bg3:         #edeae4;
+  --bg4:         #e5e1d9;
+  --text:        #0e0b1a;
+  --text-mid:    #3a3355;
+  --text-dim:    #6a6090;
+  --border:      rgba(80,60,120,0.18);
+  --border-md:   rgba(160,70,50,0.3);
+  --nav-bg:      rgba(250,248,245,0.94);
+  --shadow:      0 4px 24px rgba(0,0,0,0.08);
+  --header-glow: radial-gradient(ellipse 70% 60% at 50% 0%, rgba(155,120,187,0.09) 0%, transparent 65%),
+                 radial-gradient(ellipse 35% 35% at 85% 85%, rgba(201,123,101,0.06) 0%, transparent 65%);
+}
+
+/* ══════════════════════════════════════
+   BASE
+══════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.75;
+  overflow-x: hidden;
+  transition: var(--transition);
+}
+
+/* ══════════════════════════════════════
+   TOP BAR
+══════════════════════════════════════ */
+.top-bar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 32px;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  transition: var(--transition);
+}
+
+.theme-toggle {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 5px 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--text-mid);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+
+.theme-toggle:hover { border-color: var(--border-md); color: var(--text); }
+.theme-icon { font-size: 14px; }
+
+/* ══════════════════════════════════════
+   HEADER
+══════════════════════════════════════ */
+header {
+  position: relative;
+  text-align: center;
+  padding: 72px 40px 56px;
+  border-bottom: 1px solid var(--border);
+  overflow: hidden;
+  transition: var(--transition);
+}
+
+header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--header-glow);
+  pointer-events: none;
+}
+
+.back-link {
+  position: absolute;
+  top: 28px;
+  left: 36px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: color 0.2s, gap 0.2s;
+}
+
+.back-link:hover { color: var(--rose); gap: 12px; }
+
+.pre-name {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--plum);
+  margin-bottom: 16px;
+  opacity: 0.8;
+}
+
+h1 {
+  font-family: 'DM Serif Display', serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(2.4rem, 6vw, 4.4rem);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+
+h1 em { color: var(--rose); }
+
+.tagline {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  font-size: clamp(0.85rem, 2vw, 1rem);
+  color: var(--text-mid);
+  margin-top: 14px;
+  letter-spacing: 0.04em;
+}
+
+.divider-ornament {
+  display: block;
+  margin: 18px auto 0;
+  color: var(--gold);
+  font-size: 14px;
+  letter-spacing: 14px;
+  opacity: 0.45;
+}
+
+/* ══════════════════════════════════════
+   MAIN
+══════════════════════════════════════ */
+main {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 60px 32px 100px;
+}
+
+/* ══════════════════════════════════════
+   YEAR GROUP
+══════════════════════════════════════ */
+.year-group { margin-bottom: 56px; }
+
+.year-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: 0.7;
+  margin-bottom: 4px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* ══════════════════════════════════════
+   POST ROW
+══════════════════════════════════════ */
+.post-row {
+  display: grid;
+  grid-template-columns: 90px 1fr auto;
+  align-items: center;
+  gap: 24px;
+  padding: 22px 0;
+  border-bottom: 1px solid var(--border);
+  text-decoration: none;
+  color: var(--text);
+  transition: padding-left 0.25s, background 0.2s;
+  position: relative;
+  border-radius: 4px;
+}
+
+.post-row:hover { padding-left: 10px; }
+
+.post-date {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+
+.post-title {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15.5px;
+  font-weight: 400;
+  color: var(--text);
+  line-height: 1.45;
+  transition: color 0.2s;
+}
+
+.post-row:hover .post-title { color: var(--rose); }
+
+.post-tag {
+  font-family: 'DM Mono', monospace;
+  font-weight: 300;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--plum);
+  border: 1px solid rgba(155,120,187,0.3);
+  padding: 3px 10px;
+  border-radius: 4px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.post-arrow {
+  position: absolute;
+  right: 0;
+  color: var(--rose);
+  opacity: 0;
+  font-size: 13px;
+  transition: opacity 0.2s, right 0.2s;
+}
+
+.post-row:hover .post-arrow { opacity: 1; right: 4px; }
+
+/* ══════════════════════════════════════
+   FOOTER
+══════════════════════════════════════ */
+footer {
+  text-align: center;
+  padding: 44px 24px;
+  border-top: 1px solid var(--border);
+  transition: var(--transition);
+}
+
+.footer-name {
+  font-family: 'DM Serif Display', serif;
+  font-style: italic;
+  font-size: 1.4rem;
+  color: var(--text-mid);
+  display: block;
+  margin-bottom: 8px;
+}
+
+.footer-sub {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.footer-sub span { color: var(--gold); }
+
+/* ══════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════ */
+@media (max-width: 600px) {
+  .top-bar { padding: 10px 16px; }
+  header { padding: 52px 20px 44px; }
+  main { padding: 40px 18px 64px; }
+  .post-row { grid-template-columns: 1fr auto; gap: 10px; }
+  .post-date { display: none; }
+  .back-link { top: 16px; left: 18px; }
+}
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="top-bar">
+  <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+    <span class="theme-icon" id="theme-icon">🌙</span>
+    <span id="theme-label">Dark</span>
+  </button>
+</div>
+
+<!-- HEADER -->
+<header>
+  <a href="index.html" class="back-link">← Portfolio</a>
+  <p class="pre-name">Magdalena Bronowska · Writing</p>
+  <h1>My <em>blog</em></h1>
+  <p class="tagline">SQL · Excel · Data tools · Community</p>
+  <span class="divider-ornament">· · ·</span>
+</header>
+
+<!-- MAIN -->
+<main>
+
+  <!-- 2025 -->
+  <div class="year-group">
+    <p class="year-label">2025</p>
+
+    <a href="articles/getting-started-sql.html" class="post-row">
+      <span class="post-date">Aug 2025</span>
+      <span class="post-title">Getting Started with Data and SQL</span>
+      <span class="post-tag">SQL</span>
+      <span class="post-arrow">→</span>
+    </a>
+  </div>
+
+  <!-- 2024 -->
+  <div class="year-group">
+    <p class="year-label">2024</p>
+
+    <a href="articles/festive-tech-2024.html" class="post-row">
+      <span class="post-date">13 Dec 2024</span>
+      <span class="post-title">Festive Tech Calendar 2024: Exclusive Functions in Azure SQL Database and Managed Instance</span>
+      <span class="post-tag">Azure SQL</span>
+      <span class="post-arrow">→</span>
+    </a>
+  </div>
+
+  <!-- 2023 -->
+  <div class="year-group">
+    <p class="year-label">2023</p>
+
+    <a href="articles/tsql2sday-159-feature.html" class="post-row">
+      <span class="post-date">14 Feb 2023</span>
+      <span class="post-title">T-SQL Tuesday 159 — What's Your Favorite New Feature in SQL Server 2022?</span>
+      <span class="post-tag">SQL</span>
+      <span class="post-arrow">→</span>
+    </a>
+
+    <a href="articles/tsql2sday-159-resolutions.html" class="post-row">
+      <span class="post-date">14 Feb 2023</span>
+      <span class="post-title">T-SQL Tuesday 159 — New Year's Resolutions</span>
+      <span class="post-tag">Community</span>
+      <span class="post-arrow">→</span>
+    </a>
+  </div>
+
+  <!-- 2020 -->
+  <div class="year-group">
+    <p class="year-label">2020</p>
+
+    <a href="articles/tsql2sday-131.html" class="post-row">
+      <span class="post-date">13 Oct 2020</span>
+      <span class="post-title">T-SQL Tuesday 131 — Data Analogies, or Explain Databases Like I'm Five!</span>
+      <span class="post-tag">SQL</span>
+      <span class="post-arrow">→</span>
+    </a>
+
+    <a href="articles/let-function-excel-365.html" class="post-row">
+      <span class="post-date">29 Oct 2020</span>
+      <span class="post-title">LET Function in Excel 365</span>
+      <span class="post-tag">Excel</span>
+      <span class="post-arrow">→</span>
+    </a>
+
+      <a href="articles/xlookup-dynamic-array-formulas-excel-365.html" class="post-row">
+      <span class="post-date">29 Sep 2020</span>
+      <span class="post-title">XLOOKUP function and dynamic array formulas – Excel 365</span>
+      <span class="post-tag">Excel</span>
+      <span class="post-arrow">→</span>
+    </a>
+
+    <a href="articles/d-like-duplicate.html" class="post-row">
+      <span class="post-date">22 Sep 2020</span>
+      <span class="post-title">D like Duplicate — CTRL+D across Excel, Power BI, SSMS and more</span>
+      <span class="post-tag">Excel</span>
+      <span class="post-arrow">→</span>
+    </a>
+
+    <a href="articles/power-query-install.html" class="post-row">
+      <span class="post-date">19 Sep 2020</span>
+      <span class="post-title">Power Query Installation</span>
+      <span class="post-tag">Excel</span>
+      <span class="post-arrow">→</span>
+    </a>
+
+    <a href="articles/excel-pdf-import.html" class="post-row">
+      <span class="post-date">15 Sep 2020</span>
+      <span class="post-title">Microsoft Excel — Data Import from PDF, a Very Useful Tool</span>
+      <span class="post-tag">Excel</span>
+      <span class="post-arrow">→</span>
+    </a>
+
+    <a href="articles/tsql2sday-130.html" class="post-row">
+      <span class="post-date">8 Sep 2020</span>
+      <span class="post-title">T-SQL Tuesday 130 — Automate Your Stress Away</span>
+      <span class="post-tag">Community</span>
+      <span class="post-arrow">→</span>
+    </a>
+  </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-name">Magdalena Bronowska</span>
+  <p class="footer-sub">© 2025 &nbsp;·&nbsp; <span>Made with Love and Coffee</span></p>
+</footer>
+
+<script>
+function toggleTheme() {
+  const html = document.documentElement;
+  const isDark = html.getAttribute('data-theme') === 'dark';
+  html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  document.getElementById('theme-icon').textContent = isDark ? '☀️' : '🌙';
+  document.getElementById('theme-label').textContent = isDark ? 'Light' : 'Dark';
+  localStorage.setItem('theme', isDark ? 'light' : 'dark');
+}
+(function() {
+  const saved = localStorage.getItem('theme');
+  if (saved === 'light') {
+    document.documentElement.setAttribute('data-theme', 'light');
+    document.getElementById('theme-icon').textContent = '☀️';
+    document.getElementById('theme-label').textContent = 'Light';
+  }
+})();
+</script>
+
+</body>
+</html>
