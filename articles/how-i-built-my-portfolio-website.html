@@ -237,6 +237,31 @@ main {
   border: 0;
   padding: 0;
 }
+.flow-diagram {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 4px;
+}
+.flow-step {
+  width: min(100%, 520px);
+  padding: 12px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--border-md);
+  background: var(--bg2);
+  color: var(--text);
+  text-align: center;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  line-height: 1.45;
+}
+.flow-arrow {
+  color: var(--plum);
+  font-size: 22px;
+  line-height: 1;
+  user-select: none;
+}
 footer {
   text-align: center;
   padding: 44px 24px;
@@ -299,12 +324,12 @@ footer {
 <main>
 <article class="article">
 
-  <p>This article explains, step by step, how a simple portfolio website can be created with very little money and without software developer experience. GitHub Pages can publish static files such as HTML and CSS, it looks for a main file like <code>index.html</code>, and publishing can take up to 10 minutes after changes are saved. <a href="https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages" target="_blank" rel="noopener">GitHub</a>. A custom domain can also be connected, but GitHub recommends adding the custom domain in repository settings before finishing the DNS setup with the domain provider.<a href="https://www.youtube.com/watch?v=VRgTYJyN9pg" target="_blank" rel="noopener">YT</a></p>
+  <p>This article explains, step by step, how a simple portfolio website can be created with very little money and without software development experience. GitHub Pages can publish static files such as HTML and CSS. It looks for a main file like <code>index.html</code>, and publishing can take up to 10 minutes after changes are saved <a href="https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages" target="_blank" rel="noopener">GitHub</a>. A custom domain can also be connected, but GitHub recommends adding the custom domain in repository settings before finishing the DNS setup with the domain provider <a href="https://www.youtube.com/watch?v=VRgTYJyN9pg" target="_blank" rel="noopener">YouTube</a>.</p>
 
   <p>I built my website in:</p>
   <ul>
     <li>simple HTML and CSS,</li>
-    <li>with help from AI prompts (Cloude),</li>
+    <li>with help from AI prompts (Claude),</li>
     <li>hosted it for free using GitHub Pages,</li>
     <li>connected my own domain from Namecheap,</li>
     <li>added HTTPS,</li>
@@ -312,7 +337,7 @@ footer {
   </ul>
 
   <h2>Why this project mattered</h2>
-  <p>A personal portfolio website does not need to be expensive or technically complicated. In this case, the only direct cost was the domain name, while GitHub Pages provided hosting for the website files.<a href="https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site" target="_blank" rel="noopener">GitHub</a>. The whole project took three evenings and was built with simple files that could be opened and edited from a normal desktop folder.</p>
+  <p>A personal portfolio website does not need to be expensive or technically complicated. In this case, the only direct cost was the domain name, while GitHub Pages provided hosting for the website files <a href="https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site" target="_blank" rel="noopener">GitHub</a>. The whole project took three evenings and was built with simple files that could be opened and edited from a normal desktop folder.</p>
   <p>This approach is useful for people who are not developers but are comfortable reading simple lines of code (and even that is not necessary). A static site built with HTML and CSS is a good choice because it is light, fast, and easier to understand than a full web application.</p>
 
   <h2>The idea behind the website</h2>
@@ -437,14 +462,14 @@ section {
 
   <img src="../assets/images/OpenLocaly.png" alt="Image">
 
-  <p>This is a very beginner-friendly step because there is no pressure and no hosting needed yet. A file can be edited (in notepad or notepad++), saved, and refreshed in the browser again and again until the page looks right.</p>
+  <p>This is a very beginner-friendly step because there is no pressure and no hosting needed yet. A file can be edited (in Notepad or Notepad++), saved, and refreshed in the browser again and again until the page looks right.</p>
 
   <img src="../assets/images/OpenNotepad.png" alt="Image">
 
   <p>This is also a practical way to learn. Small changes in the HTML file show how text and page structure work, while small changes in the CSS file show how style, color, spacing, and layout work.</p>
 
   <h2>Step 3: Create a GitHub repository</h2>
-  <p>Once the local version looked good, the next step was to create a repository on GitHub. GitHub explains that a Pages site can be created from a new or existing repository, and that a user or organization site must use the name <code>&lt;user&gt;.github.io</code> or <code>&lt;organization&gt;.github.io</code>.<a href="https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-new-repository" target="_blank" rel="noopener">GitHub</a></p>
+  <p>Once the local version looked good, the next step was to create a repository on GitHub. GitHub explains that a Pages site can be created from a new or existing repository, and that a user or organization site must use the name <code>&lt;user&gt;.github.io</code> or <code>&lt;organization&gt;.github.io</code>. <a href="https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-new-repository" target="_blank" rel="noopener">GitHub</a></p>
   <p>For many beginners, this is the easiest path:</p>
   <ul>
     <li>Create a new repository.</li>
@@ -484,36 +509,36 @@ section {
   <p>After that, the site is deployed and becomes public. GitHub notes that publishing changes can take up to 10 minutes, so it may not appear instantly.
 Now I have a GitHub portfolio page on my GitHub account. I can leave it as it is, or I can buy a domain and build it further.</p>
 
-  <p><a href="https://youtu.be/uQbRW36oohc" target="_blank" rel="noopener">YouTube - Create repo and Git Hub Page</a></p>
+  <p><a href="https://youtu.be/uQbRW36oohc" target="_blank" rel="noopener">YouTube - Create repo and GitHub Page</a></p>
 
-  <h2>Step 6: Buy a domain on <a href="http://namecheap.com/" target="_blank" rel="noopener">Namecheap</a></h2>
+  <h2>Step 6: Buy a custom domain</h2>
   <p>Once the site worked on the default GitHub Pages address, a custom domain could be purchased. In this project, that was the only paid part.</p>
-  <p>A custom domain gives a portfolio website a more personal and professional look. GitHub supports the use of custom domains for Pages websites, so a domain bought from a provider like Namecheap can be connected to the site.</p>
+  <p>A custom domain gives a portfolio website a more personal and professional look. GitHub supports the use of custom domains for Pages websites, so a domain bought from a provider like Namecheap (I bought mine there) can be connected to the site.</p>
 
   <h2>Step 7: Add the custom domain in GitHub first</h2>
-  <p>This step is very important. GitHub recommends adding the custom domain in the repository settings before changing DNS records at the domain provider, because doing the DNS first can create a security risk.<a href="https://www.youtube.com/watch?v=_RpIr6yKcZo" target="_blank" rel="noopener">How To Connect Namecheap Domain To GitHub Pages (Step By Step)</a></p>
+  <p>This step is very important. GitHub recommends adding the custom domain in the repository settings before changing DNS records at the domain provider, because doing the DNS first can create a security risk. <a href="https://www.youtube.com/watch?v=_RpIr6yKcZo" target="_blank" rel="noopener">How To Connect Namecheap Domain To GitHub Pages (Step By Step)</a></p>
   <p>Basic steps:</p>
   <ol>
     <li>Open the repository.</li>
     <li>Go to <strong>Settings</strong>.</li>
     <li>Open <strong>Pages</strong>.</li>
     <li>In <strong>Custom domain</strong>, enter the domain name.</li>
-    <li>Click <strong>Save</strong>.[cite:4]</li>
+    <li>Click <strong>Save</strong>.</li>
   </ol>
   <p>GitHub explains that when publishing from a branch, this action creates a <code>CNAME</code> file in the source branch, which helps connect the site to the domain. This was explained in the video <a href="https://www.youtube.com/watch?v=_RpIr6yKcZo" target="_blank" rel="noopener">How To Connect Namecheap Domain To GitHub Pages (Step By Step)</a></p>
 
-  <h2>Step 8: Set DNS records in <a href="http://namecheap.com/" target="_blank" rel="noopener">Namecheap</a></h2>
+  <h2>Step 8: Set DNS records in Namecheap</h2>
   <p>After the custom domain is added to GitHub, the DNS records can be configured in Namecheap. GitHub explains that the setup depends on whether the root domain, such as <code>example.com</code> is being used, or a subdomain such as <code>www.example.com</code>.</p>
-  <p>For an apex domain, GitHub recommends <code>A</code> records that point to these IP addresses:
+  <p>GitHub recommends <code>A</code> records that point to these IP addresses:
 <a href="https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site" target="_blank" rel="noopener">Configuring a custom domain for your GitHub Pages site</a></p>
-  <p>Check this on the GitHub website <a href="https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site#configuring-an-apex-domain" target="_blank" rel="noopener">Configuring an apex domain</a></p>
+  <p>Check this on the GitHub website <a href="https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site#configuring-an-apex-domain" target="_blank" rel="noopener">Configuring domain</a></p>
   <ul>
     <li><code>185.199.108.153</code></li>
     <li><code>185.199.109.153</code></li>
     <li><code>185.199.110.153</code></li>
     <li><code>185.199.111.153</code></li>
   </ul>
-  <p>For the <code>www</code> version, GitHub recommends a <code>CNAME</code> record pointing to <code>USERNAME.github.io</code> or <code>ORGANIZATION.github.io</code>, without the repository name.[cite:4]</p>
+  <p>For the <code>www</code> version, GitHub recommends a <code>CNAME</code> record pointing to <code>USERNAME.github.io</code> or <code>ORGANIZATION.github.io</code>, without the repository name.</p>
   <p>Example DNS setup:</p>
 
   <table>
@@ -554,7 +579,7 @@ Now I have a GitHub portfolio page on my GitHub account. I can leave it as it is
   </table>
 
   <p>GitHub also notes that DNS changes may take up to 24 hours to propagate, and it recommends avoiding wildcard DNS records because of security risks.
-Alternatively chcek on <a href="https://dnschecker.org/" target="_blank" rel="noopener">DNS Checker</a></p>
+Alternatively, check on <a href="https://dnschecker.org/" target="_blank" rel="noopener">DNS Checker</a></p>
 
   <h2>Step 9: Add Google Analytics - if desired</h2>
   <p>After the website is live, Google Analytics 4 can be added to track visits and user activity. Google's setup flow starts with creating a property, then a web data stream, and then adding the Google tag to the website code. <a href="https://www.youtube.com/watch?v=A2Z1mvGJUqM" target="_blank" rel="noopener">How to Easily Add Google Analytics to a Website</a></p>
@@ -578,7 +603,7 @@ Alternatively chcek on <a href="https://dnschecker.org/" target="_blank" rel="no
   &lt;!-- Google tag goes here --&gt;
 &lt;/head&gt;</code></pre>
 
-  <p><a href="https://youtu.be/mlCX7RfTJ9U" target="_blank" rel="noopener">YT</a></p>
+  <p><a href="https://youtu.be/mlCX7RfTJ9U" target="_blank" rel="noopener">YouTube - Edit code in GitHub Repository for Google Analytics</a></p>
 
   <h2>What made this possible without developer skills</h2>
   <p>This project shows that full software developer knowledge is not always required to launch a small personal website. A beginner can get far with a clear AI prompt, basic patience, and the ability to read and update simple code.</p>
@@ -602,29 +627,46 @@ Alternatively chcek on <a href="https://dnschecker.org/" target="_blank" rel="no
   </ul>
 
   <h2>Website lifecycle diagram</h2>
-  <p>A simple text flow:</p>
+  <p>A simple flow:</p>
   <div class="diagram-wrap">
-    <pre class="mermaid">flowchart TD
-    A[Idea for portfolio site] --> B[Write prompt in Claude]
-    B --> C[Generate simple HTML and CSS]
-    C --> D[Save files in desktop folder]
-    D --> E[Open index.html in browser]
-    E --> F[Edit text colors and layout in Claude]
-    F --> G[Create GitHub repository]
-    G --> H[Upload files]
-    H --> I[Enable GitHub Pages]
-    I --> J[Site live on github.io]
-    J --> K[Buy domain on Namecheap]
-    K --> L[Add custom domain in GitHub Pages]
-    L --> M[Set DNS records in Namecheap]
-    M --> N[Connect domain]
-    N --> O[Add Google Analytics tag]
-    O --> P[Live portfolio website]</pre>
+    <div class="flow-diagram" aria-label="Website lifecycle flow diagram">
+      <div class="flow-step">Idea for portfolio site</div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-step">Write prompt in Claude</div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-step">Generate simple HTML and CSS</div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-step">Save files in desktop folder</div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-step">Open index.html in browser</div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-step">Edit text, colors, and layout in Claude</div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-step">Create GitHub repository</div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-step">Upload files</div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-step">Enable GitHub Pages</div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-step">Site live on github.io</div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-step">Buy domain on Namecheap</div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-step">Add custom domain in GitHub Pages</div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-step">Set DNS records in Namecheap</div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-step">Connect domain</div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-step">Add Google Analytics tag</div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-step">Live portfolio website</div>
+    </div>
   </div>
 
   <h2>Useful links</h2>
   <ul>
-    <li><a href="https://youtu.be/uQbRW36oohc" target="_blank" rel="noopener">YouTube - Create repo and Git Hub Page</a></li>
+    <li><a href="https://youtu.be/uQbRW36oohc" target="_blank" rel="noopener">YouTube - Create repo and GitHub Page</a></li>
     <li><a href="https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site" target="_blank" rel="noopener">GitHub Pages: Creating a site</a></li>
     <li><a href="https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site" target="_blank" rel="noopener">GitHub Pages: Configure publishing source</a></li>
     <li><a href="https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site" target="_blank" rel="noopener">GitHub Pages: Custom domain</a></li>
@@ -665,13 +707,6 @@ function toggleTheme() {
     document.getElementById('theme-label').textContent = 'Light';
   }
 })();
-</script>
-<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
-<script>
-mermaid.initialize({
-  startOnLoad: true,
-  theme: 'base'
-});
 </script>
 </body>
 </html>
