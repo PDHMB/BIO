@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-P9VH7BLE4X"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-P9VH7BLE4X');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How I built my Portfolio Website in 3 evenings with a low budget - Magdalena Bronowska</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --rose:        #c97b65;
+  --plum:        #9b78bb;
+  --gold:        #b8935a;
+  --transition:  background 0.35s, color 0.35s, border-color 0.35s;
+}
+[data-theme="dark"] {
+  --bg:          #0f1017;
+  --bg2:         #14161f;
+  --bg3:         #191c28;
+  --bg4:         #1f2233;
+  --text:        #e8e4f0;
+  --text-mid:    #9991b8;
+  --text-dim:    #585278;
+  --border:      rgba(155,120,187,0.16);
+  --border-md:   rgba(201,123,101,0.28);
+  --shadow:      0 4px 24px rgba(0,0,0,0.4);
+  --code-bg:     #12141e;
+}
+[data-theme="light"] {
+  --bg:          #faf8f5;
+  --bg2:         #f3f0eb;
+  --bg3:         #edeae4;
+  --bg4:         #e5e1d9;
+  --text:        #0e0b1a;
+  --text-mid:    #3a3355;
+  --text-dim:    #6a6090;
+  --border:      rgba(80,60,120,0.18);
+  --border-md:   rgba(160,70,50,0.3);
+  --shadow:      0 4px 24px rgba(0,0,0,0.08);
+  --code-bg:     #e8e4f0;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.75;
+  overflow-x: hidden;
+  transition: var(--transition);
+}
+.top-bar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 32px;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+}
+.theme-toggle {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 5px 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--text-mid);
+  font-family: 'DM Sans', sans-serif;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+.theme-toggle:hover { border-color: var(--border-md); color: var(--text); }
+.theme-icon { font-size: 14px; }
+header {
+  position: relative;
+  padding: 64px 40px 52px;
+  border-bottom: 1px solid var(--border);
+  overflow: hidden;
+  background: var(--bg2);
+}
+header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 70% 60% at 50% 0%, rgba(155,120,187,0.10) 0%, transparent 65%);
+  pointer-events: none;
+}
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  text-decoration: none;
+  margin-bottom: 28px;
+  transition: color 0.2s, gap 0.2s;
+}
+.back-link:hover { color: var(--rose); gap: 12px; }
+.post-meta {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: 0.8;
+  margin-bottom: 14px;
+}
+h1 {
+  font-family: 'DM Serif Display', serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(1.9rem, 5vw, 3.2rem);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  max-width: 900px;
+}
+.post-tag-header {
+  margin-top: 18px;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--plum);
+  border: 1px solid rgba(155,120,187,0.3);
+  padding: 3px 10px;
+  border-radius: 4px;
+  display: inline-block;
+}
+main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 56px 32px 100px;
+}
+.article h2 {
+  font-family: 'DM Serif Display', serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(1.3rem, 3vw, 1.8rem);
+  color: var(--text);
+  margin: 48px 0 18px;
+  line-height: 1.2;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+.article p {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  font-size: 16px;
+  color: var(--text);
+  line-height: 1.85;
+  margin-bottom: 18px;
+}
+.article a {
+  color: var(--rose);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(201,123,101,0.35);
+  transition: border-color 0.2s;
+}
+.article a:hover { border-color: var(--rose); }
+.article pre {
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 22px 24px;
+  overflow-x: auto;
+  margin: 24px 0;
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--text-mid);
+}
+.article code:not(pre code) {
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  background: var(--code-bg);
+  padding: 2px 7px;
+  border-radius: 4px;
+  color: var(--plum);
+}
+.article ul, .article ol {
+  padding-left: 24px;
+  margin-bottom: 18px;
+  color: var(--text);
+  font-weight: 300;
+}
+.article li { margin-bottom: 6px; line-height: 1.75; }
+.article img {
+  max-width: 100%;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  margin: 18px 0;
+  display: block;
+}
+.article table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 24px 0;
+  border: 1px solid var(--border);
+}
+.article th, .article td {
+  border: 1px solid var(--border);
+  padding: 10px 12px;
+  text-align: left;
+  font-weight: 300;
+}
+.article th {
+  background: var(--bg3);
+  font-weight: 500;
+}
+footer {
+  text-align: center;
+  padding: 44px 24px;
+  border-top: 1px solid var(--border);
+}
+.footer-name {
+  font-family: 'DM Serif Display', serif;
+  font-style: italic;
+  font-size: 1.4rem;
+  color: var(--text-mid);
+  display: block;
+  margin-bottom: 8px;
+}
+.footer-sub {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+.footer-sub span { color: var(--gold); }
+.prev-next {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 56px;
+  padding-top: 28px;
+  border-top: 1px solid var(--border);
+}
+.prev-next a {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.prev-next a:hover { color: var(--rose); }
+@media (max-width: 600px) {
+  .top-bar { padding: 10px 16px; }
+  header { padding: 44px 18px 36px; }
+  main { padding: 36px 18px 64px; }
+}
+</style>
+</head>
+<body>
+<div class="top-bar">
+  <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+    <span class="theme-icon" id="theme-icon">&#127769;</span>
+    <span id="theme-label">Dark</span>
+  </button>
+</div>
+<header>
+  <a href="../blog.html" class="back-link">&#8592; All articles</a>
+  <p class="post-meta">21 May 2026</p>
+  <h1>How I built my Portfolio Website in 3 evenings with a low budget</h1>
+  <span class="post-tag-header">Web</span>
+</header>
+<main>
+<article class="article">
+
+  <p>This article explains, step by step, how a simple portfolio website can be created with very little money and without software developer experience. GitHub Pages can publish static files such as HTML and CSS, it looks for a main file like <code>index.html</code>, and publishing can take up to 10 minutes after changes are saved. <a href="https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages" target="_blank" rel="noopener">GitHub</a>. A custom domain can also be connected, but GitHub recommends adding the custom domain in repository settings before finishing the DNS setup with the domain provider.<a href="https://www.youtube.com/watch?v=VRgTYJyN9pg" target="_blank" rel="noopener">YT</a></p>
+
+  <p>I built my website in:</p>
+  <ul>
+    <li>simple HTML and CSS,</li>
+    <li>with help from AI prompts (Cloude),</li>
+    <li>hosted it for free using GitHub Pages,</li>
+    <li>connected my own domain from Namecheap,</li>
+    <li>added HTTPS,</li>
+    <li>and connected Google Analytics.</li>
+  </ul>
+
+  <h2>Why this project mattered</h2>
+  <p>A personal portfolio website does not need to be expensive or technically complicated. In this case, the only direct cost was the domain name, while GitHub Pages provided hosting for the website files.<a href="https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site" target="_blank" rel="noopener">GitHub</a>. The whole project took three evenings and was built with simple files that could be opened and edited from a normal desktop folder.</p>
+  <p>This approach is useful for people who are not developers but are comfortable reading simple lines of code (and even that is not necessary). A static site built with HTML and CSS is a good choice because it is light, fast, and easier to understand than a full web application.</p>
+
+  <h2>The idea behind the website</h2>
+  <p>The goal was to build a website that looked clean, simple, and easy to read. Instead of using complex tools, the site was created with HTML for the structure and CSS for the styling. GitHub Pages is designed for static content and does not support server-side languages such as PHP or Python, which keeps the setup simpler for portfolio websites.</p>
+  <p>This also meant the site was easier to edit later. Text, headings, buttons, and page sections could be changed inside the HTML file, while colors, spacing, and fonts could be changed in the CSS file.</p>
+
+  <h2>The prompt used in Claude</h2>
+  <p><a href="https://claude.ai/" target="_blank" rel="noopener">Claude</a> was used as a helper to generate the first version of the website. The important part was to ask for something simple, readable, and easy to edit later.</p>
+  <p>Example prompt:</p>
+  <pre><code>Create a simple personal portfolio website in HTML and CSS only.
+Make it clean, minimal, and easy to read for recruiters.
+Use a soft color palette, clear sections, and good spacing.
+Include:
+- hero section with my name and short intro
+- about me section
+- skills section
+- projects section
+- contact section
+- buttons for blog, LinkedIn, GitHub and YouTube
+
+Important:
+- keep the layout simple and responsive
+- do not use JavaScript
+- use plain HTML and CSS only
+- make the code easy to understand and easy to edit by a non-developer
+- add comments to show where each section starts
+- create an index file as the main file,
+- create blog file as a sub page (under blog button)
+- create an image file where the images from the blog post will be stored</code></pre>
+
+  <p>Also, I added a summary about myself without including true phone numbers, email address, links etc. I can edit that later in the <code>index.html</code> file.</p>
+  <p>This kind of prompt helps because it sets clear limits. Asking for HTML and CSS only makes the result easier to read, test, and change later.</p>
+
+  <img src="../assets/images/Cloud_1.png" alt="Image">
+
+  <h2>Step 1: Create the website files</h2>
+  <p>The first step was to ask Claude to generate the website code. That code was then copied into simple files saved on a computer.</p>
+  <p>A basic folder structure looked like this:</p>
+  <pre><code>portfolio-website/
+|
+|-- index.html
+|-- blog.html
+`-- images/</code></pre>
+
+  <img src="../assets/images/CloudFiles_2.png" alt="Image">
+
+  <p>The most important file was <code>index.html</code>, because GitHub Pages uses a main file such as <code>index.html</code>, <code>index.md</code>, or <code>README.md</code> as the entry point of the website. For a simple portfolio site, <code>index.html</code> is the easiest option.</p>
+  <p>Simple example HTML:</p>
+  <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+  &lt;title&gt;Mike Wazowski&lt;/title&gt;
+  &lt;link rel="stylesheet" href="style.css"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;header&gt;
+    &lt;h1&gt;Mike Wazowski&lt;/h1&gt;
+    &lt;p&gt;Data Analyst | Portfolio Website&lt;/p&gt;
+  &lt;/header&gt;
+
+  &lt;section&gt;
+    &lt;h2&gt;About Me&lt;/h2&gt;
+    &lt;p&gt;A short introduction about you.&lt;/p&gt;
+  &lt;/section&gt;
+
+  &lt;section&gt;
+    &lt;h2&gt;Projects&lt;/h2&gt;
+    &lt;p&gt;Project examples go here.&lt;/p&gt;
+  &lt;/section&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+  <p>Simple example CSS:</p>
+  <pre><code>body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: #f7f8fb;
+  color: #222;
+}
+
+header {
+  background: white;
+  padding: 40px;
+  text-align: center;
+}
+
+section {
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 20px;
+  background: white;
+  border-radius: 10px;
+}</code></pre>
+
+  <p>What is HTML and CSS?</p>
+  <p>HTML is the structure of the website.</p>
+  <p>It creates:</p>
+  <ul>
+    <li>headings,</li>
+    <li>paragraphs,</li>
+    <li>buttons,</li>
+    <li>sections,</li>
+    <li>images.</li>
+  </ul>
+  <p>Think of it like the skeleton of the page.</p>
+  <p>CSS controls the design and appearance.</p>
+  <p>It changes:</p>
+  <ul>
+    <li>colors,</li>
+    <li>spacing,</li>
+    <li>fonts,</li>
+    <li>layouts,</li>
+    <li>responsiveness for mobile devices.</li>
+  </ul>
+  <p>Think of it like the decoration and styling.</p>
+
+  <h2>Step 2: Open the website from a desktop folder</h2>
+  <p>Before uploading anything online, the website can be tested directly from a folder on the desktop. Opening the <code>index.html</code> file in a browser makes it possible to view the site locally and check how it looks.</p>
+
+  <img src="../assets/images/OpenLocaly.png" alt="Image">
+
+  <p>This is a very beginner-friendly step because there is no pressure and no hosting needed yet. A file can be edited (in notepad or notepad++), saved, and refreshed in the browser again and again until the page looks right.</p>
+
+  <img src="../assets/images/OpenNotepad.png" alt="Image">
+
+  <p>This is also a practical way to learn. Small changes in the HTML file show how text and page structure work, while small changes in the CSS file show how style, color, spacing, and layout work.</p>
+
+  <h2>Step 3: Create a GitHub repository</h2>
+  <p>Once the local version looked good, the next step was to create a repository on GitHub. GitHub explains that a Pages site can be created from a new or existing repository, and that a user or organization site must use the name <code>&lt;user&gt;.github.io</code> or <code>&lt;organization&gt;.github.io</code>.<a href="https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-new-repository" target="_blank" rel="noopener">GitHub</a></p>
+  <p>For many beginners, this is the easiest path:</p>
+  <ul>
+    <li>Create a new repository.</li>
+    <li>Upload the website files.</li>
+    <li>Make sure <code>index.html</code> is in the correct location</li>
+    <li>Add a README if desired.</li>
+  </ul>
+  <p>Create repository - make sure this is public, not private.</p>
+
+  <img src="../assets/images/GHnewRepo.png" alt="Image">
+
+  <p>This part matters because GitHub Pages needs the files to exist inside the repository before anything can be published.</p>
+
+  <h2>Step 4: Upload the files to GitHub</h2>
+  <p>The website files can be uploaded directly through the GitHub website or with a desktop tool such as GitHub Desktop. For a simple portfolio website, direct browser upload is often enough.</p>
+  <p>The key detail is that the publishing source must include the website files and especially <code>index.html</code>. If the site is published from the root folder, that file must be there. If it is published from <code>/docs</code>, then the file must be inside <code>/docs</code>.</p>
+  <p>Upload or drag and drop new files <code>index.html</code>, <code>blog.html</code> and a folder for images and then hit Commit changes</p>
+
+  <img src="../assets/images/GHnewRepo_1.png" alt="Image">
+  <img src="../assets/images/GHnewRepo_2.png" alt="Image">
+
+  <h2>Step 5: Turn on GitHub Pages</h2>
+  <p>After the files are in the repository, GitHub Pages can be enabled. GitHub says publishing can happen from a branch, usually <code>main</code>, and the source can be the root folder or the <code>/docs</code> folder on that branch.</p>
+  <p>Basic steps:</p>
+  <ol>
+    <li>Open the repository.</li>
+    <li>Go to <strong>Settings</strong>.</li>
+    <li>Open <strong>Pages</strong>.</li>
+    <li>In <strong>Build and deployment</strong>, choose <strong>Deploy from a branch</strong>.</li>
+    <li>Select the branch, usually <code>main</code>.</li>
+    <li>Select the folder, usually <code>/root</code>.</li>
+    <li>Click <strong>Save</strong>.</li>
+  </ol>
+
+  <img src="../assets/images/GHnewRepo_3.png" alt="Image">
+
+  <p>After that, the site is deployed and becomes public. GitHub notes that publishing changes can take up to 10 minutes, so it may not appear instantly.
+Now I have a GitHub portfolio page on my GitHub account. I can leave it as it is, or I can buy a domain and build it further.</p>
+
+  <p><a href="https://youtu.be/uQbRW36oohc" target="_blank" rel="noopener">YouTube - Create repo and Git Hub Page</a></p>
+
+  <h2>Step 6: Buy a domain on <a href="http://namecheap.com/" target="_blank" rel="noopener">Namecheap</a></h2>
+  <p>Once the site worked on the default GitHub Pages address, a custom domain could be purchased. In this project, that was the only paid part.</p>
+  <p>A custom domain gives a portfolio website a more personal and professional look. GitHub supports the use of custom domains for Pages websites, so a domain bought from a provider like Namecheap can be connected to the site.</p>
+
+  <h2>Step 7: Add the custom domain in GitHub first</h2>
+  <p>This step is very important. GitHub recommends adding the custom domain in the repository settings before changing DNS records at the domain provider, because doing the DNS first can create a security risk.<a href="https://www.youtube.com/watch?v=_RpIr6yKcZo" target="_blank" rel="noopener">How To Connect Namecheap Domain To GitHub Pages (Step By Step)</a></p>
+  <p>Basic steps:</p>
+  <ol>
+    <li>Open the repository.</li>
+    <li>Go to <strong>Settings</strong>.</li>
+    <li>Open <strong>Pages</strong>.</li>
+    <li>In <strong>Custom domain</strong>, enter the domain name.</li>
+    <li>Click <strong>Save</strong>.[cite:4]</li>
+  </ol>
+  <p>GitHub explains that when publishing from a branch, this action creates a <code>CNAME</code> file in the source branch, which helps connect the site to the domain. This was explained in the video <a href="https://www.youtube.com/watch?v=_RpIr6yKcZo" target="_blank" rel="noopener">How To Connect Namecheap Domain To GitHub Pages (Step By Step)</a></p>
+
+  <h2>Step 8: Set DNS records in <a href="http://namecheap.com/" target="_blank" rel="noopener">Namecheap</a></h2>
+  <p>After the custom domain is added to GitHub, the DNS records can be configured in Namecheap. GitHub explains that the setup depends on whether the root domain, such as <code>example.com</code> is being used, or a subdomain such as <code>www.example.com</code>.</p>
+  <p>For an apex domain, GitHub recommends <code>A</code> records that point to these IP addresses:
+<a href="https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site" target="_blank" rel="noopener">Configuring a custom domain for your GitHub Pages site</a></p>
+  <p>Check this on the GitHub website <a href="https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site#configuring-an-apex-domain" target="_blank" rel="noopener">Configuring an apex domain</a></p>
+  <ul>
+    <li><code>185.199.108.153</code></li>
+    <li><code>185.199.109.153</code></li>
+    <li><code>185.199.110.153</code></li>
+    <li><code>185.199.111.153</code></li>
+  </ul>
+  <p>For the <code>www</code> version, GitHub recommends a <code>CNAME</code> record pointing to <code>USERNAME.github.io</code> or <code>ORGANIZATION.github.io</code>, without the repository name.[cite:4]</p>
+  <p>Example DNS setup:</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Record type</th>
+        <th>Host</th>
+        <th>Value</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>A Record</td>
+        <td>@</td>
+        <td>185.199.108.153</td>
+      </tr>
+      <tr>
+        <td>A Record</td>
+        <td>@</td>
+        <td>185.199.109.153</td>
+      </tr>
+      <tr>
+        <td>A Record</td>
+        <td>@</td>
+        <td>185.199.110.153</td>
+      </tr>
+      <tr>
+        <td>A Record</td>
+        <td>@</td>
+        <td>185.199.111.153</td>
+      </tr>
+      <tr>
+        <td>CNAME Record</td>
+        <td>www</td>
+        <td>yourusername.github.io <a href="https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site#configuring-an-apex-domain-and-the-www-subdomain-variant" target="_blank" rel="noopener">Configuring an apex domain and the www subdomain variant</a></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>GitHub also notes that DNS changes may take up to 24 hours to propagate, and it recommends avoiding wildcard DNS records because of security risks.
+Alternatively chcek on <a href="https://dnschecker.org/" target="_blank" rel="noopener">DNS Checker</a></p>
+
+  <h2>Step 9: Add Google Analytics - if desired</h2>
+  <p>After the website is live, Google Analytics 4 can be added to track visits and user activity. Google's setup flow starts with creating a property, then a web data stream, and then adding the Google tag to the website code. <a href="https://www.youtube.com/watch?v=A2Z1mvGJUqM" target="_blank" rel="noopener">How to Easily Add Google Analytics to a Website</a></p>
+  <p>Simple beginner steps:</p>
+  <ol>
+    <li>Log in to Google Analytics.</li>
+    <li>Go to <strong>Admin</strong>.</li>
+    <li>Create a new property.</li>
+    <li>Create a <strong>Web</strong> data stream.</li>
+    <li>Copy the Google tag.</li>
+    <li>Paste the tag into the <code>&lt;head&gt;</code> section of the HTML file.</li>
+  </ol>
+  <p>Because the site uses plain HTML, this step is quite manageable. The code is simply added inside the page head section, then the file is saved and uploaded again.</p>
+  <p>Example position:</p>
+  <pre><code>&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+  &lt;title&gt;My Portfolio&lt;/title&gt;
+  &lt;link rel="stylesheet" href="style.css"&gt;
+
+  &lt;!-- Google tag goes here --&gt;
+&lt;/head&gt;</code></pre>
+
+  <p><a href="https://youtu.be/mlCX7RfTJ9U" target="_blank" rel="noopener">YT</a></p>
+
+  <h2>What made this possible without developer skills</h2>
+  <p>This project shows that full software developer knowledge is not always required to launch a small personal website. A beginner can get far with a clear AI prompt, basic patience, and the ability to read and update simple code.</p>
+  <p>The main reasons this worked were:</p>
+  <ul>
+    <li>the website stayed static, with HTML and CSS only</li>
+    <li>the first version was generated with AI</li>
+    <li>the site was tested locally before being uploaded</li>
+    <li>GitHub Pages handled the hosting of static files</li>
+    <li>the only financial cost was the domain name</li>
+  </ul>
+
+  <h2>Common mistakes to avoid</h2>
+  <p>A few mistakes can slow the project down:</p>
+  <ul>
+    <li>Missing <code>index.html</code>, or putting it in the wrong folder, because GitHub Pages needs the main file in the publishing source.</li>
+    <li>Choosing the wrong branch or wrong folder in the Pages settings.</li>
+    <li>Entering incorrect DNS records when connecting the custom domain.</li>
+    <li>Expecting everything to work instantly, even though GitHub says publishing can take up to 10 minutes and DNS changes can take up to 24 hours.</li>
+    <li>Configuring DNS before adding the custom domain in GitHub, even though GitHub recommends the opposite for security reasons.</li>
+  </ul>
+
+  <h2>Website lifecycle diagram</h2>
+  <p>A simple text flow:</p>
+  <pre><code>flowchart TD
+    A[Idea for portfolio site] --&gt; B[Write prompt in Claude]
+    B --&gt; C[Generate simple HTML and CSS]
+    C --&gt; D[Save files in desktop folder]
+    D --&gt; E[Open index.html in browser]
+    E --&gt; F[Edit text, colors, layout in Claude]
+    F --&gt; G[Create GitHub repository]
+    G --&gt; H[Upload files]
+    H --&gt; I[Enable GitHub Pages]
+    I --&gt; J[Site live on github.io]
+    J --&gt; K[Buy domain on Namecheap]
+    K --&gt; L[Add custom domain in GitHub Pages]
+    L --&gt; M[Set DNS records in Namecheap]
+    M --&gt; N[Connect domain]
+    N --&gt; O[Add Google Analytics tag]
+    O --&gt; P[Live portfolio website]</code></pre>
+
+  <h2>Useful links</h2>
+  <ul>
+    <li><a href="https://youtu.be/uQbRW36oohc" target="_blank" rel="noopener">YouTube - Create repo and Git Hub Page</a></li>
+    <li><a href="https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site" target="_blank" rel="noopener">GitHub Pages: Creating a site</a></li>
+    <li><a href="https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site" target="_blank" rel="noopener">GitHub Pages: Configure publishing source</a></li>
+    <li><a href="https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site" target="_blank" rel="noopener">GitHub Pages: Custom domain</a></li>
+    <li><a href="https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site" target="_blank" rel="noopener">GitHub Pages: Managing custom domain</a></li>
+    <li><a href="https://docs.github.com/en/pages/getting-started-with-github-pages/securing-your-github-pages-site-with-https" target="_blank" rel="noopener">GitHub Pages: HTTPS</a></li>
+    <li><a href="https://www.youtube.com/watch?v=_RpIr6yKcZo" target="_blank" rel="noopener">YouTube - How To Connect Namecheap Domain To GitHub Pages (Step By Step)</a></li>
+    <li><a href="https://support.google.com/analytics/answer/9304153?hl=en" target="_blank" rel="noopener">Google Analytics setup</a></li>
+    <li><a href="https://youtu.be/mlCX7RfTJ9U" target="_blank" rel="noopener">YouTube - Edit code in GitHub Repository for Google Analytics</a></li>
+  </ul>
+
+  <div class="prev-next">
+    <a href="../blog.html">&#8592; Back to blog</a>
+    <span></span>
+  </div>
+
+</article>
+</main>
+
+<footer>
+  <span class="footer-name">Magdalena Bronowska</span>
+  <p class="footer-sub">&#169; 2025 &nbsp;&#183;&nbsp; <span>Made with Love and Coffee</span></p>
+</footer>
+
+<script>
+function toggleTheme() {
+  const html = document.documentElement;
+  const isDark = html.getAttribute('data-theme') === 'dark';
+  html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  document.getElementById('theme-icon').textContent = isDark ? '☀️' : '🌙';
+  document.getElementById('theme-label').textContent = isDark ? 'Light' : 'Dark';
+  localStorage.setItem('theme', isDark ? 'light' : 'dark');
+}
+(function() {
+  const saved = localStorage.getItem('theme');
+  if (saved === 'light') {
+    document.documentElement.setAttribute('data-theme', 'light');
+    document.getElementById('theme-icon').textContent = '☀️';
+    document.getElementById('theme-label').textContent = 'Light';
+  }
+})();
+</script>
+</body>
+</html>
