@@ -224,6 +224,19 @@ main {
   background: var(--bg3);
   font-weight: 500;
 }
+.diagram-wrap {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px;
+  margin: 24px 0;
+  background: var(--bg3);
+}
+.diagram-wrap .mermaid {
+  margin: 0;
+  background: transparent;
+  border: 0;
+  padding: 0;
+}
 footer {
   text-align: center;
   padding: 44px 24px;
@@ -590,22 +603,24 @@ Alternatively chcek on <a href="https://dnschecker.org/" target="_blank" rel="no
 
   <h2>Website lifecycle diagram</h2>
   <p>A simple text flow:</p>
-  <pre><code>flowchart TD
-    A[Idea for portfolio site] --&gt; B[Write prompt in Claude]
-    B --&gt; C[Generate simple HTML and CSS]
-    C --&gt; D[Save files in desktop folder]
-    D --&gt; E[Open index.html in browser]
-    E --&gt; F[Edit text, colors, layout in Claude]
-    F --&gt; G[Create GitHub repository]
-    G --&gt; H[Upload files]
-    H --&gt; I[Enable GitHub Pages]
-    I --&gt; J[Site live on github.io]
-    J --&gt; K[Buy domain on Namecheap]
-    K --&gt; L[Add custom domain in GitHub Pages]
-    L --&gt; M[Set DNS records in Namecheap]
-    M --&gt; N[Connect domain]
-    N --&gt; O[Add Google Analytics tag]
-    O --&gt; P[Live portfolio website]</code></pre>
+  <div class="diagram-wrap">
+    <pre class="mermaid">flowchart TD
+    A[Idea for portfolio site] --> B[Write prompt in Claude]
+    B --> C[Generate simple HTML and CSS]
+    C --> D[Save files in desktop folder]
+    D --> E[Open index.html in browser]
+    E --> F[Edit text colors and layout in Claude]
+    F --> G[Create GitHub repository]
+    G --> H[Upload files]
+    H --> I[Enable GitHub Pages]
+    I --> J[Site live on github.io]
+    J --> K[Buy domain on Namecheap]
+    K --> L[Add custom domain in GitHub Pages]
+    L --> M[Set DNS records in Namecheap]
+    M --> N[Connect domain]
+    N --> O[Add Google Analytics tag]
+    O --> P[Live portfolio website]</pre>
+  </div>
 
   <h2>Useful links</h2>
   <ul>
@@ -650,6 +665,13 @@ function toggleTheme() {
     document.getElementById('theme-label').textContent = 'Light';
   }
 })();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+  startOnLoad: true,
+  theme: 'base'
+});
 </script>
 </body>
 </html>
