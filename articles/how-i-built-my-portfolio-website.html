@@ -60,13 +60,7 @@ body {
   transition: var(--transition);
 }
 .top-bar {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  gap: 8px;
-  padding: 12px 32px;
-  background: var(--bg2);
-  border-bottom: 1px solid var(--border);
+  display: none;
 }
 .theme-toggle {
   background: var(--bg3);
@@ -84,6 +78,14 @@ body {
 }
 .theme-toggle:hover { border-color: var(--border-md); color: var(--text); }
 .theme-icon { font-size: 14px; }
+.floating-theme-toggle {
+  position: fixed;
+  top: 12px;
+  right: 14px;
+  z-index: 999;
+  box-shadow: var(--shadow);
+  border-radius: 999px;
+}
 header {
   position: relative;
   padding: 64px 40px 52px;
@@ -302,14 +304,17 @@ footer {
 }
 .prev-next a:hover { color: var(--rose); }
 @media (max-width: 600px) {
-  .top-bar { padding: 10px 16px; }
+  .floating-theme-toggle {
+    top: 10px;
+    right: 10px;
+  }
   header { padding: 44px 18px 36px; }
   main { padding: 36px 18px 64px; }
 }
 </style>
 </head>
 <body>
-<div class="top-bar">
+<div class="floating-theme-toggle">
   <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
     <span class="theme-icon" id="theme-icon">&#127769;</span>
     <span id="theme-label">Dark</span>
@@ -573,7 +578,7 @@ Now I have a GitHub portfolio page on my GitHub account. I can leave it as it is
       <tr>
         <td>CNAME Record</td>
         <td>www</td>
-        <td>yourusername.github.io <a href="https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site#configuring-an-apex-domain-and-the-www-subdomain-variant" target="_blank" rel="noopener">Configuring domain and the www subdomain variant</a></td>
+        <td>yourusername.github.io <a href="https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site#configuring-an-apex-domain-and-the-www-subdomain-variant" target="_blank" rel="noopener">Configuring an apex domain and the www subdomain variant</a></td>
       </tr>
     </tbody>
   </table>
