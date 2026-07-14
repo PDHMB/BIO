@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Deep Dive: Generating Row IDs in Apache Spark — Magdalena Bronowska</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --rose: #c97b65;
+      --plum: #9b78bb;
+      --gold: #b8935a;
+      --transition: background 0.35s, color 0.35s, border-color 0.35s;
+    }
+    [data-theme="dark"] {
+      --bg: #0f1017;
+      --bg2: #14161f;
+      --bg3: #191c28;
+      --bg4: #1f2233;
+      --text: #e8e4f0;
+      --text-mid: #9991b8;
+      --text-dim: #585278;
+      --border: rgba(155,120,187,0.16);
+      --border-md: rgba(201,123,101,0.28);
+      --shadow: 0 4px 24px rgba(0,0,0,0.4);
+      --code-bg: #363a57;
+      --code-border: rgba(155,120,187,0.35);
+      --syn-keyword: #e8a0f0;
+      --syn-function: #93c5fd;
+      --syn-string: #86efac;
+      --syn-number: #fdba74;
+      --syn-comment: #94a3b8;
+      --syn-operator: #7dd3fc;
+      --syn-alias: #fde68a;
+      --syn-default: #e2e8f0;
+    }
+    [data-theme="light"] {
+      --bg: #faf8f5;
+      --bg2: #f3f0eb;
+      --bg3: #edeae4;
+      --bg4: #e5e1d9;
+      --text: #0e0b1a;
+      --text-mid: #3a3355;
+      --text-dim: #6a6090;
+      --border: rgba(80,60,120,0.18);
+      --border-md: rgba(160,70,50,0.3);
+      --shadow: 0 4px 24px rgba(0,0,0,0.08);
+      --code-bg: #363a57;
+      --code-border: rgba(155,120,187,0.35);
+      --syn-keyword: #e8a0f0;
+      --syn-function: #93c5fd;
+      --syn-string: #86efac;
+      --syn-number: #fdba74;
+      --syn-comment: #94a3b8;
+      --syn-operator: #7dd3fc;
+      --syn-alias: #fde68a;
+      --syn-default: #e2e8f0;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', system-ui, sans-serif;
+      font-size: 16px;
+      line-height: 1.75;
+      overflow-x: hidden;
+      transition: var(--transition);
+    }
+    .top-bar {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 32px;
+      background: var(--bg2);
+      border-bottom: 1px solid var(--border);
+    }
+    .theme-toggle {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 5px 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: var(--text-mid);
+      font-family: 'DM Sans', sans-serif;
+      transition: background 0.2s, border-color 0.2s, color 0.2s;
+    }
+    .theme-toggle:hover { border-color: var(--border-md); color: var(--text); }
+    header {
+      position: relative;
+      padding: 64px 40px 52px;
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+      background: var(--bg2);
+    }
+    header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 70% 60% at 50% 0%, rgba(155,120,187,0.10) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      text-decoration: none;
+      margin-bottom: 28px;
+      transition: color 0.2s, gap 0.2s;
+    }
+    .back-link:hover { color: var(--rose); gap: 12px; }
+    .post-meta {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: var(--gold);
+      opacity: 0.8;
+      margin-bottom: 14px;
+    }
+    h1 {
+      font-family: 'DM Serif Display', serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: clamp(1.9rem, 5vw, 3.2rem);
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+      color: var(--text);
+      max-width: 900px;
+    }
+    .post-tag-header {
+      margin-top: 18px;
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--plum);
+      border: 1px solid rgba(155,120,187,0.3);
+      padding: 3px 10px;
+      border-radius: 4px;
+      display: inline-block;
+    }
+    main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 56px 32px 100px;
+    }
+    .article h2 {
+      font-family: 'DM Serif Display', serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: clamp(1.3rem, 3vw, 1.8rem);
+      color: var(--text);
+      margin: 48px 0 18px;
+      line-height: 1.2;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+    .article h3 {
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 500;
+      font-size: 1rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--plum);
+      margin: 32px 0 12px;
+    }
+    .article p {
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      font-size: 16px;
+      color: var(--text);
+      line-height: 1.85;
+      margin-bottom: 18px;
+    }
+    .article a {
+      color: var(--rose);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(201,123,101,0.35);
+      transition: border-color 0.2s;
+    }
+    .article a:hover { border-color: var(--rose); }
+    .article ul,
+    .article ol {
+      padding-left: 24px;
+      margin-bottom: 18px;
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      font-size: 16px;
+      line-height: 1.85;
+    }
+    .article ul li,
+    .article ol li { margin-bottom: 6px; }
+    .article code:not(pre code) {
+      font-family: 'DM Mono', monospace;
+      font-size: 13px;
+      background: rgba(155,120,187,0.15);
+      padding: 2px 7px;
+      border-radius: 4px;
+      color: var(--plum);
+    }
+    .code-wrap {
+      position: relative;
+      margin: 24px 0;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--code-border);
+      box-shadow: 0 6px 28px rgba(0,0,0,0.4);
+    }
+    .code-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #2a2d46;
+      padding: 9px 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .code-lang {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+    }
+    .copy-btn {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      color: rgba(255,255,255,0.45);
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+      user-select: none;
+    }
+    .copy-btn:hover { background: rgba(255,255,255,0.16); color: rgba(255,255,255,0.85); border-color: rgba(255,255,255,0.3); }
+    .copy-btn.copied { color: #86efac; border-color: rgba(134,239,172,0.5); background: rgba(134,239,172,0.08); }
+    .resource-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 24px 0 8px;
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+    .resource-links a {
+      color: var(--rose);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(201,123,101,0.35);
+    }
+    .resource-links a:hover { border-color: var(--rose); }
+    .code-wrap pre {
+      background: var(--code-bg);
+      padding: 22px 24px;
+      overflow-x: auto;
+      font-family: 'DM Mono', monospace;
+      font-size: 13.5px;
+      line-height: 1.8;
+      color: var(--syn-default);
+      margin: 0;
+      border-radius: 0;
+      tab-size: 2;
+    }
+    .kw { color: var(--syn-keyword); }
+    .fn { color: var(--syn-function); }
+    .str { color: var(--syn-string); }
+    .num { color: var(--syn-number); }
+    .cmt { color: var(--syn-comment); font-style: italic; }
+    .op { color: var(--syn-operator); }
+    .al { color: var(--syn-alias); }
+    .article img {
+      max-width: 100%;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      margin: 18px 0;
+      display: block;
+    }
+    .img-caption {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      color: var(--text-dim);
+      letter-spacing: 0.08em;
+      margin-top: -10px;
+      margin-bottom: 18px;
+    }
+    .article table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 24px 0 32px;
+      overflow: hidden;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--bg2);
+    }
+    .article th,
+    .article td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+      font-size: 14px;
+      line-height: 1.6;
+      vertical-align: top;
+    }
+    .article th {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-mid);
+      background: rgba(155,120,187,0.08);
+    }
+    .article td { font-family: 'DM Sans', sans-serif; font-weight: 300; color: var(--text); }
+    footer {
+      text-align: center;
+      padding: 44px 24px;
+      border-top: 1px solid var(--border);
+    }
+    .footer-name {
+      font-family: 'DM Serif Display', serif;
+      font-style: italic;
+      font-size: 1.4rem;
+      color: var(--text-mid);
+      display: block;
+      margin-bottom: 8px;
+    }
+    .footer-sub {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+    .footer-sub span { color: var(--gold); }
+    @media (max-width: 600px) {
+      .top-bar { padding: 10px 16px; }
+      header { padding: 44px 18px 36px; }
+      main { padding: 36px 18px 64px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="top-bar">
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+      <span class="theme-icon" id="theme-icon">🌙</span>
+      <span id="theme-label">Dark</span>
+    </button>
+  </div>
+
+  <header>
+    <a href="../bio-main/bio-main/blog.html" class="back-link">← All articles</a>
+    <p class="post-meta">July 2026</p>
+    <h1>Deep Dive: Generating Row IDs in Apache Spark — monotonically_increasing_id vs. zipWithIndex</h1>
+    <span class="post-tag-header">Apache Spark • PySpark</span>
+  </header>
+
+  <main>
+    <article class="article">
+      <p>When working with large-scale data in Apache Spark (including PySpark in Microsoft Fabric), generating a unique identifier or a row index for your dataset seems like a trivial task. However, because Spark handles data across a distributed cluster of computers, creating IDs comes with a hidden catch.</p>
+
+      <p>Two of the most common ways to achieve this are <code>monotonically_increasing_id()</code> and <code>df.rdd.zipWithIndex()</code>. While they sound like they do similar jobs, they work entirely differently under the hood. Selecting the wrong one can completely block your production pipeline or inject unexpected bugs into your data.</p>
+
+      <div class="resource-links">
+        <a href="https://www.youtube.com/shorts/TqlP1nVGI78" target="_blank" rel="noopener">Watch a short YouTube explanation</a>
+        <a href="https://github.com/MGACHA/PySpark_LearningByDoing/tree/main/Row_ID" target="_blank" rel="noopener">Open the GitHub notebook</a>
+      </div>
+
+      <h2>The Core Analogy</h2>
+      <p>To understand how these two methods differ, imagine you are managing a massive marathon with thousands of runners split across different starting corrals (representing Spark's partitions). Your job is to assign a unique bib number (ID) to every single runner.</p>
+
+      <div class="code-wrap">
+        <div class="code-header">
+          <span class="code-lang">Text</span>
+          <button class="copy-btn" type="button" aria-label="Copy code">Copy</button>
+        </div>
+        <pre>                  THE MARATHON ANALOGY
+                  
+ Corral A (5 runners)         Corral B (3 runners)
+ [🏃🏃🏃🏃🏃]                 [🏃🏃🏃]
+   
+ ── Method 1: monotonically_increasing_id() ───────────────────
+ Hand out huge pre-allocated blocks of numbers to each corral leader. No coordination.
+ IDs: 0, 1, 2, 3, 4           IDs: 8589934592, 8589934593, 8589934594
+ (Fastest, but leaves massive gaps!)
+ 
+ ── Method 2: zipWithIndex() ───────────────────
+ Count Group A first (5 runners). Tell Group B to start its numbering at exactly 5.
+ IDs: 0, 1, 2, 3, 4           IDs: 5, 6, 7
+ (Perfectly consecutive, but requires talking/counting first!)</pre>
+      </div>
+
+      <h2>1. monotonically_increasing_id()</h2>
+      <h3>How it works?</h3>
+      <p>This is a native Spark SQL function. It follows the "Fast and Rough" approach. Spark assigns a massive, unique block of numbers to each partition ahead of time based on the partition's index number. Specifically, it shifts the partition ID into the upper bits of a 64-bit integer, and counts rows locally within that partition using the lower bits.</p>
+      <p>Because each partition works with its own isolated pool of numbers, the worker computers do not need to communicate with one another. Notice how the IDs leap to 8589934592 when moving to the next partition block.</p>
+
+      <h3>Code Example</h3>
+      <div class="code-wrap">
+        <div class="code-header">
+          <span class="code-lang">Python</span>
+          <button class="copy-btn" type="button" aria-label="Copy code">Copy</button>
+        </div>
+        <pre><span class="kw">from</span> <span class="fn">pyspark.sql</span> <span class="kw">import</span> <span class="fn">functions</span> <span class="kw">as</span> <span class="al">F</span>
+
+<span class="cmt"># Sample DataFrame split across 2 partitions</span>
+data = [("Kevin",), ("Bob",), ("Stuart",), ("Otto",), ("Dave",)]
+df = spark.createDataFrame(data, ["name"]).repartition(2)
+
+<span class="cmt"># Applying the fast ID function</span>
+df_mono = df.withColumn("row_id", F.monotonically_increasing_id())
+df_mono.show()</pre>
+      </div>
+
+      <img src="../bio-main/bio-main/assets/images/13072026_row_id_mono.png" alt="Illustration showing row IDs generated with monotonically_increasing_id across partitions">
+      <p class="img-caption">Example of the numbering pattern produced by monotonically_increasing_id()</p>
+
+      <h2>2. df.rdd.zipWithIndex()</h2>
+      <h3>How it works?</h3>
+      <p>This method uses the "Perfectly Consecutive" approach (series). To eliminate gaps, Spark cannot guess where the next partition should start numbering. It must launch an initial Spark job to scan the data and count exactly how many rows exist in each partition.</p>
+      <p>Once Partition 0 reports it has exactly 3 rows, Partition 1 is told to start its local numbering at index 3. This guarantees a continuous, unbroken sequence.</p>
+
+      <h3>Code Example</h3>
+      <div class="code-wrap">
+        <div class="code-header">
+          <span class="code-lang">Python</span>
+          <button class="copy-btn" type="button" aria-label="Copy code">Copy</button>
+        </div>
+        <pre><span class="cmt"># Sample DataFrame split across 2 partitions</span>
+data = [("Kevin",), ("Bob",), ("Stuart",), ("Otto",), ("Dave",)]
+df = spark.createDataFrame(data, ["name"]).repartition(2)
+
+<span class="cmt"># To use zipWithIndex, we must drop down to the RDD layer,</span>
+<span class="cmt"># apply the index, and reconstruct the DataFrame.</span>
+rdd_with_index = df.rdd.zipWithIndex()
+
+<span class="cmt"># Re-mapping the structure from ((Name), Index) to (Name, Index)</span>
+mapped_rdd = rdd_with_index.map(lambda row: (row[0][0], row[1]))
+
+<span class="cmt"># Convert back to DataFrame</span>
+df_zipped = spark.createDataFrame(mapped_rdd, ["name", "row_id"])
+df_zipped.show()</pre>
+      </div>
+
+      <img src="../bio-main/bio-main/assets/images/13072026_row_id_zipwithindex.png" alt="Illustration showing row IDs generated with zipWithIndex across partitions">
+      <p class="img-caption">Example of the numbering pattern produced by zipWithIndex()</p>
+
+      <h2>Comparison</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th><code>monotonically_increasing_id()</code></th>
+            <th><code>df.rdd.zipWithIndex()</code></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Are IDs Unique?</strong></td>
+            <td>Yes</td>
+            <td>Yes</td>
+          </tr>
+          <tr>
+            <td><strong>Are IDs Consecutive?</strong></td>
+            <td>No (contains huge gaps)</td>
+            <td>Yes (0, 1, 2, 3...)</td>
+          </tr>
+          <tr>
+            <td><strong>Performance Over Large Data</strong></td>
+            <td><strong>Extremely Fast</strong> (no data exchange)</td>
+            <td><strong>Slow</strong> (triggers extra counting jobs)</td>
+          </tr>
+          <tr>
+            <td><strong>API Layer</strong></td>
+            <td>Native DataFrames</td>
+            <td>RDD (requires serialization back and forth)</td>
+          </tr>
+          <tr>
+            <td><strong>Determinism</strong></td>
+            <td><strong>Non-deterministic</strong> (IDs change if partitions change)</td>
+            <td><strong>Deterministic</strong> (as long as data ordering is stable)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>Where to Use Which</h2>
+      <p>Use <code>monotonically_increasing_id()</code> when:</p>
+      <ul>
+        <li>You are building primary keys for a data warehouse or a database table join where gaps do not matter.</li>
+        <li>You are operating on massive, multi-terabyte datasets where execution speed and system performance are critical.</li>
+      </ul>
+
+      <p>Use <code>df.rdd.zipWithIndex()</code> when:</p>
+      <ul>
+        <li>You explicitly need consecutive numbers—such as implementing pagination for a web app frontend, or sampling specific fractions of data based on row count boundaries.</li>
+        <li>Your dataset is small-to-medium in size, making the extra counting job overhead negligible.</li>
+      </ul>
+
+      <h2>Common Mistakes to Avoid</h2>
+      <ol>
+        <li><strong>Assuming <code>monotonically_increasing_id()</code> is Static (The Non-Deterministic Trap)</strong><br>Because it relies entirely on partition IDs, this function is non-deterministic. If you call the function, filter or repartition the data downstream, and reference that same ID column later, Spark may re-evaluate the execution plan. Rows can shift partitions, resulting in completely different IDs being generated for the same records.<br>The Fix: If you need the assigned IDs to remain absolute for downstream operations, save or cache your DataFrame directly to storage (<code>.write.mode("parquet")</code>) immediately after applying the ID function.</li>
+        <br>
+        <li><strong>Dropping Down to RDDs Too Carelessly</strong><br><code>zipWithIndex</code> requires converting your clean Spark DataFrame down to an RDD format, applying the indexes via Python/Java object serialization, and converting it back. This serialization round-trip bypasses Spark’s native catalyst optimizer, resulting in a severe performance hit on wide tables.</li>
+        <br>
+        <li><strong>Using<code>Window.row_number()</code> as an Alternative on Huge Datasets</strong><br>Developers who realize they need consecutive numbers often choose <code>F.row_number().over(Window.orderBy("some_column"))</code> instead of <code>zipWithIndex</code>. If you do not specify a partition boundary inside that window statement, Spark forces your entire multi-node dataset into a single computer partition to sort it sequentially. This completely destroys parallelism and will likely cause your driver to crash with an Out-Of-Memory (OOM) error.</li>
+      </ol>
+    </article>
+  </main>
+
+  <footer>
+    <span class="footer-name">Magdalena Bronowska</span>
+    <p class="footer-sub">Data <span>•</span> SQL <span>•</span> Fabric</p>
+  </footer>
+
+  <script>
+    const root = document.documentElement;
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    const themeIcon = document.getElementById('theme-icon');
+    const themeLabel = document.getElementById('theme-label');
+
+    function applyTheme(theme) {
+      root.setAttribute('data-theme', theme);
+      localStorage.setItem('theme', theme);
+      themeIcon.textContent = theme === 'dark' ? '🌙' : '☀️';
+      themeLabel.textContent = theme === 'dark' ? 'Dark' : 'Light';
+    }
+
+    function toggleTheme() {
+      const nextTheme = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      applyTheme(nextTheme);
+    }
+
+    document.querySelectorAll('.copy-btn').forEach((button) => {
+      button.addEventListener('click', async () => {
+        const wrap = button.closest('.code-wrap');
+        const code = wrap ? wrap.querySelector('pre') : null;
+        if (!code) return;
+
+        try {
+          await navigator.clipboard.writeText(code.innerText);
+          button.textContent = 'Copied';
+          button.classList.add('copied');
+          setTimeout(() => {
+            button.textContent = 'Copy';
+            button.classList.remove('copied');
+          }, 1800);
+        } catch (error) {
+          button.textContent = 'Retry';
+          setTimeout(() => {
+            button.textContent = 'Copy';
+          }, 1800);
+        }
+      });
+    });
+
+    applyTheme(savedTheme);
+  </script>
+</body>
+</html>
