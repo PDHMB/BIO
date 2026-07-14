@@ -377,7 +377,11 @@
 
       <div class="resource-links">
         <a href="https://www.youtube.com/shorts/TqlP1nVGI78" target="_blank" rel="noopener">Watch a short YouTube explanation</a>
+        <br>
         <a href="https://github.com/MGACHA/PySpark_LearningByDoing/tree/main/Row_ID" target="_blank" rel="noopener">Open the GitHub notebook</a>
+        <br>
+        <a href="https://www.bronowska.com/articles/Surrogate_Keys_Explained_Simply.html" target="_blank" rel="noopener">Read about Surrogete Key</a>
+
       </div>
 
       <h2>The Core Analogy</h2>
@@ -518,6 +522,16 @@ df_zipped.show()</pre>
         <br>
         <li><strong>Using<code>Window.row_number()</code> as an Alternative on Huge Datasets</strong><br>Developers who realize they need consecutive numbers often choose <code>F.row_number().over(Window.orderBy("some_column"))</code> instead of <code>zipWithIndex</code>. If you do not specify a partition boundary inside that window statement, Spark forces your entire multi-node dataset into a single computer partition to sort it sequentially. This completely destroys parallelism and will likely cause your driver to crash with an Out-Of-Memory (OOM) error.</li>
       </ol>
+
+            <div class="resource-links">
+        <a href="https://www.youtube.com/shorts/TqlP1nVGI78" target="_blank" rel="noopener">Watch a short YouTube explanation</a>
+        <br>
+        <a href="https://github.com/MGACHA/PySpark_LearningByDoing/tree/main/Row_ID" target="_blank" rel="noopener">Open the GitHub notebook</a>
+        <br>
+        <a href="https://www.bronowska.com/articles/Surrogate_Keys_Explained_Simply.html" target="_blank" rel="noopener">Read about Surrogete Key</a>
+
+      </div>
+      
     </article>
   </main>
 
