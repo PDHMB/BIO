@@ -426,7 +426,7 @@ df_mono = df.withColumn("row_id", F.monotonically_increasing_id())
 df_mono.show()</pre>
       </div>
 
-      <img src="../bio-main/bio-main/assets/images/13072026_row_id_mono.png" alt="Illustration showing row IDs generated with monotonically_increasing_id across partitions">
+      <img src="../assets/images/13072026_row_id_mono.png" alt="Illustration showing row IDs generated with monotonically_increasing_id across partitions">
       <p class="img-caption">Example of the numbering pattern produced by monotonically_increasing_id()</p>
 
       <h2>2. df.rdd.zipWithIndex()</h2>
@@ -456,7 +456,7 @@ df_zipped = spark.createDataFrame(mapped_rdd, ["name", "row_id"])
 df_zipped.show()</pre>
       </div>
 
-      <img src="../bio-main/bio-main/assets/images/13072026_row_id_zipwithindex.png" alt="Illustration showing row IDs generated with zipWithIndex across partitions">
+      <img src="../assets/images/13072026_row_id_zipwithindex.png" alt="Illustration showing row IDs generated with zipWithIndex across partitions">
       <p class="img-caption">Example of the numbering pattern produced by zipWithIndex()</p>
 
       <h2>Comparison</h2>
