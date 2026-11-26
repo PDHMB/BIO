@@ -1,0 +1,65 @@
+:root {
+  color-scheme: light;
+  --background: #ffffff;
+  --surface: #f5f8fc;
+  --text: #172333;
+  --muted: #46566a;
+  --accent: #0756a5;
+  --accent-hover: #003e7b;
+  --border: #cbd6e2;
+  --control-border: #68798d;
+  --focus: #005fcc;
+  --header-background: #ffffff;
+  --font-main: "Segoe UI", system-ui, sans-serif;
+  --font-size: 1rem;
+  --line-height: 1.65;
+  --heading-line-height: 1.15;
+  --title-size: clamp(2.2rem, 5vw, 3.8rem);
+  --heading-size: clamp(1.6rem, 3vw, 2.2rem);
+  --small-size: 0.875rem;
+  --lead-size: 1.15rem;
+  --card-heading-size: 1.15rem;
+  --article-heading-size: 1.6rem;
+  --article-subheading-size: 1.2rem;
+  --title-letter-spacing: -0.035em;
+  --heading-letter-spacing: -0.02em;
+  --eyebrow-letter-spacing: 0.04em;
+  --link-underline-offset: 0.18em;
+  --space-half: 0.25rem;
+  --space-1: 0.5rem;
+  --space-2: 1rem;
+  --space-3: 1.5rem;
+  --space-4: 2rem;
+  --space-5: 3rem;
+  --space-6: 4.5rem;
+  --page-width: 1200px;
+  --reading-width: 75ch;
+  --article-width: 1000px;
+  --frame-inset: 5px;
+  --frame-width: 2px;
+  --frame-radius: 7px;
+  --frame-colours: linear-gradient(120deg, #47a8ff, #3dddb4 55%, #c36dff);
+  --flag-width: 24px;
+  --social-icon-size: 28px;
+  --radius: 0.5rem;
+  --border-width: 1px;
+  --focus-width: 3px;
+  --focus-offset: 3px;
+  --control-height: 44px;
+  --scroll-offset: 12rem;
+  --shadow: none;
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+  --background: #101820;
+  --surface: #182534;
+  --text: #edf3fa;
+  --muted: #c0cddd;
+  --accent: #91c6ff;
+  --accent-hover: #c1e0ff;
+  --border: #526579;
+  --control-border: #788da2;
+  --focus: #a9d2ff;
+  --header-background: #101820;
+}
