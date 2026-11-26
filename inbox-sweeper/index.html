@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-P9VH7BLE4X"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag("js", new Date());
+    gtag("config", "G-P9VH7BLE4X");
+  </script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Inbox Sweeper — a Minesweeper-style corporate mailbox puzzle.">
+  <meta name="theme-color" content="#0756a5">
+  <title>Inbox Sweeper — Clear the Inbox</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="script.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <a href="../index.html">← Back to Portfolio</a>
+    <button class="icon-button" id="help-button" type="button" aria-label="How to play">?</button>
+  </header>
+
+  <main class="game-container">
+    <section class="hero" aria-labelledby="game-title">
+      <p class="eyebrow">Mail · Data · Security</p>
+      <h1 id="game-title">Inbox <span>Sweeper</span></h1>
+      <p>Open safe messages. Flag suspicious email. Keep the inbox secure.</p>
+    </section>
+
+    <section class="hud" aria-label="Inbox status">
+      <div><span>Hackers remaining</span><strong id="remaining-value">10</strong><small id="flag-progress">0 / 10 flagged</small></div>
+      <div><span>Elapsed time</span><strong id="timer-value">0s</strong></div>
+      <label>
+        <span>Difficulty</span>
+        <select id="difficulty-select">
+          <option value="8">8×8 · 10 hackers</option>
+          <option value="10">10×10 · 15 hackers</option>
+        </select>
+      </label>
+    </section>
+
+    <section class="mail-card" aria-label="Inbox Sweeper game">
+      <div class="game-toolbar">
+        <div class="mode-toggle" role="group" aria-label="Cell interaction mode">
+          <button type="button" data-mode="open" aria-pressed="true">📨 Open</button>
+          <button type="button" data-mode="flag" aria-pressed="false">🚩 Flag Spam</button>
+        </div>
+        <button class="new-game-button" id="new-game-button" type="button">New Inbox</button>
+      </div>
+
+      <p class="subject-preview" id="subject-preview">Safe first click: Payroll Summary</p>
+      <div id="board" class="mail-grid" role="grid" aria-label="Corporate mailbox grid"></div>
+      <p id="status-message" class="status-message" role="status" aria-live="polite">Open an email to start. Your first click is safe.</p>
+
+      <div class="game-overlay" id="game-overlay" hidden>
+        <div>
+          <p class="eyebrow">Inbox scan complete</p>
+          <h2 id="overlay-title">Breach Detected!</h2>
+          <p id="overlay-message"></p>
+          <button id="retry-button" class="primary-button" type="button">Retry Inbox</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="legend" aria-label="Mailbox guide">
+      <span>📨 Safe email</span>
+      <span>🚩 Flagged spam</span>
+      <span>⚠️ Hacker email</span>
+      <span>Numbers = nearby hackers</span>
+    </section>
+
+    <footer>
+      <span>Created by Magda Bronowska</span>
+      <a href="../index.html">Back to Portfolio</a>
+    </footer>
+  </main>
+
+  <div class="modal-backdrop" id="help-modal" hidden role="dialog" aria-modal="true" aria-labelledby="help-title">
+    <section class="modal">
+      <button class="modal-close" id="close-help" type="button" aria-label="Close">×</button>
+      <p class="eyebrow">How to play</p>
+      <h2 id="help-title">Keep hacker email out of the mailbox.</h2>
+      <p>Open every safe email without opening a hacker email. A number shows how many hackers touch that cell.</p>
+      <p>Use right-click to flag a cell, or switch to <strong>Flag Spam</strong> for touch and trackpads.</p>
+      <p>Your first opened cell and its surrounding cells are always safe.</p>
+      <button class="primary-button" id="start-button" type="button">Start scanning</button>
+    </section>
+  </div>
+</body>
+</html>

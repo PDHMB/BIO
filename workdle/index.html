@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-P9VH7BLE4X"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-P9VH7BLE4X');
+  </script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Workdle — a workplace, HR, and analytics word game in six tries.">
+  <meta name="theme-color" content="#0756a5">
+  <title>Workdle — HR & Analytics Word Game</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="script.js"></script>
+</head>
+<body>
+  <div class="page-glow" aria-hidden="true"></div>
+  <header class="site-header">
+    <a class="portfolio-link" href="../index.html">← Back to Portfolio</a>
+    <div class="header-actions">
+      <button class="icon-button" id="help-button" type="button" aria-label="How to play">?</button>
+      <button class="icon-button" id="stats-button" type="button" aria-label="View statistics">▥</button>
+      <button class="icon-button" id="theme-button" type="button" aria-label="Switch colour theme">☾</button>
+    </div>
+  </header>
+
+  <main class="game-shell">
+    <section class="intro" aria-labelledby="game-title">
+      <p class="eyebrow">People · Pay · Data</p>
+      <h1 id="game-title">Work<span>dle</span></h1>
+      <p>Guess the workplace, HR, and analytics term in 6 tries.</p>
+    </section>
+
+    <section class="mode-panel" aria-label="Game mode">
+      <div class="mode-switch" role="group" aria-label="Choose game mode">
+        <button type="button" data-mode="daily" aria-pressed="true">Daily challenge</button>
+        <button type="button" data-mode="free" aria-pressed="false">Free play</button>
+      </div>
+      <p id="puzzle-label">Daily puzzle</p>
+    </section>
+
+    <section class="game-area" aria-label="Workdle game">
+      <div class="board" id="board" role="grid" aria-label="Six guesses of six letters"></div>
+      <div class="toast" id="toast" role="status" aria-live="polite"></div>
+      <div class="keyboard" id="keyboard" aria-label="On-screen keyboard"></div>
+    </section>
+
+    <section class="legend" aria-label="Letter colour guide">
+      <span><i class="swatch correct"></i>Right place</span>
+      <span><i class="swatch present"></i>Wrong place</span>
+      <span><i class="swatch absent"></i>Not in word</span>
+    </section>
+
+    <footer>
+      <p>Created by Magda Bronowska</p>
+      <a href="../index.html">Back to Portfolio</a>
+    </footer>
+  </main>
+
+  <div class="modal-backdrop" id="welcome-modal" role="dialog" aria-modal="true" aria-labelledby="welcome-title" hidden>
+    <section class="modal">
+      <button class="modal-close" type="button" data-close-modal aria-label="Close">×</button>
+      <p class="eyebrow">Welcome to Workdle</p>
+      <h2 id="welcome-title">A word game for people who work with people and data.</h2>
+      <p>Guess the six-letter term in six attempts. After each guess, the tiles show how close you are.</p>
+      <div class="rule-examples">
+        <div><span class="example-tile correct">P</span><p><strong>P</strong> is in the word and in the right place.</p></div>
+        <div><span class="example-tile present">A</span><p><strong>A</strong> is in the word but in another place.</p></div>
+        <div><span class="example-tile absent">Y</span><p><strong>Y</strong> is not in the word.</p></div>
+      </div>
+      <button class="primary-button" id="start-button" type="button">Start playing</button>
+    </section>
+  </div>
+
+  <div class="modal-backdrop" id="stats-modal" role="dialog" aria-modal="true" aria-labelledby="stats-title" hidden>
+    <section class="modal stats-modal">
+      <button class="modal-close" type="button" data-close-modal aria-label="Close">×</button>
+      <p class="eyebrow">Your progress</p>
+      <h2 id="stats-title">Statistics</h2>
+      <div class="stats-grid">
+        <div><strong id="games-played">0</strong><span>Games played</span></div>
+        <div><strong id="games-won">0</strong><span>Wins</span></div>
+        <div><strong id="win-percentage">0%</strong><span>Win percentage</span></div>
+      </div>
+      <p class="result-message" id="result-message"></p>
+      <div class="modal-actions">
+        <button class="secondary-button" id="share-button" type="button" hidden>Share results</button>
+        <button class="primary-button" id="play-again-button" type="button">Play Again</button>
+      </div>
+    </section>
+  </div>
+
+  <canvas id="confetti" aria-hidden="true"></canvas>
+</body>
+</html>

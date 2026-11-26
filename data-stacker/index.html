@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-P9VH7BLE4X"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag("js", new Date());
+    gtag("config", "G-P9VH7BLE4X");
+  </script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Data Stacker — a Tetris-inspired analytics and bar-chart puzzle game.">
+  <meta name="theme-color" content="#0756a5">
+  <title>Data Stacker — Build the Right Dataset</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="script.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <a href="../index.html">← Back to Portfolio</a>
+    <button id="sound-button" type="button" class="icon-button" aria-label="Turn sound on" aria-pressed="false">♫</button>
+  </header>
+
+  <main class="game-container">
+    <section class="hero" aria-labelledby="game-title">
+      <p class="eyebrow">Data · Coding · HR</p>
+      <h1 id="game-title">Data <span>Stacker</span></h1>
+      <p>Build six columns. Match every target. Compile the dataset.</p>
+    </section>
+
+    <section class="hud" aria-label="Game status">
+      <div><span>Level</span><strong id="level-value">1</strong></div>
+      <div class="scenario"><span>Scenario</span><strong id="scenario-value">Level 1: Weekly Timesheet</strong></div>
+      <div><span>Score</span><strong id="score-value">0</strong></div>
+      <div>
+        <span>Next</span>
+        <div id="next-preview" class="next-preview" aria-label="Next piece"></div>
+      </div>
+    </section>
+
+    <section class="game-card" aria-label="Data Stacker game">
+      <div class="board-wrap">
+        <div id="board" class="board" role="grid" aria-label="6 columns by 10 rows puzzle board"></div>
+        <div id="targets" class="targets" aria-label="Column targets"></div>
+      </div>
+
+      <div class="status-row">
+        <span id="status-message" role="status" aria-live="polite">Match all six target heights.</span>
+        <span id="column-status">0 / 6 matched</span>
+      </div>
+
+      <div class="controls" aria-label="Game controls">
+        <button type="button" data-action="left" aria-label="Move left">←</button>
+        <button type="button" data-action="rotate" aria-label="Rotate piece">↻</button>
+        <button type="button" data-action="right" aria-label="Move right">→</button>
+        <button type="button" data-action="down" aria-label="Move down">↓</button>
+        <button type="button" data-action="drop" class="wide">Drop</button>
+      </div>
+      <p class="key-help">← → or A/D move · ↑ or W rotate · ↓ or S soft drop · Space hard drop</p>
+
+      <div id="game-overlay" class="game-overlay" hidden>
+        <div>
+          <p class="eyebrow" id="overlay-kicker">Run ended</p>
+          <h2 id="overlay-title">Dataset Overflow</h2>
+          <p id="overlay-copy"></p>
+          <button id="restart-button" type="button" class="primary-button">Restart</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="legend" aria-label="Column states">
+      <span><i class="legend-dot below"></i>Building</span>
+      <span><i class="legend-dot matched"></i>Target matched</span>
+      <span><i class="legend-dot overflow"></i>Overflow</span>
+      <span><i class="legend-dot rollback"></i>Rollback</span>
+    </section>
+
+    <footer>
+      <span>Created by Magda Bronowska</span>
+      <a href="../index.html">Back to Portfolio</a>
+    </footer>
+  </main>
+</body>
+</html>
