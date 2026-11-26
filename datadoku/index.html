@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-P9VH7BLE4X"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag("js", new Date());
+    gtag("config", "G-P9VH7BLE4X");
+  </script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="DataDoku: Sudoku for data analysts, HR analytics, and BI professionals.">
+  <meta name="theme-color" content="#f2c811">
+  <title>DataDoku — The Sudoku for Data Analysts</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="script.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="back-link" href="../index.html">← Back to Portfolio</a>
+    <div class="header-actions">
+      <button class="icon-button" id="help-button" type="button" aria-label="How to play">?</button>
+      <button class="icon-button" id="sound-button" type="button" aria-label="Turn sound on" aria-pressed="false">♫</button>
+      <button class="icon-button" id="theme-button" type="button" aria-label="Switch colour theme">☾</button>
+    </div>
+  </header>
+
+  <main class="app-shell">
+    <section class="hero" aria-labelledby="game-title">
+      <p class="eyebrow">DataDoku · Data puzzle</p>
+      <h1 id="game-title">Data<span>Doku</span></h1>
+      <p>The Sudoku for Data Analysts</p>
+    </section>
+
+    <section class="status-strip" aria-label="Game status">
+      <div><span>Time</span><strong id="timer">00:00</strong></div>
+      <div><span>Hints</span><strong id="hints-left">3</strong></div>
+      <div><span>Score</span><strong id="score">—</strong></div>
+      <div><span>Difficulty</span><strong id="difficulty-label">Medium</strong></div>
+    </section>
+
+    <section class="game-layout">
+      <article class="board-card">
+        <div class="board-toolbar">
+          <div class="mode-switch" role="group" aria-label="Difficulty">
+            <button type="button" data-difficulty="easy">Easy</button>
+            <button type="button" data-difficulty="medium" aria-pressed="true">Medium</button>
+            <button type="button" data-difficulty="hard">Hard</button>
+          </div>
+          <button class="daily-toggle" id="daily-button" type="button" aria-pressed="false">Daily Challenge</button>
+        </div>
+        <div id="board" class="board" role="grid" aria-label="9 by 9 DataDoku board"></div>
+        <p id="message" class="message" role="status" aria-live="polite">Select a cell, then choose an analytics symbol.</p>
+        <div id="symbol-pad" class="symbol-pad" aria-label="Analytics symbols"></div>
+        <div class="visual-legend" aria-label="Analytics symbol legend">
+          <span data-symbol="CSV"><i class="legend-badge legend-csv">📄</i><strong>CSV</strong> Dataset</span>
+          <span data-symbol="DAX"><i class="legend-badge legend-dax">📘</i><strong>DAX</strong> Power BI Language</span>
+          <span data-symbol="ETL"><i class="legend-badge legend-etl">🔄</i><strong>ETL</strong> Data Pipeline</span>
+          <span data-symbol="HRA"><i class="legend-badge legend-hra">👥</i><strong>HRA</strong> HR Analytics</span>
+          <span data-symbol="KPI"><i class="legend-badge legend-kpi">📈</i><strong>KPI</strong> Metric</span>
+          <span data-symbol="PBI"><i class="legend-badge legend-pbi">📊</i><strong>PBI</strong> Power BI</span>
+          <span data-symbol="PYT"><i class="legend-badge legend-pyt">🐍</i><strong>PYT</strong> Python</span>
+          <span data-symbol="SQL"><i class="legend-badge legend-sql">🗄️</i><strong>SQL</strong> Database</span>
+          <span data-symbol="XLS"><i class="legend-badge legend-xls">📗</i><strong>XLS</strong> Excel Spreadsheet</span>
+        </div>
+        <div class="quick-legend" aria-label="Quick analytics legend">
+          <span data-symbol="CSV">📄 CSV</span>
+          <span data-symbol="XLS">📙 Excel</span>
+          <span data-symbol="ETL">🔄 ETL</span>
+          <span data-symbol="HRA">👥 HR</span>
+          <span data-symbol="KPI">📈 KPI</span>
+          <span data-symbol="PBI">📊 Power BI</span>
+          <span data-symbol="PYT">🐍 Python</span>
+          <span data-symbol="SQL">🗄 SQL</span>
+          <span data-symbol="XLS">📗 XLS</span>
+        </div>
+      </article>
+
+      <aside class="side-panel">
+        <section class="panel">
+          <h2>Game controls</h2>
+          <div class="control-grid">
+            <button class="primary-button" id="new-game-button" type="button">New Game</button>
+            <button class="secondary-button" id="reset-button" type="button">Reset</button>
+            <button class="secondary-button" id="hint-button" type="button">Hint</button>
+            <button class="secondary-button" id="check-button" type="button">Check Solution</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-heading">
+            <h2>Leaderboard</h2>
+            <span>Top 5</span>
+          </div>
+          <ol id="leaderboard" class="leaderboard"></ol>
+        </section>
+
+        <section class="panel">
+          <h2>Achievements</h2>
+          <div id="achievements" class="achievements"></div>
+        </section>
+      </aside>
+    </section>
+
+    <footer>
+      <span>Created by Magda Bronowska</span>
+      <a href="../index.html">Back to Portfolio</a>
+    </footer>
+  </main>
+
+  <div class="modal-backdrop" id="welcome-modal" hidden role="dialog" aria-modal="true" aria-labelledby="welcome-title">
+    <section class="modal">
+      <button class="modal-close" type="button" data-close-modal aria-label="Close">×</button>
+      <p class="eyebrow">Welcome to DataDoku</p>
+      <h2 id="welcome-title">Fill the board with analytics concepts.</h2>
+      <p>Use SQL, PBI, PYT, DAX, ETL, KPI, HRA, CSV, and XLS in place of numbers.</p>
+      <div class="rules">
+        <span>01</span><p>Each row contains every symbol once.</p>
+        <span>02</span><p>Each column contains every symbol once.</p>
+        <span>03</span><p>Each 3×3 section contains every symbol once.</p>
+      </div>
+      <p class="note"><strong>HRA</strong> means HR Analytics. You have up to three hints per puzzle.</p>
+      <button class="primary-button wide-button" id="start-button" type="button">Start solving</button>
+    </section>
+  </div>
+
+  <div class="modal-backdrop" id="win-modal" hidden role="dialog" aria-modal="true" aria-labelledby="win-title">
+    <section class="modal">
+      <button class="modal-close" type="button" data-close-modal aria-label="Close">×</button>
+      <p class="eyebrow">Puzzle complete</p>
+      <h2 id="win-title">Excellent analysis.</h2>
+      <p id="win-message"></p>
+      <div class="win-stats">
+        <div><span>Time</span><strong id="win-time">00:00</strong></div>
+        <div><span>Score</span><strong id="win-score">0</strong></div>
+        <div><span>Hints</span><strong id="win-hints">0</strong></div>
+      </div>
+      <button class="primary-button wide-button" id="win-new-game" type="button">Play Again</button>
+    </section>
+  </div>
+
+  <canvas id="confetti" aria-hidden="true"></canvas>
+</body>
+</html>
