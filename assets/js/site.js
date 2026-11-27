@@ -160,7 +160,8 @@ function renderPreferences() {
   document.querySelectorAll("[data-language]").forEach((button) => {
     button.setAttribute("aria-pressed", String(button.dataset.language === language));
   });
-  themeButton.textContent = text[theme];
+  themeButton.textContent = theme === "dark" ? "☀️" : "🌙";
+  themeButton.title = text[theme === "dark" ? "switchLight" : "switchDark"];
   themeButton.setAttribute("aria-label", text[theme === "dark" ? "switchLight" : "switchDark"]);
   themeButton.setAttribute("aria-pressed", String(theme === "dark"));
   renderArticle();
