@@ -20,7 +20,7 @@ body::before {
   mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   mask-composite: exclude;
 }
-a { color: var(--accent); text-underline-offset: var(--link-underline-offset); }
+a { color: var(--accent); text-decoration: none; text-underline-offset: var(--link-underline-offset); }
 a:hover { color: var(--accent-hover); }
 :focus-visible { outline: var(--focus-width) solid var(--focus); outline-offset: var(--focus-offset); }
 img { display: block; max-width: 100%; height: auto; }
@@ -34,7 +34,7 @@ h2 { font-size: var(--heading-size); letter-spacing: var(--heading-letter-spacin
 .brand { color: var(--text); font-size: clamp(1.2rem, 2.4vw, 1.45rem); font-weight: 750; letter-spacing: -0.02em; text-decoration: none; margin-right: auto; white-space: nowrap; }
 .navigation, .preferences { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-1) var(--space-2); }
 .navigation a { color: var(--text); text-decoration: none; }
-.navigation a:hover, .navigation a[aria-current="page"] { color: var(--accent); text-decoration: underline; }
+.navigation a:hover, .navigation a[aria-current="page"] { color: var(--accent); text-decoration: none; }
 .preferences { margin-left: auto; }
 main { padding-block: var(--space-5) var(--space-6); }
 .section { margin-top: var(--space-6); }

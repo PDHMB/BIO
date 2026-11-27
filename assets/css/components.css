@@ -3,12 +3,28 @@
 .control { min-height: var(--control-height); padding: var(--space-1) var(--space-2); border: var(--border-width) solid var(--control-border); border-radius: var(--radius); background: var(--background); color: var(--text); font: inherit; }
 button.control { cursor: pointer; }
 button.control:hover, button.control[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
-button.control[aria-pressed="true"] { font-weight: 700; text-decoration: underline; text-underline-offset: var(--link-underline-offset); }
+button.control[aria-pressed="true"] { font-weight: 700; text-decoration: none; }
 .language-group { display: flex; gap: var(--space-1); }
 .language-group button { display: inline-flex; align-items: center; gap: var(--space-1); }
-.language-flag-button.control { min-width: var(--control-height); min-height: var(--control-height); justify-content: center; padding: var(--space-1); }
-.theme-icon-button.control { min-width: var(--control-height); min-height: var(--control-height); justify-content: center; padding: var(--space-1); font-size: 1.15rem; line-height: 1; }
-.flag { display: inline-block; flex: none; width: var(--flag-width); height: auto; border: var(--border-width) solid var(--control-border); vertical-align: middle; }
+.language-flag-button.control,
+.theme-icon-button.control {
+  min-width: var(--control-height);
+  min-height: var(--control-height);
+  justify-content: center;
+  padding: 0;
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
+}
+.language-flag-button.control:hover,
+.language-flag-button.control[aria-pressed="true"],
+.theme-icon-button.control:hover,
+.theme-icon-button.control[aria-pressed="true"] {
+  border-color: transparent;
+  background: transparent;
+}
+.theme-icon-button.control { font-size: 1.15rem; line-height: 1; }
+.flag { display: inline-block; flex: none; width: var(--flag-width); height: auto; border: 0; vertical-align: middle; }
 .eyebrow { color: var(--accent); font-size: var(--small-size); font-weight: 700; letter-spacing: var(--eyebrow-letter-spacing); text-transform: uppercase; margin-bottom: var(--space-2); }
 .lead { font-size: var(--lead-size); }
 .section-intro { max-width: var(--reading-width); margin: calc(-1 * var(--space-2)) 0 var(--space-3); color: var(--muted); }
