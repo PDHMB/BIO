@@ -6,20 +6,6 @@ body {
   color: var(--text);
   font: var(--font-size)/var(--line-height) var(--font-main);
 }
-body::before {
-  content: "";
-  position: fixed;
-  inset: var(--frame-inset);
-  z-index: 30;
-  pointer-events: none;
-  padding: var(--frame-width);
-  border-radius: var(--frame-radius);
-  background: var(--frame-colours);
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  mask-composite: exclude;
-}
 a { color: var(--accent); text-decoration: none; text-underline-offset: var(--link-underline-offset); }
 a:hover { color: var(--accent-hover); }
 :focus-visible { outline: var(--focus-width) solid var(--focus); outline-offset: var(--focus-offset); }
