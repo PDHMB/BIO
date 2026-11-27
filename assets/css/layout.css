@@ -53,6 +53,12 @@ footer { border-top: var(--border-width) solid var(--border); color: var(--muted
   .navigation { gap: var(--space-1); }
   .preferences { gap: var(--space-half); }
   .preferences .control { padding-inline: var(--space-half); font-size: var(--small-size); }
+  .links-grid,
+  .hobbies-grid,
+  .games-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .hobbies-grid .hobby-cooking { display: none; }
   .video-card:nth-child(n+5) { display: none; }
   .video-card:nth-child(n+5) h3 a::before { content: none; }
 }
